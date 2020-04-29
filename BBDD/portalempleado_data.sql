@@ -70,14 +70,14 @@ INSERT INTO sedes_servicios VALUES (null, 4,8,0,null,null);
 
 select * from sedes_servicios;
 
-INSERT INTO reservas VALUES(null,1,1,'2020-04-10','11:30','visita a cliente 1','03:00',null,null);
-INSERT INTO reservas VALUES(null,2,2,'2020-04-15','09:15','Reunión departamento','00:45',null,null);
-INSERT INTO reservas VALUES(null,3,3,'2020-04-18','15:00','Reserva comedor','01:00',null,null);
-INSERT INTO reservas VALUES(null,2,9,'2020-04-03','16:00','Reunión con proveedor 2','01:00',null,null);
-INSERT INTO reservas VALUES(null,1,10,'2020-05-12','12:30','Cita en Notaría','01:30',null,null);
-INSERT INTO reservas VALUES(null,2,11,'2020-05-12','16:00','Videoconferencia','03:00',null,null);
-INSERT INTO reservas VALUES(null,3,3,'2020-05-02','14:30','Reserva comedor','01:00',null,null);
-INSERT INTO reservas VALUES(null,1,8,'2020-04-30','09:00','Traslado a reunión en Sede-Coruña','06:00',null,null);
+INSERT INTO reservas VALUES(null,1,1,'2020-04-10 11:30','visita a cliente 1','03:00',null,null);
+INSERT INTO reservas VALUES(null,2,2,'2020-04-15 09:15','Reunión departamento','00:45',null,null);
+INSERT INTO reservas VALUES(null,3,3,'2020-04-18 15:00','Reserva comedor','01:00',null,null);
+INSERT INTO reservas VALUES(null,2,9,'2020-04-03 16:00','Reunión con proveedor 2','01:00',null,null);
+INSERT INTO reservas VALUES(null,1,10,'2020-05-12 12:30','Cita en Notaría','01:30',null,null);
+INSERT INTO reservas VALUES(null,2,11,'2020-05-12 16:00','Videoconferencia','03:00',null,null);
+INSERT INTO reservas VALUES(null,3,3,'2020-05-02 14:30','Reserva comedor','01:00',null,null);
+INSERT INTO reservas VALUES(null,1,8,'2020-04-30 09:00','Traslado a reunión en Sede-Coruña','06:00',null,null);
 
 select * from reservas;
 
