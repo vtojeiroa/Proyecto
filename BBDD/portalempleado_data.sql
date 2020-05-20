@@ -1,6 +1,5 @@
-CREATE DATABASE portal_empleado;
 
-USE portal_empleado;
+USE proyecto_portal_empleado;
 
 
 INSERT INTO sedes VALUES (null,1,'Central_Coruña','Cantón Pequeño 1', 15001, 'A Coruña','A Coruña','España',null,null);

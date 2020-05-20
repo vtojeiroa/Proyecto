@@ -1,6 +1,6 @@
-CREATE DATABASE portal_empleado;
+CREATE DATABASE proyecto_portal_empleado;
 
-USE portal_empleado;
+USE proyecto_portal_empleado;
 
 CREATE TABLE sedes(
 id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
