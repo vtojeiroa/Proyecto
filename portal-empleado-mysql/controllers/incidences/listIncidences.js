@@ -25,12 +25,12 @@ async function listIncidences(req, res, next) {
       result = await connection.query(
         `SELECT i.id,i.servicios_id,i.usuarios_id, i.descripcion,
         i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro,
-        v.valoracion, v.comentario_valoracion  FROM incidencias i, valoraciones v
-        WHERE v.incidencias_id = i.id  AND i.usuarios_id IN 
+        v.valoracion, v.comentario_valoracion  FROM incidencias i INNER JOIN valoraciones v
+       ON  v.incidencias_id = i.id WHERE i.usuarios_id IN 
         (SELECT id FROM usuarios WHERE sedes_id IN
         (SELECT id FROM sedes WHERE nombre LIKE ?)) 
         ORDER BY fecha_registro;`,
-        [`%${search}%`, `%${search}%`]
+        [`%${search}%`]
       );
     } else {
       result = await connection.query(

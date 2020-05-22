@@ -70,7 +70,7 @@ async function editUser(req, res, next) {
     if (!current.length) {
       throw generateError(`El usuario con id ${id} no existe`, 404);
     }
-    console.log(current[0].id);
+
     // Check if auth user is the same as :id or is admin
     if (current[0].id !== req.auth.id && req.auth.role !== 'admin') {
       throw generateError('No tienes permisos para editar este usuario', 401);

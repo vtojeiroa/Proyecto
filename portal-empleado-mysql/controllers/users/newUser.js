@@ -78,7 +78,7 @@ async function newUser(req, res, next) {
     );
 
     res.send({
-      staus: 'ok',
+      status: 'ok',
       message: `Usuario registrado correctamente.Te hemos enviado un email al correo que nos has facilitado (Revisa la carpeta de SPAM). Sigue las instrucciones para activar tu usuario.`,
       data: {
         id: data.insertID,

@@ -125,9 +125,7 @@ const editUserSchema = Joi.object().keys({
         `Elcampo número documento identidad está compuesto por números y letras, y máximo 10 caracteres`
       )
     ),
-  email: Joi.string()
-    .email()
-    .error(generateError('El campo email debe ser un email bien formado', 400)),
+  email: emailSchema,
   avatar: Joi.string(),
   address: nameSchema,
   postal_code: Joi.number()
@@ -160,6 +158,16 @@ const editPasswordUserSchema = Joi.object().keys({
     .error(generateError('Las passwords debe ser iguales', 400))
 });
 
+const recoveryPasswordSchema = Joi.object().keys({
+  email: emailSchema,
+  postal_code: Joi.number()
+    .integer()
+    .error(generateError(`El campo código postal está formado por números`)),
+  birthdate: Joi.date().error(
+    generateError(`El campo birthdate debe tener el formato yyyy-mm-dd`)
+  )
+});
+
 module.exports = {
   reserveSchema,
   incidenceSchema,
@@ -169,5 +177,6 @@ module.exports = {
   userLoginSchema,
   editUserSchema,
   editPasswordUserSchema,
-  editIncidenceSchema
+  editIncidenceSchema,
+  recoveryPasswordSchema
 };

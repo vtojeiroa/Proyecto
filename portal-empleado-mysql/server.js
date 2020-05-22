@@ -25,6 +25,7 @@ const loginUser = require('./controllers/users/loginUser');
 const updatePasswordUser = require('./controllers/users/updatePasswordUser');
 const validateUser = require('./controllers/users/validateUser');
 const deleteUser = require('./controllers/users/deleteUser');
+const recoveryPassUser = require('./controllers/users/recoveryPassUser');
 
 // Incidences controllers
 
@@ -73,6 +74,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.post('/users', newUser); //Registro nuevo usuario-ok
 app.get('/users/', userIsAuthenticated, userIsAdmin, listUsers); //Listar usuarios solo Admin
 app.post('/users/login', loginUser); //Login usuario-ok
+app.post('/users/password/recovery', recoveryPassUser);
 app.get('/users/validate', validateUser); //Validación inicial del usuario-ok
 app.post('/users/:id/password', userIsAuthenticated, updatePasswordUser); // Cambiar password-ok
 app.get('/users/:id', userIsAuthenticated, getUser); //Listar perfil-ok
