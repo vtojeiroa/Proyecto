@@ -1,17 +1,19 @@
-const { getConnection } = require('../db');
+'use strict';
+
+const { getConnection } = require('../../db');
 const {
   formatDateToDB,
   sendEmail,
   randomString,
   generateError
-} = require('../helpers');
+} = require('../../helpers');
 
 const {
   incidenceSchema,
   voteSchema,
   searchSchema,
   editIncidenceSchema
-} = require('./validations');
+} = require('../validations');
 
 // GET - /INCIDENCES
 async function listIncidences(req, res, next) {
@@ -65,7 +67,7 @@ async function newIncidence(req, res, next) {
   try {
     await incidenceSchema.validateAsync(req.body);
 
-    const { incidence, description } = req.body;
+    const { incidenceType, description } = req.body;
 
     connection = await getConnection();
 
@@ -74,27 +76,28 @@ async function newIncidence(req, res, next) {
     // Check tipe of incidence exists in the db
     const [
       dataIncidence
-    ] = await connection.query(`SELECT id FROM servicios WHERE tipo LIKE ?`, [
-      `%${incidence}%`
-    ]);
+    ] = await connection.query(
+      `SELECT id, tipo FROM servicios WHERE tipo LIKE ?`,
+      [`%${incidenceType}%`]
+    );
 
     if (!dataIncidence.length) {
       throw generateError(
-        'El tipo de incedencia que indica no existe en la base de datos',
+        'El tipo de incidencia que indica no existe en la base de datos',
         404
       );
     }
-    const [incidenceType] = dataIncidence;
+    const [dataIncType] = dataIncidence;
 
     const [result] = await connection.query(
       `INSERT INTO incidencias(servicios_id, usuarios_id, descripcion,activo)
         VALUES(?, ?, ?, ?)`,
-      [incidenceType.id, req.auth.id, description, 1]
+      [dataIncType.id, req.auth.id, description, 1]
     );
     // Send email with number of incidence
 
     const incidenceNumber =
-      result.insertId + '-' + incidence + '-' + randomString(20);
+      result.insertId + '-' + dataIncType.tipo + '-' + randomString(20);
 
     const incidenceNumberURL = `${process.env.PUBLIC_HOST}/incidences/${result.insertId}?number=${incidenceNumber}`;
 
@@ -103,10 +106,10 @@ async function newIncidence(req, res, next) {
         email: req.auth.email,
         title: 'Registro de incidencia en el Portal del Empleado',
         html: `<div>
-      <h1>Hemos registrado su incidencia en el Portal del Empleado</h1>
-      <p>Para revisar tu Incidencia pega esta url en el navegador: ${incidenceNumberURL}</p>  
-      <p>Si desea modificarla, haga Login en la aplicación, vaya apartado de incidencias, y
-      en el buscador introduzca el codigo de incidencia que le adjuntamos.</p>
+      <h1>Hemos registrado su incidencia al departamento  de ${dataIncType.tipo} en el Portal del Empleado</h1>
+      <p>Para revisar tu Incidencia haz click o pega esta url en el navegador: ${incidenceNumberURL}</p>  
+      <p>Si deseas modificarla, haz Login en la aplicación, ve al apartado de incidencias, e
+      introduce en el buscador el siguiente código de incidencia: ${incidenceNumber}.</p>
     </div>`
       });
     } catch (error) {
@@ -128,9 +131,8 @@ async function newIncidence(req, res, next) {
       data: {
         id: result.insertId,
         user: req.auth.id,
-        number_incidence: incidenceNumber,
         date: date,
-        incidence: incidence,
+        incidence: dataIncType.tipo,
         incidence_Number: incidenceNumber,
         description: description
       }
@@ -352,7 +354,7 @@ async function voteIncidence(req, res, next) {
   let connection;
   try {
     const { id } = req.params;
-    const { code } = req.query;
+    /* const { code } = req.query; */
     const userId = req.auth.id;
 
     // Validate payload

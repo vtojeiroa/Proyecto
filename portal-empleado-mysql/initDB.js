@@ -96,9 +96,9 @@ async function main() {
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     servicios_id INT UNSIGNED NOT NULL,
     usuarios_id INT UNSIGNED NOT NULL,
-    fechahora_reserva DATETIME NOT NULL,
+    fecha_hora_inicio_reserva DATETIME NOT NULL,
+    fecha_hora_fin_reserva DATETIME NOT NULL,
     motivo_reserva TEXT NOT NULL,
-    duracion_reserva TIME NOT NULL,
     codigo_reserva VARCHAR(255),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ultima_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -236,16 +236,16 @@ async function main() {
         `);
 
     await connection.query(`
-        INSERT INTO reservas (servicios_id, usuarios_id, fechahora_reserva, motivo_reserva, duracion_reserva)
+        INSERT INTO reservas (servicios_id, usuarios_id, fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva)
         VALUES
-            ( 1, 1, "2020-04-10 11:30", "visita a cliente 1", "03:00"),
-            ( 2, 2, "2020-04-15 09:15", "Reunión departamento", "00:45"),
-            ( 3, 3, "2020-04-18 15:00", "Reserva comedor", "01:00"),
-            ( 2, 9, "2020-04-03 16:00", "Reunión con proveedor 2", "01:00"),
-            ( 1, 10, "2020-05-12 12:30", "Cita en Notaría", "01:30"),
-            ( 2, 11, "2020-05-12 16:00", "Videoconferencia", "03:00"),
-            ( 3, 3, "2020-05-02 14:30", "Reserva comedor", "01:00"),
-            ( 1, 8, "2020-04-30 09:00", "Traslado a reunión en Sede-Coruña", "06:00");
+            ( 1, 1, "2020-04-10 11:30","2020-04-10 14:30",  "visita a cliente 1"),
+            ( 2, 2, "2020-04-15 09:15", "2020-04-15 10:00","Reunión departamento"),
+            ( 3, 3, "2020-04-18 15:00", "2020-04-18 16:00","Reserva comedor" ),
+            ( 2, 9, "2020-04-03 16:00", "2020-04-03 17:00","Reunión con proveedor 2"),
+            ( 1, 10, "2020-05-12 12:30","2020-05-12 14:00" ,"Cita en Notaría"),
+            ( 2, 11, "2020-05-12 16:00","2020-05-12 19:00" ,"Videoconferencia"),
+            ( 3, 3, "2020-05-02 14:30", "2020-05-02 15:30","Reserva comedor"),
+            ( 1, 8, "2020-04-30 09:00","2020-04-30 15:00" ,"Traslado a reunión en Sede-Coruña");
         `);
 
     await connection.query(`

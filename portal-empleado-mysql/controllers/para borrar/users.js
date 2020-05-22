@@ -2,14 +2,14 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const { getConnection } = require('../db');
+const { getConnection } = require('../../db');
 
 const {
   userSchema,
   userLoginSchema,
   editUserSchema,
   editPasswordUserSchema
-} = require('./validations');
+} = require('../validations');
 
 const {
   processAndSavePhoto,
@@ -17,7 +17,7 @@ const {
   randomString,
   sendEmail,
   generateError
-} = require('../helpers');
+} = require('../../helpers');
 
 // POST - /USER --- NUEVO USUARIO
 async function newUser(req, res, next) {
@@ -141,7 +141,7 @@ async function loginUser(req, res, next) {
     const [
       dbUser
     ] = await connection.query(
-      'SELECT id, email, contraseña, tipo_usuario  from usuarios where email=? AND activo=1',
+      'SELECT id, email, contraseña, tipo_usuario, sedes_id  from usuarios where email=? AND activo=1',
       [email]
     );
 
@@ -164,7 +164,8 @@ async function loginUser(req, res, next) {
     const tokenPayload = {
       id: user.id,
       role: user.tipo_usuario,
-      email: user.email
+      email: user.email,
+      headquarter: user.sedes_id
     };
     const token = jwt.sign(tokenPayload, process.env.SECRET, {
       expiresIn: '30d'

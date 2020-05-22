@@ -1,3 +1,5 @@
+'use strict';
+
 require('dotenv').config();
 
 const express = require('express');
@@ -26,19 +28,37 @@ const {
   deleteUser
 } = require('./controllers/users');
 
-// Portal controllers
+// Incidences controllers
 
-const {
+/* const {
   listIncidences,
   newIncidence,
   getIncidence,
   deleteIncidence,
-  permisionToVote,
-  voteIncidence,
-  editIncidence,
-  getEntryVotes
-} = require('./controllers/incidences');
+   permisionToVote,
+  voteIncidence, 
+  editIncidence
+    getEntryVotes 
+} = require('./controllers/incidences/incidences'); */
 
+const listIncidences = require('./controllers/incidences/listIncidences');
+const newIncidence = require('./controllers/incidences/newIncidence');
+const getIncidence = require('./controllers/incidences/getIncidence');
+const deleteIncidence = require('./controllers/incidences/editIncidence');
+const editIncidence = require('./controllers/incidences/deleteIncidence');
+const voteIncidence = require('./controllers/incidences/voteIncidence');
+
+// Reserves controllers
+
+const listReserves = require('./controllers/reserves/listReserves');
+const newReserve = require('./controllers/reserves/newReserve');
+const getReserve = require('./controllers/reserves/getReserve');
+const deleteReserve = require('./controllers/reserves/deleteReserve');
+const editReserve = require('./controllers/reserves/editReserve');
+const voteReserve = require('./controllers/reserves/voteReserve');
+
+// Votes controllers
+const getEntryVotes = require('./controllers/votes/getEntryVotes');
 // Middlewares
 
 // Auth middlewares
@@ -71,19 +91,9 @@ app.get('/users/:id', userIsAuthenticated, getUser); //Listar perfil-ok
 app.put('/users/:id', userIsAuthenticated, editUser); //Editar perfil-ok
 app.delete('/users/:id', userIsAuthenticated, userIsAdmin, deleteUser); //Desactivar un usuario-solo Admin-
 
-/* // Reservas routes
-app.get('/entries', listEntries);
-app.get('/entries/:id', getEntry);
-app.post('/entries', userIsAuthenticated, newEntry); // Solo usuarios
-app.get('/entries/:id/votes', getEntryVotes);
-app.post('/entries/:id/votes', userIsAuthenticated, voteEntry); // Solo usuarios
-app.put('/entries/:id', userIsAuthenticated, editEntry); // Solo usuarios (que crearon esa entrada) o admin
-app.delete('/entries/:id', userIsAuthenticated, userIsAdmin, deleteEntry); // Solo admin */
-
 // Incidences routes
 app.get('/incidences', listIncidences); //Listar todas las incidencias
 app.post('/incidences', userIsAuthenticated, newIncidence); //Crear nueva incidencia
-app.get('/incidences/votes', getEntryVotes);
 app.get('/incidences/:id', userIsAuthenticated, getIncidence); // Listar una incidencia
 app.delete(
   '/incidences/:id',
@@ -92,12 +102,21 @@ app.delete(
   deleteIncidence
 ); // Solo admin Borrar una incidencia
 app.put('/incidences/:id', userIsAuthenticated, editIncidence); // Usuario modifica descripcion / Maintenance contesta la incidencia y envia correo)
-app.get('/incidences/:id/vote', permisionToVote);
+/* app.get('/incidences/:id/vote', permisionToVote);*/
 app.post('/incidences/:id/vote', userIsAuthenticated, voteIncidence);
 
-// Booking routes
+// Reserve routes
 
-/* app.get('/booking', listBookings); */
+app.get('/reserves', listReserves); //Listar todas las reservas
+app.post('/reserves', userIsAuthenticated, newReserve); //Crear nueva reserva
+app.get('/reserves/:id', /* userIsAuthenticated, */ getReserve); // Listar una reserva
+app.delete('/reserves/:id', userIsAuthenticated, deleteReserve); // Solo admin Borrar una reserva
+app.put('/reserves/:id', userIsAuthenticated, editReserve); // Usuario modifica descripcion / Maintenance contesta la reserva y envia correo)
+/* app.get('/reserves/:id/vote', perToVote);*/
+app.post('/reserves/:id/vote', userIsAuthenticated, voteReserve); //Votar una reserva
+
+//Votes routes
+app.get('/votes', getEntryVotes); // Listar las votaciones por tipo de servicio
 
 // Error middleware
 app.use((error, req, res, next) => {

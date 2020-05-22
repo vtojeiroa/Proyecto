@@ -1,4 +1,4 @@
-const Joi = require('@hapi/joi');
+const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
 
 const { generateError } = require('../../helpers');
 
@@ -35,23 +35,42 @@ const descriptionSchema = Joi.string()
   .required()
   .error(
     generateError(
-      'El campo description es obligatorio y non puede tener más de 500 caracteres',
+      'El campo description es obligatorio y no puede tener más de 500 caracteres',
+      400
+    )
+  );
+const dateSchema = Joi.date()
+  .required()
+  .error(
+    generateError(
+      `El campo fecha es obligatorio y el formato es YYYY-MM-DD HH:MM`,
+      400
+    )
+  );
+
+const serviceSchema = Joi.string()
+  .min(3)
+  .max(50)
+  .required()
+  .error(
+    generateError(
+      'El campo reserva/incidencia es obligatorio y no puede tener menos de 3 ni más de 50 caracteres',
       400
     )
   );
 
 // Object Schemas
-const incidenceSchema = Joi.object().keys({
-  incidence: Joi.string()
-    .max(50)
-    .required()
-    .error(
-      generateError(
-        'El campo tipo de incidencia es obligatorio y no puede tener más de 50 caracteres',
-        400
-      )
-    ),
+const reserveSchema = Joi.object().keys({
+  reserveType: serviceSchema,
+  dateInit: dateSchema,
+  dateEnd: dateSchema
+    .greater(Joi.ref('dateInit'))
+    .error(generateError('La fecha final tiene que ser superior a la inicial')),
+  commentary: descriptionSchema
+});
 
+const incidenceSchema = Joi.object().keys({
+  incidenceType: serviceSchema,
   description: descriptionSchema
 });
 
@@ -113,14 +132,14 @@ const editUserSchema = Joi.object().keys({
   address: nameSchema,
   postal_code: Joi.number()
     .integer()
-    .error(generateError(`El campo código postar está formado por números`)),
+    .error(generateError(`El campo código postal está formado por números`)),
   location: nameSchema,
   province: nameSchema,
   country: nameSchema,
   phone: Joi.string()
     .max(12)
     .error(
-      generateError(`El campo phone debe de tener 12 caracteres como máximo`)
+      generateError(`El campo teléfono debe de tener 12 caracteres como máximo`)
     ),
   birthdate: Joi.date().error(
     generateError(`El campo birthdate debe tener el formato yyyy-mm-dd`)
@@ -142,6 +161,7 @@ const editPasswordUserSchema = Joi.object().keys({
 });
 
 module.exports = {
+  reserveSchema,
   incidenceSchema,
   voteSchema,
   searchSchema,
