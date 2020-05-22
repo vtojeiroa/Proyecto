@@ -60,6 +60,4 @@ async function getIncidence(req, res, next) {
   }
 }
 
-module.exports = {
-  getIncidence
-};
+module.exports = getIncidence;

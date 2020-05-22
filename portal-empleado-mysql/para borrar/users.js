@@ -516,7 +516,7 @@ async function deleteUser(req, res, next) {
     next(error);
   }
 }
-
+/* 
 module.exports = {
   newUser,
   listUsers,
@@ -526,4 +526,4 @@ module.exports = {
   updatePasswordUser,
   validateUser,
   deleteUser
-};
+}; */

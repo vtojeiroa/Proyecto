@@ -84,6 +84,4 @@ async function updatePasswordUser(req, res, next) {
   }
 }
 
-module.exports = {
-  updatePasswordUser
-};
+module.exports = updatePasswordUser;

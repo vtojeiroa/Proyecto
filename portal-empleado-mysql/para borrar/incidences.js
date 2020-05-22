@@ -1,19 +1,19 @@
 'use strict';
-
-const { getConnection } = require('../../db');
+/* 
+const { getConnection } = require('../db');
 const {
   formatDateToDB,
   sendEmail,
   randomString,
   generateError
-} = require('../../helpers');
+} = require('../helpers');
 
 const {
   incidenceSchema,
   voteSchema,
   searchSchema,
   editIncidenceSchema
-} = require('../validations');
+} = require('../controllers/validations');
 
 // GET - /INCIDENCES
 async function listIncidences(req, res, next) {
@@ -354,7 +354,7 @@ async function voteIncidence(req, res, next) {
   let connection;
   try {
     const { id } = req.params;
-    /* const { code } = req.query; */
+     const { code } = req.query; 
     const userId = req.auth.id;
 
     // Validate payload
@@ -479,4 +479,4 @@ module.exports = {
   permisionToVote,
   voteIncidence,
   getEntryVotes
-};
+}; */

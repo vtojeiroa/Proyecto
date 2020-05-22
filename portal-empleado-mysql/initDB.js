@@ -1,3 +1,5 @@
+'use strict';
+
 require('dotenv').config();
 const { getConnection } = require('./db');
 const faker = require('faker/locale/es');

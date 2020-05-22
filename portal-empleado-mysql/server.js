@@ -17,35 +17,22 @@ const port = process.env.PORT;
 
 //User controllers
 
-const {
-  newUser,
-  listUsers,
-  getUser,
-  editUser,
-  loginUser,
-  updatePasswordUser,
-  validateUser,
-  deleteUser
-} = require('./controllers/users');
+const newUser = require('./controllers/users/newUser');
+const listUsers = require('./controllers/users/listUsers');
+const getUser = require('./controllers/users/getUser');
+const editUser = require('./controllers/users/editUser');
+const loginUser = require('./controllers/users/loginUser');
+const updatePasswordUser = require('./controllers/users/updatePasswordUser');
+const validateUser = require('./controllers/users/validateUser');
+const deleteUser = require('./controllers/users/deleteUser');
 
 // Incidences controllers
-
-/* const {
-  listIncidences,
-  newIncidence,
-  getIncidence,
-  deleteIncidence,
-   permisionToVote,
-  voteIncidence, 
-  editIncidence
-    getEntryVotes 
-} = require('./controllers/incidences/incidences'); */
 
 const listIncidences = require('./controllers/incidences/listIncidences');
 const newIncidence = require('./controllers/incidences/newIncidence');
 const getIncidence = require('./controllers/incidences/getIncidence');
-const deleteIncidence = require('./controllers/incidences/editIncidence');
-const editIncidence = require('./controllers/incidences/deleteIncidence');
+const deleteIncidence = require('./controllers/incidences/deleteIncidence');
+const editIncidence = require('./controllers/incidences/editIncidence');
 const voteIncidence = require('./controllers/incidences/voteIncidence');
 
 // Reserves controllers
@@ -82,6 +69,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 // Routes
 
 // User routes
+
 app.post('/users', newUser); //Registro nuevo usuario-ok
 app.get('/users/', userIsAuthenticated, userIsAdmin, listUsers); //Listar usuarios solo Admin
 app.post('/users/login', loginUser); //Login usuario-ok

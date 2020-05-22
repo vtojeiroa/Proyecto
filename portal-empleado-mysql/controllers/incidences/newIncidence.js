@@ -94,6 +94,4 @@ async function newIncidence(req, res, next) {
   }
 }
 
-module.exports = {
-  newIncidence
-};
+module.exports = newIncidence;

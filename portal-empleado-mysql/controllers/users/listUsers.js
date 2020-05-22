@@ -25,6 +25,4 @@ async function listUsers(req, res, next) {
   }
 }
 
-module.exports = {
-  listUsers
-};
+module.exports = listUsers;

@@ -55,6 +55,4 @@ async function listIncidences(req, res, next) {
   }
 }
 
-module.exports = {
-  listIncidences
-};
+module.exports = listIncidences;

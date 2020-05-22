@@ -105,6 +105,4 @@ async function editIncidence(req, res, next) {
   }
 }
 
-module.exports = {
-  editIncidence
-};
+module.exports = editIncidence;

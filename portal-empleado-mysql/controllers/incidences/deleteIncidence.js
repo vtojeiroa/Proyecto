@@ -48,6 +48,4 @@ async function deleteIncidence(req, res, next) {
   }
 }
 
-module.exports = {
-  deleteIncidence
-};
+module.exports = deleteIncidence;
