@@ -58,7 +58,7 @@ async function getReserve(req, res, next) {
     const [data] = result;
 
     if (!data[0]) {
-      throw generateError(`La incidencia número ${id} no existe`, 404);
+      throw generateError(`La reserva número ${id} no existe`, 404);
     }
 
     res.send({

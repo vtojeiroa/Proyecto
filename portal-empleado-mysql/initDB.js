@@ -193,12 +193,12 @@ async function main() {
         VALUES
             ( "1", "Reserva", "Vehículo", "Utiliza los vehiculos electricos que pone a tú disposición la empresa para realizar visitas a provedores o a clientes"),
             ( "1", "Reserva", "Sala de Reunión", "Reserva una sala para realizar tus reuniones o videoconferencias"),
-            ( "1", "Reserva", "Plaza en el comedor", "Indicanos en que turno prefieres comer"),
+            ( "1", "Reserva", "Plaza en el comedor", "Indícanos en que turno prefieres comer y reserva tu plaza"),
             ( "1", "Incidencia", "Informática", "Registra tus incidencias para el departamento de informática"),
             ( "1", "Incidencia", "Mantenimiento", "Registra tus incidencias para el departamento de mantenimiento"),
             ( "1", "Incidencia", "Limpieza", "Registra tus incidencias para el departamento de limpieza"),
             ( "1", "Incidencia", "Seguridad", "Registra tus incidencias para el departamento de seguridad"),
-            ( "1", "Incidencia", "Otras", "Registra aquí tus incidencias o sugerencias");
+            ( "1", "Incidencia", "Otras", "Registra aquí otro tipo de incidencias o sugerencias");
             `);
 
     await connection.query(`

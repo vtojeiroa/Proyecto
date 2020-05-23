@@ -18,7 +18,6 @@ const port = process.env.PORT;
 //User controllers
 
 const newUser = require('./controllers/users/newUser');
-const listUsers = require('./controllers/users/listUsers');
 const getUser = require('./controllers/users/getUser');
 const editUser = require('./controllers/users/editUser');
 const loginUser = require('./controllers/users/loginUser');
@@ -30,6 +29,8 @@ const recoveryPassUser = require('./controllers/users/recoveryPassUser');
 // Incidences controllers
 
 const listIncidences = require('./controllers/incidences/listIncidences');
+const listIncidencesValorations = require('./controllers/incidences/listIncidencesValorations');
+const listTypeIncidences = require('./controllers/incidences/listTypeIncidences');
 const newIncidence = require('./controllers/incidences/newIncidence');
 const getIncidence = require('./controllers/incidences/getIncidence');
 const deleteIncidence = require('./controllers/incidences/deleteIncidence');
@@ -39,6 +40,8 @@ const voteIncidence = require('./controllers/incidences/voteIncidence');
 // Reserves controllers
 
 const listReserves = require('./controllers/reserves/listReserves');
+const listReservesValorations = require('./controllers/reserves/listReservesValorations');
+const listTypeReserves = require('./controllers/reserves/listTypeReserves');
 const newReserve = require('./controllers/reserves/newReserve');
 const getReserve = require('./controllers/reserves/getReserve');
 const deleteReserve = require('./controllers/reserves/deleteReserve');
@@ -47,6 +50,10 @@ const voteReserve = require('./controllers/reserves/voteReserve');
 
 // Votes controllers
 const getEntryVotes = require('./controllers/votes/getEntryVotes');
+
+// Admin controllers
+const listUsers = require('./controllers/admin/listUsers');
+
 // Middlewares
 
 // Auth middlewares
@@ -83,6 +90,8 @@ app.delete('/users/:id', userIsAuthenticated, userIsAdmin, deleteUser); //Desact
 
 // Incidences routes
 app.get('/incidences', listIncidences); //Listar todas las incidencias
+app.get('/incidences/valorations', listIncidencesValorations); //Listar todas las incidencias que tienen valoración
+app.get('/incidences/type', listTypeIncidences); //Listar todos los tipos de incidencias
 app.post('/incidences', userIsAuthenticated, newIncidence); //Crear nueva incidencia
 app.get('/incidences/:id', userIsAuthenticated, getIncidence); // Listar una incidencia
 app.delete(
@@ -98,8 +107,10 @@ app.post('/incidences/:id/vote', userIsAuthenticated, voteIncidence);
 // Reserve routes
 
 app.get('/reserves', listReserves); //Listar todas las reservas
+app.get('/reserves/valorations', listReservesValorations); //Listar todas las reservas que tienen valoración
+app.get('/reserves/type', listTypeReserves); //Listar todos los tipos de reservas
 app.post('/reserves', userIsAuthenticated, newReserve); //Crear nueva reserva
-app.get('/reserves/:id', /* userIsAuthenticated, */ getReserve); // Listar una reserva
+app.get('/reserves/:id', userIsAuthenticated, getReserve); // Listar una reserva
 app.delete('/reserves/:id', userIsAuthenticated, deleteReserve); // Solo admin Borrar una reserva
 app.put('/reserves/:id', userIsAuthenticated, editReserve); // Usuario modifica descripcion / Maintenance contesta la reserva y envia correo)
 /* app.get('/reserves/:id/vote', perToVote);*/

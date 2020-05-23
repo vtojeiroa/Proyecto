@@ -1,34 +1,53 @@
 'use strict';
 
 const { getConnection } = require('../../db');
+const { formatDateToDB } = require('../../helpers');
 
 const { searchSchema } = require('../validations');
 
-// GET - /RESERVES
+// GET - /INCIDENCES
 async function listReserves(req, res, next) {
   let connection;
   try {
     connection = await getConnection();
-    const { search } = req.query;
+
+    const { headquarter, type_reserve, date_init, date_end } = req.query;
 
     let result;
 
-    if (search) {
-      await searchSchema.validateAsync(search);
+    if (headquarter && type_reserve) {
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE usuarios_id IN (SELECT id FROM usuarios WHERE sedes_id IN
+      (SELECT id FROM sedes WHERE nombre LIKE ?)) AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
+        [`%${headquarter}%`, `%${type_reserve}%`]
+      );
+    } else if (headquarter) {
+      await searchSchema.validateAsync(headquarter);
 
       result = await connection.query(
-        `SELECT r.*, v.valoracion, v.comentario_valoracion,v.fecha_registro  FROM reservas r, valoraciones v
-        WHERE v.incidencias_id = r.id  AND r.usuarios_id IN 
-        (SELECT id FROM usuarios WHERE sedes_id IN
-        (SELECT id FROM sedes WHERE nombre LIKE ?)) 
-        ORDER BY r.fecha_registro;`,
-        [`%${search}%`]
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE usuarios_id IN (SELECT id FROM usuarios WHERE sedes_id IN
+        (SELECT id FROM sedes WHERE nombre LIKE ?)) ORDER BY fecha_registro DESC;`,
+        [`%${headquarter}%`]
+      );
+    } else if (type_reserve) {
+      await searchSchema.validateAsync(type_reserve);
+
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
+        [`%${type_reserve}%`]
+      );
+    } else if (date_init && date_end) {
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC
+        ;`,
+        [
+          formatDateToDB(new Date(date_init)),
+          formatDateToDB(new Date(date_end))
+        ]
       );
     } else {
       result = await connection.query(
-        `SELECT r.*, v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r 
-        INNER JOIN valoraciones v WHERE r.id= v.incidencias_id  
-        ORDER BY r.id DESC`
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas ORDER BY fecha_registro DESC`
       );
     }
 

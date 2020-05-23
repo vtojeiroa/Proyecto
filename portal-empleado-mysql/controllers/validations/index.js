@@ -1,3 +1,5 @@
+'use strict';
+
 const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
 
 const { generateError } = require('../../helpers');
@@ -7,10 +9,7 @@ const searchSchema = Joi.string()
   .min(2)
   .required()
   .error(
-    generateError(
-      'El campo de búsqueda debe de ser de máis de 2 caracteres',
-      400
-    )
+    generateError('El campo de búsqueda debe de tener más de 2 caracteres', 400)
   );
 
 const nameSchema = Joi.string()
@@ -43,7 +42,7 @@ const dateSchema = Joi.date()
   .required()
   .error(
     generateError(
-      `El campo fecha es obligatorio y el formato es YYYY-MM-DD HH:MM`,
+      `El campo fecha es obligatorio y el formato es YYYY-MM-DD HH:MM:SS`,
       400
     )
   );
