@@ -58,6 +58,40 @@ const serviceSchema = Joi.string()
     )
   );
 
+const sectionSchema = Joi.string()
+  .valid('Reserva', 'Incidencia')
+  .required()
+  .error(
+    generateError(
+      'El campo seccion es obligatorio y solo puede tener los valores Reserva o Incidencia',
+      400
+    )
+  );
+
+const activeSchema = Joi.number()
+  .allow('1', '0')
+  .error(
+    generateError(
+      'El campo activosolo puede tener los valores 0 (desactivado) o 1 (activado)',
+      400
+    )
+  );
+
+const postalCodeSchema = Joi.number()
+  .integer()
+  .error(generateError(`El campo código postal está formado por 5 números`));
+
+const headquarterSchema = Joi.string()
+  .min(3)
+  .max(50)
+  .required()
+  .error(
+    generateError(
+      'El campo Sede es obligatorio y debe de tener entre 3 y 50 carateres',
+      400
+    )
+  );
+
 // Object Schemas
 const reserveSchema = Joi.object().keys({
   reserveType: serviceSchema,
@@ -127,9 +161,7 @@ const editUserSchema = Joi.object().keys({
   email: emailSchema,
   avatar: Joi.string(),
   address: nameSchema,
-  postal_code: Joi.number()
-    .integer()
-    .error(generateError(`El campo código postal está formado por números`)),
+  postal_code: postalCodeSchema,
   location: nameSchema,
   province: nameSchema,
   country: nameSchema,
@@ -159,12 +191,55 @@ const editPasswordUserSchema = Joi.object().keys({
 
 const recoveryPasswordSchema = Joi.object().keys({
   email: emailSchema,
-  postal_code: Joi.number()
-    .integer()
-    .error(generateError(`El campo código postal está formado por números`)),
+  postal_code: postalCodeSchema,
   birthdate: Joi.date().error(
     generateError(`El campo birthdate debe tener el formato yyyy-mm-dd`)
   )
+});
+
+const createServiceSchema = Joi.object().keys({
+  section: sectionSchema,
+  type: serviceSchema,
+  description: descriptionSchema
+});
+const editServiceSchema = Joi.object().keys({
+  active: activeSchema,
+  section: sectionSchema,
+  type: serviceSchema,
+  description: descriptionSchema
+});
+const createHeadquarterSchema = Joi.object().keys({
+  name: nameSchema,
+  address: nameSchema,
+  postal_code: postalCodeSchema,
+  location: nameSchema,
+  province: nameSchema,
+  country: nameSchema
+});
+
+const editHeadquarterSchema = Joi.object().keys({
+  active: activeSchema,
+  name: nameSchema,
+  address: nameSchema,
+  postal_code: postalCodeSchema,
+  location: nameSchema,
+  province: nameSchema,
+  country: nameSchema
+});
+
+const createAssignmentSchema = Joi.object().keys({
+  headquarter: headquarterSchema,
+  service_type: serviceSchema,
+  disponibility: Joi.number()
+    .integer()
+    .min(0)
+    .required()
+    .error(
+      generateError(
+        'El campo disponibilidad es obligatorio y tiene que ser un número igual o mayor que cero',
+        400
+      )
+    )
 });
 
 module.exports = {
@@ -177,5 +252,10 @@ module.exports = {
   editUserSchema,
   editPasswordUserSchema,
   editIncidenceSchema,
-  recoveryPasswordSchema
+  recoveryPasswordSchema,
+  createServiceSchema,
+  editServiceSchema,
+  createHeadquarterSchema,
+  editHeadquarterSchema,
+  createAssignmentSchema
 };

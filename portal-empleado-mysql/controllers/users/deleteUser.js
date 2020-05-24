@@ -4,16 +4,27 @@ require('dotenv').config();
 
 const { getConnection } = require('../../db');
 
+const { generateError } = require('../../helpers');
+
 // DELETE - /USERS/:id  ---DESACTIVATE USER
 async function deleteUser(req, res, next) {
+  let connection;
+
   try {
     const { id } = req.params;
 
-    const connection = await getConnection();
+    connection = await getConnection();
+
+    // Delete user if exists!
+    const [
+      current
+    ] = await connection.query('SELECT * FROM usuarios WHERE id=?', [id]);
+
+    if (!current.length) {
+      throw generateError(`El usuario con el número ${id} no existe`, 400);
+    }
 
     await connection.query('UPDATE usuarios SET activo=0 WHERE id=?', [id]);
-
-    connection.release();
 
     res.send({
       status: 'ok',
@@ -21,6 +32,8 @@ async function deleteUser(req, res, next) {
     });
   } catch (error) {
     next(error);
+  } finally {
+    if (connection) connection.release();
   }
 }
 

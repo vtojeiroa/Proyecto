@@ -53,6 +53,18 @@ const getEntryVotes = require('./controllers/votes/getEntryVotes');
 
 // Admin controllers
 const listUsers = require('./controllers/admin/listUsers');
+const createServices = require('./controllers/admin/createServices');
+const getServices = require('./controllers/admin/getServices');
+const editServices = require('./controllers/admin/editServices');
+const deleteServices = require('./controllers/admin/deleteServices');
+const createHeadquarter = require('./controllers/admin/createHeadquarter');
+const getHeadquarter = require('./controllers/admin/getHeadquarter');
+const editHeadquarter = require('./controllers/admin/editHeadquarter');
+const deleteHeadquarter = require('./controllers/admin/deleteHeadquarter');
+const createAssignment = require('./controllers/admin/createAssignment');
+const getAssignment = require('./controllers/admin/getAssignment');
+const editAssignment = require('./controllers/admin/editAssignment');
+const deleteAssignment = require('./controllers/admin/deleteAssignment');
 
 // Middlewares
 
@@ -76,10 +88,35 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 // Routes
 
+// Admin routes
+
+app.get('/users/', userIsAuthenticated, userIsAdmin, listUsers); //Listar usuarios - solo Admin
+app.post('/services', userIsAuthenticated, userIsAdmin, createServices); //Crear nuevos Servicios - solo Admin
+app.get('/services', userIsAuthenticated, userIsAdmin, getServices); //Listar los Servicios- solo Admin
+app.put('/services/:id', userIsAuthenticated, userIsAdmin, editServices); //Editar un Servicio- solo Admin
+app.delete('/services/:id', userIsAuthenticated, userIsAdmin, deleteServices); //Borrar un Servicios- solo Admin
+app.post('/headquarters', userIsAuthenticated, userIsAdmin, createHeadquarter); //Crear nuevas Sedes - solo Admin
+app.get('/Headquarters', userIsAuthenticated, userIsAdmin, getHeadquarter); //Listar las Sedes- solo Admin
+app.put('/Headquarters/:id', userIsAuthenticated, userIsAdmin, editHeadquarter); //Editar una Sede - solo Admin
+app.delete(
+  '/Headquarters/:id',
+  userIsAuthenticated,
+  userIsAdmin,
+  deleteHeadquarter
+); //Borrar una Sede - solo Admin
+app.post('/assignment', userIsAuthenticated, userIsAdmin, createAssignment); //Crear nuevas Sedes - solo Admin
+app.get('/assignment', userIsAuthenticated, userIsAdmin, getAssignment); //Listar las Sedes- solo Admin
+app.put('/assignment/:id', userIsAuthenticated, userIsAdmin, editAssignment); //Editar una Sede - solo Admin
+app.delete(
+  '/assignment/:id',
+  userIsAuthenticated,
+  userIsAdmin,
+  deleteAssignment
+); //Borrar una Sede - solo Admin
+
 // User routes
 
 app.post('/users', newUser); //Registro nuevo usuario-ok
-app.get('/users/', userIsAuthenticated, userIsAdmin, listUsers); //Listar usuarios solo Admin
 app.post('/users/login', loginUser); //Login usuario-ok
 app.post('/users/password/recovery', recoveryPassUser);
 app.get('/users/validate', validateUser); //Validación inicial del usuario-ok
