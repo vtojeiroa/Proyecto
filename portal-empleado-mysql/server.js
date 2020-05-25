@@ -66,6 +66,9 @@ const getAssignment = require('./controllers/admin/getAssignment');
 const editAssignment = require('./controllers/admin/editAssignment');
 const deleteAssignment = require('./controllers/admin/deleteAssignment');
 
+// Attention users controllers
+const makeQuestion = require('./controllers/attentionUsers/makeQuestion');
+
 // Middlewares
 
 // Auth middlewares
@@ -112,18 +115,21 @@ app.delete(
   userIsAuthenticated,
   userIsAdmin,
   deleteAssignment
-); //Borrar una Sede - solo Admin
+); //Borrar una Asignación - solo Admin
+
+// Attencion to users routes
+app.post('/attention', makeQuestion); //Registro nuevo usuario
 
 // User routes
 
-app.post('/users', newUser); //Registro nuevo usuario-ok
-app.post('/users/login', loginUser); //Login usuario-ok
+app.post('/users', newUser); //Registro nuevo usuario
+app.post('/users/login', loginUser); //Login usuario
 app.post('/users/password/recovery', recoveryPassUser);
-app.get('/users/validate', validateUser); //Validación inicial del usuario-ok
-app.post('/users/:id/password', userIsAuthenticated, updatePasswordUser); // Cambiar password-ok
-app.get('/users/:id', userIsAuthenticated, getUser); //Listar perfil-ok
-app.put('/users/:id', userIsAuthenticated, editUser); //Editar perfil-ok
-app.delete('/users/:id', userIsAuthenticated, userIsAdmin, deleteUser); //Desactivar un usuario-solo Admin-
+app.get('/users/validate', validateUser); //Validación inicial del usuario
+app.post('/users/:id/password', userIsAuthenticated, updatePasswordUser); // Cambiar password
+app.get('/users/:id', userIsAuthenticated, getUser); //Listar perfil
+app.put('/users/:id', userIsAuthenticated, editUser); //Editar perfil
+app.delete('/users/:id', userIsAuthenticated, userIsAdmin, deleteUser); //Desactivar un usuario - solo Admin-
 
 // Incidences routes
 app.get('/incidences', listIncidences); //Listar todas las incidencias
