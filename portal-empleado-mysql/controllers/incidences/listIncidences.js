@@ -1,57 +1,92 @@
 'use strict';
 
 const { getConnection } = require('../../db');
-const { formatDateToDB } = require('../../helpers');
-
-const { searchSchema } = require('../validations');
+const { formatDateToDB, generateError } = require('../../helpers');
 
 // GET - /INCIDENCES
-async function listIncidences(req, res, next) {
+async function ListIncidences(req, res, next) {
   let connection;
   try {
     connection = await getConnection();
 
-    const { headquarter, type_incidence, date_init, date_end } = req.query;
+    const userId = req.auth.id;
+
+    const { active, type, date_init, date_end } = req.query;
 
     let result;
 
-    if (headquarter && type_incidence) {
+    if (active && type && date_init && date_end) {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,descripcion,fecha_resolucion, comentario_resolucion, fecha_registro FROM incidencias WHERE usuarios_id IN (SELECT id FROM usuarios WHERE sedes_id IN
-      (SELECT id FROM sedes WHERE nombre LIKE ?)) AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
-        [`%${headquarter}%`, `%${type_incidence}%`]
+        `SELECT id,servicios_id,usuarios_id,descripcion,i.activo,fecha_resolucion, comentario_resolucion, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion  FROM incidencias i WHERE usuarios_id = ? AND activo = ? AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) AND (fecha_registro >=  ? AND  fecha_registro <  ?)  ORDER BY fecha_registro DESC;`,
+        [
+          userId,
+          active,
+          `%${type}%`,
+          formatDateToDB(new Date(date_init)),
+          formatDateToDB(new Date(date_end))
+        ]
       );
-    } else if (headquarter) {
-      await searchSchema.validateAsync(headquarter);
-
+    } else if (active && type) {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,descripcion,fecha_resolucion, comentario_resolucion, fecha_registro FROM incidencias WHERE usuarios_id IN (SELECT id FROM usuarios WHERE sedes_id IN
-        (SELECT id FROM sedes WHERE nombre LIKE ?)) ORDER BY fecha_registro DESC;`,
-        [`%${headquarter}%`]
+        `SELECT id,servicios_id,usuarios_id,descripcion,i.activo,fecha_resolucion, comentario_resolucion, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion  FROM incidencias i WHERE usuarios_id = ? AND activo = ? AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
+        [userId, active, `%${type}%`]
       );
-    } else if (type_incidence) {
-      await searchSchema.validateAsync(type_incidence);
-
+    } else if (type && date_init && date_end) {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,descripcion,fecha_resolucion, comentario_resolucion, fecha_registro FROM incidencias WHERE (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
-        [`%${type_incidence}%`]
+        `SELECT id,servicios_id,usuarios_id,descripcion,i.activo,fecha_resolucion, comentario_resolucion, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion  FROM incidencias i WHERE usuarios_id = ?  AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) AND (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC;`,
+        [
+          userId,
+          `%${type}%`,
+          formatDateToDB(new Date(date_init)),
+          formatDateToDB(new Date(date_end))
+        ]
+      );
+    } else if (active && date_init && date_end) {
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,descripcion,i.activo,fecha_resolucion, comentario_resolucion, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion  FROM incidencias i WHERE usuarios_id = ? AND activo = ? AND (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC
+        ;`,
+        [
+          userId,
+          active,
+          formatDateToDB(new Date(date_init)),
+          formatDateToDB(new Date(date_end))
+        ]
+      );
+    } else if (active) {
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,descripcion,i.activo,fecha_resolucion, comentario_resolucion, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion  FROM incidencias i WHERE usuarios_id = ? AND  activo = ? ORDER BY fecha_registro DESC;`,
+        [userId, active]
+      );
+    } else if (type) {
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,descripcion,i.activo,fecha_resolucion, comentario_resolucion, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion  FROM incidencias i WHERE usuarios_id = ? AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
+        [userId, `%${type}%`]
       );
     } else if (date_init && date_end) {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,descripcion,fecha_resolucion, comentario_resolucion, fecha_registro FROM incidencias WHERE (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC
+        `SELECT id,servicios_id,usuarios_id,descripcion,i.activo,fecha_resolucion, comentario_resolucion, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion  FROM incidencias i WHERE usuarios_id = ? AND (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC
         ;`,
         [
+          userId,
           formatDateToDB(new Date(date_init)),
           formatDateToDB(new Date(date_end))
         ]
       );
     } else {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,descripcion,fecha_resolucion, comentario_resolucion, fecha_registro FROM incidencias ORDER BY fecha_registro DESC`
+        `SELECT i.id,i.servicios_id,i.usuarios_id,i.descripcion,i.activo,i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion, (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion FROM incidencias i WHERE usuarios_id = ? ORDER BY fecha_registro DESC`,
+        [userId]
       );
     }
 
     const [entries] = result;
+
+    if (!entries.length) {
+      throw generateError(
+        'No hemos encontrado ninguna incidencia que se ajuste a los parámetros indicados',
+        400
+      );
+    }
 
     res.send({
       status: 'ok',
@@ -64,4 +99,4 @@ async function listIncidences(req, res, next) {
   }
 }
 
-module.exports = listIncidences;
+module.exports = ListIncidences;

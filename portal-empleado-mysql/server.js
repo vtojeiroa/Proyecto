@@ -28,19 +28,19 @@ const recoveryPassUser = require('./controllers/users/recoveryPassUser');
 
 // Incidences controllers
 
+const searchIncidences = require('./controllers/incidences/searchIncidences');
 const listIncidences = require('./controllers/incidences/listIncidences');
-const listIncidencesValorations = require('./controllers/incidences/listIncidencesValorations');
 const listTypeIncidences = require('./controllers/incidences/listTypeIncidences');
 const newIncidence = require('./controllers/incidences/newIncidence');
-const getIncidence = require('./controllers/incidences/getIncidence');
+const getIncidenceByCode = require('./controllers/incidences/getIncidenceByCode');
 const deleteIncidence = require('./controllers/incidences/deleteIncidence');
 const editIncidence = require('./controllers/incidences/editIncidence');
 const voteIncidence = require('./controllers/incidences/voteIncidence');
 
 // Reserves controllers
 
+const searchReserves = require('./controllers/reserves/searchReserves');
 const listReserves = require('./controllers/reserves/listReserves');
-const listReservesValorations = require('./controllers/reserves/listReservesValorations');
 const listTypeReserves = require('./controllers/reserves/listTypeReserves');
 const newReserve = require('./controllers/reserves/newReserve');
 const getReserve = require('./controllers/reserves/getReserve');
@@ -132,32 +132,27 @@ app.put('/users/:id', userIsAuthenticated, editUser); //Editar perfil
 app.delete('/users/:id', userIsAuthenticated, userIsAdmin, deleteUser); //Desactivar un usuario - solo Admin-
 
 // Incidences routes
-app.get('/incidences', listIncidences); //Listar todas las incidencias
-app.get('/incidences/valorations', listIncidencesValorations); //Listar todas las incidencias que tienen valoración
+app.get('/incidences', searchIncidences); //Buscar incidencias
+app.get('/incidences/list', userIsAuthenticated, listIncidences); //Listar todas las incidencias por usuario
 app.get('/incidences/type', listTypeIncidences); //Listar todos los tipos de incidencias
 app.post('/incidences', userIsAuthenticated, newIncidence); //Crear nueva incidencia
-app.get('/incidences/:id', userIsAuthenticated, getIncidence); // Listar una incidencia
-app.delete(
-  '/incidences/:id',
-  userIsAuthenticated,
-  userIsAdmin,
-  deleteIncidence
-); // Solo admin Borrar una incidencia
-app.put('/incidences/:id', userIsAuthenticated, editIncidence); // Usuario modifica descripcion / Maintenance contesta la incidencia y envia correo)
+app.get('/incidences/number', userIsAuthenticated, getIncidenceByCode); // Buscar una incidencia por el código
+app.delete('/incidences/:id', userIsAuthenticated, deleteIncidence); //  Borrar una incidencia - Solo admin
+app.put('/incidences/:id', userIsAuthenticated, editIncidence); // Usuario modifica descripcion de la incidencia / Maintenance contesta la incidencia y envia correo)
+app.post('/incidences/:id/vote', userIsAuthenticated, voteIncidence); //Votar una incidencia
 /* app.get('/incidences/:id/vote', permisionToVote);*/
-app.post('/incidences/:id/vote', userIsAuthenticated, voteIncidence);
 
 // Reserve routes
 
-app.get('/reserves', listReserves); //Listar todas las reservas
-app.get('/reserves/valorations', listReservesValorations); //Listar todas las reservas que tienen valoración
+app.get('/reserves', searchReserves); //Buscar reservas
+app.get('/reserves/list', userIsAuthenticated, listReserves); //Listar todas las reservas que tienen valoración
 app.get('/reserves/type', listTypeReserves); //Listar todos los tipos de reservas
 app.post('/reserves', userIsAuthenticated, newReserve); //Crear nueva reserva
 app.get('/reserves/:id', userIsAuthenticated, getReserve); // Listar una reserva
 app.delete('/reserves/:id', userIsAuthenticated, deleteReserve); // Solo admin Borrar una reserva
 app.put('/reserves/:id', userIsAuthenticated, editReserve); // Usuario modifica descripcion / Maintenance contesta la reserva y envia correo)
-/* app.get('/reserves/:id/vote', perToVote);*/
 app.post('/reserves/:id/vote', userIsAuthenticated, voteReserve); //Votar una reserva
+/* app.get('/reserves/:id/vote', perToVote);*/
 
 //Votes routes
 app.get('/votes', getEntryVotes); // Listar las votaciones por tipo de servicio

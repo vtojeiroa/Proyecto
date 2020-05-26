@@ -13,7 +13,7 @@ const { incidenceSchema } = require('../validations');
 // POST - /incidences
 async function newIncidence(req, res, next) {
   let connection;
-  //Meterlos en la base de datos
+
   try {
     await incidenceSchema.validateAsync(req.body);
 
@@ -47,19 +47,16 @@ async function newIncidence(req, res, next) {
     // Send email with number of incidence
 
     const incidenceNumber =
-      result.insertId + '-' + dataIncType.tipo + '-' + randomString(20);
-
-    const incidenceNumberURL = `${process.env.PUBLIC_HOST}/incidences/${result.insertId}?number=${incidenceNumber}`;
+      result.insertId + '-' + dataIncType.tipo + '-' + randomString(10);
 
     try {
       await sendEmail({
         email: req.auth.email,
         title: 'Registro de incidencia en el Portal del Empleado',
         html: `<div>
-      <h1>Hemos registrado su incidencia al departamento  de ${dataIncType.tipo} en el Portal del Empleado</h1>
-      <p>Para revisar tu Incidencia haz click o pega esta url en el navegador: ${incidenceNumberURL}</p>  
-      <p>Si deseas modificarla, haz Login en la aplicación, ve al apartado de incidencias, e
-      introduce en el buscador el siguiente código de incidencia: ${incidenceNumber}.</p>
+         <h1>Incidencia registrada</h1>
+     <p>Hemos registrado tu incidencia al departamento  de ${dataIncType.tipo} con el código: <strong>${incidenceNumber}</strong> el día ${date}</p>  
+      <p>Si deseas modificarla, haz Login en el Portal, ve al apartado de incidencias, e introduce en el buscador el código que te hemos facilitado.</p>
     </div>`
       });
     } catch (error) {

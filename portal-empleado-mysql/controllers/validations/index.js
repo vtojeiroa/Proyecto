@@ -65,18 +65,26 @@ const passwordSchema = Joi.string()
 const phoneSchema = Joi.string()
   .max(12)
   .error(
-    generateError(`El campo teléfono debe de tener 12 caracteres como máximo`)
+    generateError(
+      `El campo teléfono debe de tener 12 caracteres como máximo`,
+      400
+    )
   );
 
 const postalCodeSchema = Joi.number()
   .integer()
-  .error(generateError(`El campo código postal está formado por 5 números`));
+  .error(
+    generateError(`El campo código postal está formado por 5 números`, 400)
+  );
 
 const searchSchema = Joi.string()
-  .min(2)
-  .required()
+  .min(3)
+  .max(50)
   .error(
-    generateError('El campo de búsqueda debe de tener más de 2 caracteres', 400)
+    generateError(
+      `El campo de busqueda debe de tener entre 3 y 50 caracteres`,
+      400
+    )
   );
 
 const sectionSchema = Joi.string()
@@ -178,7 +186,8 @@ const editUserSchema = Joi.object().keys({
     .max(10)
     .error(
       generateError(
-        `Elcampo número documento identidad está compuesto por números y letras, y máximo 10 caracteres`
+        `Elcampo número documento identidad está compuesto por números y letras, y máximo 10 caracteres`,
+        400
       )
     ),
   email: emailSchema,
@@ -190,7 +199,8 @@ const editUserSchema = Joi.object().keys({
   country: nameSchema,
   phone: phoneSchema,
   birthdate: Joi.date().error(
-    generateError(`El campo birthdate debe tener el formato yyyy-mm-dd`)
+    generateError(`El campo birthdate debe tener el formato yyyy-mm-dd`),
+    400
   ),
   headquarters: Joi.string()
     .min(3)
@@ -218,8 +228,21 @@ const reserveSchema = Joi.object().keys({
   dateInit: dateSchema,
   dateEnd: dateSchema
     .greater(Joi.ref('dateInit'))
-    .error(generateError('La fecha final tiene que ser superior a la inicial')),
+    .error(
+      generateError('La fecha final tiene que ser superior a la inicial', 400)
+    ),
   commentary: descriptionSchema
+});
+
+const searchDateSchema = Joi.object().keys({
+  date_init: Joi.date().error(
+    generateError('La fecha inicial tiene que ser menor que la final', 400)
+  ),
+  date_end: Joi.date()
+    .greater(Joi.ref('date_init'))
+    .error(
+      generateError('La fecha final tiene que ser superior a la inicial', 400)
+    )
 });
 
 const userLoginSchema = Joi.object().keys({
@@ -264,6 +287,7 @@ module.exports = {
   incidenceSchema,
   voteSchema,
   searchSchema,
+  searchDateSchema,
   userSchema,
   userLoginSchema,
   editUserSchema,

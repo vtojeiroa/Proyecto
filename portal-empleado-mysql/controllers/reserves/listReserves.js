@@ -1,7 +1,7 @@
 'use strict';
 
 const { getConnection } = require('../../db');
-const { formatDateToDB } = require('../../helpers');
+const { formatDateToDB, generateError } = require('../../helpers');
 
 const { searchSchema } = require('../validations');
 
@@ -11,47 +11,89 @@ async function listReserves(req, res, next) {
   try {
     connection = await getConnection();
 
-    const { headquarter, type_reserve, date_init, date_end } = req.query;
+    const userId = req.auth.id;
+
+    const { dateEndReserve, type, date_init, date_end } = req.query;
 
     let result;
 
-    if (headquarter && type_reserve) {
+    if (dateEndReserve && type && date_init && date_end) {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE usuarios_id IN (SELECT id FROM usuarios WHERE sedes_id IN
-      (SELECT id FROM sedes WHERE nombre LIKE ?)) AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
-        [`%${headquarter}%`, `%${type_reserve}%`]
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva,fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? AND fecha_hora_fin_reserva < ? AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) AND (fecha_registro >=  ? AND  fecha_registro <  ?)  
+         ORDER BY fecha_registro DESC;`,
+        [
+          userId,
+          dateEndReserve,
+          `%${type}%`,
+          formatDateToDB(new Date(date_init)),
+          formatDateToDB(new Date(date_end))
+        ]
       );
-    } else if (headquarter) {
-      await searchSchema.validateAsync(headquarter);
+    } else if (dateEndReserve && type) {
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva,fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? AND fecha_hora_fin_reserva < ? AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
+        [userId, dateEndReserve, `%${type}%`]
+      );
+    } else if (dateEndReserve && date_init && date_end) {
+      result = await connection.query(
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva,fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? AND fecha_hora_fin_reserva < ? AND (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC;`,
+        [
+          userId,
+          dateEndReserve,
+          formatDateToDB(new Date(date_init)),
+          formatDateToDB(new Date(date_end))
+        ]
+      );
+    } else if (type && date_init && date_end) {
+      result = await connection.query(
+        `SELECT id, servicios_id, usuarios_id, fecha_hora_inicio_reserva, fecha_hora_fin_reserva, motivo_reserva, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion, (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? AND(servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) AND(fecha_registro >=  ? AND  fecha_registro <  ?)
+       ORDER BY fecha_registro DESC;`,
+        [
+          userId,
+          `%${type}%`,
+          formatDateToDB(new Date(date_init)),
+          formatDateToDB(new Date(date_end))
+        ]
+      );
+    } else if (dateEndReserve) {
+      await searchSchema.validateAsync(dateEndReserve);
 
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE usuarios_id IN (SELECT id FROM usuarios WHERE sedes_id IN
-        (SELECT id FROM sedes WHERE nombre LIKE ?)) ORDER BY fecha_registro DESC;`,
-        [`%${headquarter}%`]
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva,fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? AND fecha_hora_fin_reserva < ? ORDER BY fecha_registro DESC;`,
+        [userId, dateEndReserve]
       );
-    } else if (type_reserve) {
-      await searchSchema.validateAsync(type_reserve);
+    } else if (type) {
+      await searchSchema.validateAsync(type);
 
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
-        [`%${type_reserve}%`]
+        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva,fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? AND (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;`,
+        [userId, `%${type}%`]
       );
     } else if (date_init && date_end) {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC
-        ;`,
+        `SELECT id, servicios_id, usuarios_id, fecha_hora_inicio_reserva, fecha_hora_fin_reserva, motivo_reserva, fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion, (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? AND(fecha_registro >=  ? AND  fecha_registro <  ?)
+       ORDER BY fecha_registro DESC;`,
         [
+          userId,
           formatDateToDB(new Date(date_init)),
           formatDateToDB(new Date(date_end))
         ]
       );
     } else {
       result = await connection.query(
-        `SELECT id,servicios_id,usuarios_id,fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas ORDER BY fecha_registro DESC`
+        `SELECT id,servicios_id,usuarios_id, fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva,fecha_registro, (SELECT v.valoracion FROM valoraciones v WHERE v.id = r.id) AS valoracion , (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = r.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = r.id) AS fecha_registro_valoracion  FROM reservas r WHERE usuarios_id = ? ORDER BY fecha_registro DESC;`,
+        [userId]
       );
     }
 
     const [entries] = result;
+
+    if (!entries.length) {
+      throw generateError(
+        'No hemos encontrado ninguna reserva que se ajuste a los parámetros indicados',
+        400
+      );
+    }
 
     res.send({
       status: 'ok',

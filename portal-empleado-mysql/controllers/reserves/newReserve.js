@@ -28,6 +28,13 @@ async function newReserve(req, res, next) {
 
     const date = formatDateToDB(new Date());
 
+    // check dateInit > Now
+    if (dateInit < date) {
+      throw generateError(
+        'El la fecha de la reserva no puede ser anterior a este momento'
+      );
+    }
+
     // Check type of reserve exists in the db
     const [
       dataTypeReserve
@@ -52,7 +59,6 @@ async function newReserve(req, res, next) {
     );
 
     const [reserveDisponibililty] = dataDisponibilityReserve;
-    console.log(reserveDisponibililty.disponibilidad_servicios);
 
     // Check number of reservations made
 
@@ -72,10 +78,7 @@ async function newReserve(req, res, next) {
       ]
     );
 
-    console.log(dataReservesMade);
-
     const [reservesMade] = dataReservesMade;
-    console.log(reservesMade.numberOfReserves);
 
     if (
       reservesMade.numberOfReserves >=
@@ -85,8 +88,6 @@ async function newReserve(req, res, next) {
         'No es posible realizar la reserva, en estos momentos no hay disponbilidad'
       );
     }
-
-    console.log(dataReservesMade);
 
     const [result] = await connection.query(
       `INSERT INTO reservas(servicios_id, usuarios_id, fecha_hora_inicio_reserva,fecha_hora_fin_reserva,
