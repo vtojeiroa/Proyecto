@@ -2,7 +2,7 @@
 
 const { getConnection } = require('../../db');
 
-// GET - /services
+// GET - /ASSIGNMENT
 
 async function getAssignment(req, res, next) {
   let connection;

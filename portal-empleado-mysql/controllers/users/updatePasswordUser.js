@@ -15,30 +15,31 @@ async function updatePasswordUser(req, res, next) {
 
   try {
     const { id } = req.params;
-    // body: oldpassword, newPassword, newPasswordRepeat (opcional)
+    // body: oldpassword, newPassword, newPasswordRepeat (optional)
     connection = await getConnection();
 
     await editPasswordUserSchema.validateAsync(req.body);
 
     const { oldPassword, newPassword } = req.body;
 
-    // Comprobar que el usuario del token es el mismo que el que vamos a cambiar la pass
+    // Check that the user of the token is the same as the one that we are going to change the pass
 
     if (Number(id) !== req.auth.id) {
       throw generateError(
-        `No tienes permisos para cambiar la password del usuario con id ${id}`,
+        `No tienes permisos para cambiar la contraseña del usuario con id ${id}`,
         401
       );
     }
 
     if (oldPassword === newPassword) {
       throw generateError(
-        'La nueva password no puede ser la misma que la antigua',
+        'La nueva contraseña no puede ser la misma que la antigua',
         400
       );
     }
 
-    // Sacar la info del usuario de la base de datos
+    // Remove the user info from the database
+
     const [currentUser] = await connection.query(
       `
       SELECT id, contraseña from usuarios where id=?
@@ -46,25 +47,26 @@ async function updatePasswordUser(req, res, next) {
       [id]
     );
 
-    // Código un poco redundante
     if (!currentUser.length) {
       throw generateError(`El usuario con id ${id} no existe`, 404);
     }
 
     const [dbUser] = currentUser;
 
-    // Comprobar que la vieja password envíada sea la correcta
-    // el orden es: password sin encriptar, password encriptada
+    // Check that the old password sent is correct
+    // the order is: unencrypted password, encrypted password
+
     const passwordMatch = await bcrypt.compare(oldPassword, dbUser.contraseña);
 
     if (!passwordMatch) {
-      throw generateError('Tu password antigua es incorrecta', 401);
+      throw generateError('Tu contraseña antigua es incorrecta', 401);
     }
 
-    // generar hash de la password
+    // generate hash of the password
     const dbNewPassword = await bcrypt.hash(newPassword, 10);
 
-    // actualizar la base de datos
+    // update the database
+
     await connection.query(
       `
       UPDATE usuarios SET contraseña=?, fecha_actualizacion_contraseña=NOW() WHERE id=?

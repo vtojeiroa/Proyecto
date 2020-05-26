@@ -6,7 +6,8 @@ const { getConnection } = require('../../db');
 
 const { generateError } = require('../../helpers');
 
-// GET - /USERS/:id  --- LISTAR PERFIL USUARIO (ONLY USER OR ADMIN)
+// GET - /USERS/:id  --- LIST USER PROFILE (ONLY USER OR ADMIN)
+
 async function getUser(req, res, next) {
   let connection;
 
@@ -25,7 +26,6 @@ async function getUser(req, res, next) {
       [id]
     );
 
-    // Throw 404 if no results
     if (!result.length) {
       throw generateError(`No hay ningun usuario con el id ${id}`, 404);
     }
@@ -45,6 +45,7 @@ async function getUser(req, res, next) {
     let payload;
     if (userData.id === req.auth.id || req.auth.role === 'admin') {
       payload = {
+        id: id,
         registrationDate: userData.fecha_registro,
         name: userData.nombre,
         surname: userData.apellidos,

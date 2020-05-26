@@ -7,7 +7,7 @@ const { createHeadquarterSchema } = require('../validations');
 // POST - /Sedes
 async function createHeadquarter(req, res, next) {
   let connection;
-  //Meterlos en la base de datos
+
   try {
     await createHeadquarterSchema.validateAsync(req.body);
 

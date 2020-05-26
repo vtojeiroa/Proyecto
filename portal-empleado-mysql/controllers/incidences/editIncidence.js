@@ -8,7 +8,7 @@ const {
   generateError
 } = require('../../helpers');
 
-const { editIncidenceSchema } = require('../validations');
+const { editServiceSchema } = require('../validations');
 
 // PUT - /incidencies/:id
 async function editIncidence(req, res, next) {
@@ -17,7 +17,7 @@ async function editIncidence(req, res, next) {
     const { description } = req.body;
     const { id } = req.params;
 
-    await editIncidenceSchema.validateAsync(req.body);
+    await editServiceSchema.validateAsync(req.body);
 
     connection = await getConnection();
 
@@ -62,8 +62,8 @@ async function editIncidence(req, res, next) {
             'Hemos solucionado la incidencia registrada en el Portal del Empleado',
           html: `<div>
             <h1>Valora el proceso de resolucion de la incidencia</h1>
-            <p>Para revisar la solución y valorar el proceso de resolución de Incidencias pega esta url en tu navegador: ${voteURL}</p>  
-            <p> o haga Login en la aplicación, vaya apartado de incidencias, y en el buscador introduzca el codigo de votacion que le adjuntamos.</p>
+            <p>Para revisar la solución y valorar el proceso de resolución de Incidencias, haz click o pega esta url en tu navegador: ${voteURL}</p>  
+            <p> También puedes acceder al Portal, y valorar la resolución en el apartado de incidencias.</p>
             </div>`
         });
         await connection.query(

@@ -1,27 +1,16 @@
 'use strict';
 
 const { getConnection } = require('../../db');
-const {
-  /*  formatDateToDB,
-          sendEmail,
-          randomString,  */
+const { generateError } = require('../../helpers');
 
-  generateError
-} = require('../../helpers');
-
-const {
-  /*  reserveSchema, */
-  voteSchema
-  /*  searchSchema,
-     editReserveSchema   */
-} = require('../validations');
+const { voteSchema } = require('../validations');
 
 // POST - /incidences /: id / vote
 async function voteIncidence(req, res, next) {
   let connection;
   try {
     const { id } = req.params;
-    /* const { code } = req.query; */
+
     const userId = req.auth.id;
 
     // Validate payload

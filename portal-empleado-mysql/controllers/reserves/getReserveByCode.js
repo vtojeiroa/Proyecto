@@ -3,30 +3,31 @@
 const { getConnection } = require('../../db');
 const { generateError } = require('../../helpers');
 
-// GET - /incidences/:code
-async function getIncidenceByCode(req, res, next) {
+// GET - /reserves/:code
+async function getReserveByCode(req, res, next) {
   let connection;
   try {
     const { code } = req.params;
 
+    console.log(code);
     connection = await getConnection();
 
     if (!code) {
-      throw generateError(`No ha indicado ningún código de incidencia`, 404);
+      throw generateError(`No ha indicado ningún código de reserva`, 404);
     }
 
     const existData = await connection.query(
-      `SELECT id,usuarios_id, codigo_incidencia FROM incidencias WHERE codigo_incidencia = ?`,
+      `SELECT id,usuarios_id, codigo_reserva FROM reservas WHERE codigo_reserva = ?`,
       [code]
     );
     const [dataId] = existData;
 
     if (!dataId.length) {
-      throw generateError(`La incidencia con el código ${code} no existe`, 404);
+      throw generateError(`La reserva con el código ${code} no existe`, 404);
     }
 
     let result = await connection.query(
-      `select id,servicios_id, usuarios_id, fecha_registro, descripcion,fecha_resolucion, comentario_resolucion from incidencias WHERE codigo_incidencia = ?  GROUP BY id`,
+      `select id,servicios_id, usuarios_id, fecha_hora_inicio_reserva,fecha_hora_fin_reserva, motivo_reserva, fecha_registro FROM reservas WHERE codigo_reserva = ?  GROUP BY id`,
       [code]
     );
 
@@ -43,4 +44,4 @@ async function getIncidenceByCode(req, res, next) {
   }
 }
 
-module.exports = getIncidenceByCode;
+module.exports = getReserveByCode;

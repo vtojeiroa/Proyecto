@@ -7,7 +7,7 @@ const { generateError } = require('../../helpers');
 // POST - /services
 async function deleteHeadquarter(req, res, next) {
   let connection;
-  //Meterlos en la base de datos
+
   try {
     const { id } = req.params;
 

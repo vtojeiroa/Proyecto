@@ -8,12 +8,7 @@ const {
   generateError
 } = require('../../helpers');
 
-const {
-  reserveSchema
-  /*   voteSchema, 
-  searchSchema,
-   editReserveSchema  */
-} = require('../validations');
+const { reserveSchema } = require('../validations');
 
 // POST - /RESERVES
 async function newReserve(req, res, next) {
@@ -31,7 +26,7 @@ async function newReserve(req, res, next) {
     // check dateInit > Now
     if (dateInit < date) {
       throw generateError(
-        'El la fecha de la reserva no puede ser anterior a este momento'
+        'La fecha de la reserva no puede ser anterior a este momento'
       );
     }
 
@@ -97,25 +92,24 @@ async function newReserve(req, res, next) {
     );
     // Send email with number of reserve
 
-    const reserveNumber =
+    const reserveCode =
       result.insertId +
       '-' +
       dataReserve.tipo.replace(/ /g, '') +
       '-' +
       randomString(20);
 
-    const reserveNumberURL = `${process.env.PUBLIC_HOST}/reserves/${result.insertId}?number=${reserveNumber}`;
+    const reserveCodeURL = `${process.env.PUBLIC_HOST}/reserves/code/${reserveCode}`;
 
     try {
       await sendEmail({
         email: req.auth.email,
         title: 'Registro de reserva en el Portal del Empleado',
         html: `<div>
-      <h1>Hemos registrado tu reserva de ${dataReserve.tipo} en el Portal del Empleado</h1>
-      <p>Para revisar tu reserva pega esta url en el navegador: ${reserveNumberURL}</p>  
-      <p>Si deseas modificarla, haz Login en la aplicación, ve al apartado de reservas, e
-     introduce en el buscador el siguiente código de reserva ${reserveNumber}.</p>
-    </div>`
+              <h1>Reserva registrada</h1>
+              <p>Hemos registrado tu reserva de ${dataReserve.tipo} con el código: <strong>${reserveCode}</strong> el día ${date}</p> </p>
+              <p>Si deseas modificarla, haz click en el enlace: ${reserveCodeURL}, o copialo en tu navegador. También puedes acceder al Portal, e ir al apartado de reservas.</p>
+              </div>`
       });
     } catch (error) {
       console.error(error.response.body);
@@ -127,7 +121,7 @@ async function newReserve(req, res, next) {
       `
       UPDATE reservas SET codigo_reserva =? WHERE id=?
     `,
-      [reserveNumber, result.insertId]
+      [reserveCode, result.insertId]
     );
 
     res.send({
@@ -140,7 +134,7 @@ async function newReserve(req, res, next) {
         reserve_type: dataReserve.tipo,
         date_init: dateInit,
         date_end: dateEnd,
-        reserve_number: reserveNumber,
+        reserve_number: reserveCode,
         description: commentary
       }
     });

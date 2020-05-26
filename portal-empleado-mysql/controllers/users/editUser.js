@@ -21,10 +21,10 @@ async function editUser(req, res, next) {
 
     const { id } = req.params;
     const {
+      activo,
       name,
       surname,
       identification_document,
-      email,
       address,
       postal_code,
       location,
@@ -99,17 +99,25 @@ async function editUser(req, res, next) {
 
     // Update user
 
+    if (req.auth.role === 'admin') {
+      await connection.query(
+        `
+      UPDATE usuarios SET activo=? WHERE id=?
+    `,
+        [activo, id]
+      );
+    }
+
     await connection.query(
       `
       UPDATE usuarios SET nombre=?, apellidos=?, num_doc_identidad=?,
-      email=?, foto=?, direccion=?, codigo_postal=?, localidad=?, provincia=?, 
+       foto=?, direccion=?, codigo_postal=?, localidad=?, provincia=?, 
       pais=?, telefono=?, fecha_nacimiento=?, sedes_id=? WHERE id=?
     `,
       [
         name,
         surname,
         identification_document,
-        email,
         savedFileName,
         address,
         postal_code,

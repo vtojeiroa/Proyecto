@@ -12,7 +12,7 @@ async function makeQuestion(req, res, next) {
   try {
     await attentionSchema.validateAsync(req.body);
 
-    const { email, name, phone, service_type, message } = req.body;
+    const { email, name, phone, service, message } = req.body;
 
     connection = await getConnection();
 
@@ -32,7 +32,7 @@ async function makeQuestion(req, res, next) {
         <li>Email: ${email}.</li>
         <li>Nombre: ${name}.</li>
         <li>Teléfono: ${phone}.</li>
-        <li>Tipo de consulta: ${service_type}.</li>
+        <li>Tipo de consulta: ${service}.</li>
         <li>Consulta: ${message}.</li>
         <li>Consulta: ${date}.</li>
       </ul>  
@@ -48,12 +48,12 @@ async function makeQuestion(req, res, next) {
 
     res.send({
       status: 'ok',
-      message: `Hemos registrado su consulta en el Portal del Empleado, en breve se podrán en contacto con usted para solucionar la consulta`,
+      message: `Hemos registrado su consulta en el Portal del Empleado, en breve se podrán en contacto con usted para resolversela`,
       data: {
         email: email,
         name: name,
         phone: phone,
-        questionType: service_type,
+        questionType: service,
         message: message,
         date: date
       }

@@ -16,7 +16,8 @@ async function validateUser(req, res, next) {
 
     connection = await getConnection();
 
-    // Actualizamos el usuario
+    // Update User
+
     const [
       result
     ] = await connection.query(

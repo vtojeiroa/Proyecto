@@ -1,20 +1,7 @@
 'use strict';
 
 const { getConnection } = require('../../db');
-const {
-  /* formatDateToDB,
-      sendEmail,
-      randomString, */
-
-  generateError
-} = require('../../helpers');
-
-/* const {
-    reserveSchema,
-       voteSchema, 
-    searchSchema,
-     editReserveSchema  
-} = require('../validations');  */
+const { generateError } = require('../../helpers');
 
 //GET - /RESERVES/votes
 async function entryVotesReserve(req, res, next) {

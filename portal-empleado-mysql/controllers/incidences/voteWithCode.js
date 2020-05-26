@@ -4,10 +4,10 @@ const { getConnection } = require('../../db');
 const { generateError } = require('../../helpers');
 
 // GET - /incidences/:code
-async function getIncidenceByCode(req, res, next) {
+async function VoteWithCode(req, res, next) {
   let connection;
   try {
-    const { code } = req.params;
+    const { code } = req.query;
 
     connection = await getConnection();
 
@@ -26,7 +26,7 @@ async function getIncidenceByCode(req, res, next) {
     }
 
     let result = await connection.query(
-      `select id,servicios_id, usuarios_id, fecha_registro, descripcion,fecha_resolucion, comentario_resolucion from incidencias WHERE codigo_incidencia = ?  GROUP BY id`,
+      `select id,servicios_id, usuarios_id, fecha_registro, descripcion,fecha_resolucion, comentario_resolucion,(SELECT v.valoracion FROM valoraciones v WHERE v.id = i.id) AS valoracion, (SELECT v.comentario_valoracion FROM valoraciones v WHERE v.id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.id = i.id) AS fecha_registro_valoracion FROM incidencias i WHERE codigo_incidencia = ?`,
       [code]
     );
 
@@ -43,4 +43,4 @@ async function getIncidenceByCode(req, res, next) {
   }
 }
 
-module.exports = getIncidenceByCode;
+module.exports = VoteWithCode;

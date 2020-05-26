@@ -10,71 +10,83 @@ const activeSchema = Joi.number()
   .allow('1', '0')
   .error(
     generateError(
-      'El campo activosolo puede tener los valores 0 (desactivado) o 1 (activado)',
+      'El campo activo sólo puede tener los valores 0 (desactivado) o 1 (activado)',
       400
     )
   );
 
-const dateSchema = Joi.date()
-  .required()
+const addressSchema = Joi.string()
+  .max(255)
   .error(
-    generateError(
-      `El campo fecha es obligatorio y el formato es YYYY-MM-DD HH:MM:SS`,
-      400
-    )
+    generateError('La dirección no puede tener más de 255 caracteres', 400)
   );
+
+const birthdateSchema = Joi.date().error(
+  generateError(`La fecha de nacimiento debe tener el formato yyyy-mm-dd`, 400)
+);
+
+const countrySchema = Joi.string()
+  .max(255)
+  .error(generateError('El pais no puede tener más de 255 caracteres', 400));
+
+const dateSchema = Joi.date().error(
+  generateError(`El formato correcto de La fecha es YYYY-MM-DD HH:MM:SS`, 400)
+);
 
 const descriptionSchema = Joi.string()
   .max(500)
   .required()
   .error(
-    generateError(
-      'El campo description es obligatorio y no puede tener más de 500 caracteres',
-      400
-    )
+    generateError('La descripcion no puede tener más de 500 caracteres', 400)
   );
 
 const emailSchema = Joi.string()
   .email()
-  .required()
-  .error(generateError('El campo email debe ser un email bien formado', 400));
-
-const headquarterSchema = Joi.string()
-  .min(3)
-  .max(50)
-  .required()
   .error(
     generateError(
-      'El campo Sede es obligatorio y debe de tener entre 3 y 50 carateres',
+      'El correo electrónico introducido no es válido. Por favor, introduce un correo electrónico válido.',
       400
     )
   );
 
+const headquarterSchema = Joi.string()
+  .min(3)
+  .max(50)
+  .error(generateError('La sede debe de tener entre 3 y 50 carateres', 400));
+
+const locationSchema = Joi.string()
+  .max(255)
+  .error(
+    generateError('La localidad no puede tener más de 255 caracteres', 400)
+  );
+
 const nameSchema = Joi.string()
   .max(255)
-  .error(generateError('El nombre no puede pasar de 255 caracteres', 400));
+  .error(generateError('El nombre no puede tener más de 255 caracteres', 400));
 
 const passwordSchema = Joi.string()
   .min(6)
   .max(100)
   .required()
   .error(
-    generateError('La password debe de tener entre 6 y 100 carateres', 400)
+    generateError('La contraseña debe de tener entre 6 y 100 carateres', 400)
   );
 
 const phoneSchema = Joi.string()
   .max(12)
   .error(
-    generateError(
-      `El campo teléfono debe de tener 12 caracteres como máximo`,
-      400
-    )
+    generateError(`El teléfono debe de tener 12 caracteres como máximo`, 400)
   );
 
 const postalCodeSchema = Joi.number()
+  .min(5)
   .integer()
+  .error(generateError(`El código postal está formado por 5 números`, 400));
+
+const provinceSchema = Joi.string()
+  .max(255)
   .error(
-    generateError(`El campo código postal está formado por 5 números`, 400)
+    generateError('La provincia no puede tener más de 255 caracteres', 400)
   );
 
 const searchSchema = Joi.string()
@@ -87,23 +99,27 @@ const searchSchema = Joi.string()
     )
   );
 
-const sectionSchema = Joi.string()
+const serviceSchema = Joi.string()
   .valid('Reserva', 'Incidencia')
-  .required()
   .error(
     generateError(
-      'El campo seccion es obligatorio y solo puede tener los valores Reserva o Incidencia',
+      `El servicio sólo puede tener los valores 'Reserva' o 'Incidencia'`,
       400
     )
   );
 
-const serviceSchema = Joi.string()
+const surnameSchema = Joi.string()
+  .max(255)
+  .error(
+    generateError('El apellido no puede tener más de 255 caracteres', 400)
+  );
+
+const typeSchema = Joi.string()
   .min(3)
   .max(50)
-  .required()
   .error(
     generateError(
-      'El campo reserva/incidencia es obligatorio y no puede tener menos de 3 ni más de 50 caracteres',
+      'El campo tipo no puede tener menos de 3 ni más de 50 caracteres',
       400
     )
   );
@@ -111,57 +127,103 @@ const serviceSchema = Joi.string()
 // Object Schemas
 
 const attentionSchema = Joi.object().keys({
-  email: emailSchema,
+  email: emailSchema
+    .required()
+    .error(
+      generateError(
+        'El correo electrónico es obligatorio. Por favor, introduce un correo electrónico válido',
+        400
+      )
+    ),
   emailRepeat: Joi.any()
     .valid(Joi.ref('email'))
-    .error(generateError('Los emails deben ser iguales', 400)),
-  name: nameSchema,
-  phone: phoneSchema,
-  service_type: sectionSchema,
-  message: descriptionSchema
+    .required()
+    .error(generateError('Los correos electrónicos deben de ser iguales', 400)),
+  name: nameSchema
+    .required()
+    .error(
+      generateError(
+        'El nombre es obligatorio y debe de tener 255 caracteres como máximo',
+        400
+      )
+    ),
+  phone: phoneSchema
+    .required()
+    .error(
+      generateError(
+        'El teléfono es obligatorio y debe de tener 10 caracteres como máximo',
+        400
+      )
+    ),
+  service: serviceSchema.required(),
+  message: descriptionSchema.required()
 });
 
 const createAssignmentSchema = Joi.object().keys({
-  headquarter: headquarterSchema,
-  service_type: serviceSchema,
+  headquarter: headquarterSchema
+    .required()
+    .error(
+      generateError(
+        'La Sede es obligatoria y debe tener entre 3 y 50 caracteres',
+        400
+      )
+    ),
+  service_type: typeSchema
+    .required()
+    .error(
+      generateError(
+        `El tipo es obligatorio y debe tener entre 3 y 50 caracteres`,
+        400
+      )
+    ),
   disponibility: Joi.number()
     .integer()
     .min(0)
     .required()
     .error(
       generateError(
-        'El campo disponibilidad es obligatorio y tiene que ser un número igual o mayor que cero',
+        'La disponibilidad es obligatoria y tiene que ser un número igual o mayor que cero',
         400
       )
     )
 });
 const createHeadquarterSchema = Joi.object().keys({
-  name: nameSchema,
-  address: nameSchema,
-  postal_code: postalCodeSchema,
-  location: nameSchema,
-  province: nameSchema,
-  country: nameSchema
+  name: nameSchema.required(),
+  address: addressSchema.required(),
+  postal_code: postalCodeSchema.required(),
+  location: locationSchema.required(),
+  province: provinceSchema.required(),
+  country: countrySchema.required()
 });
 
-const createServiceSchema = Joi.object().keys({
-  section: sectionSchema,
-  type: serviceSchema,
-  description: descriptionSchema
+const createtypeSchema = Joi.object().keys({
+  section: serviceSchema.required(),
+  type: typeSchema.required(),
+  description: descriptionSchema.required()
+});
+
+const editEmailUserSchema = Joi.object().keys({
+  oldEmail: emailSchema.required(),
+  newEmail: emailSchema.required(),
+  newEmailRepeat: Joi.any()
+    .valid(Joi.ref('newEmail'))
+    .error(
+      generateError('Los correos electrónico introducidos no coinciden', 400)
+    )
 });
 
 const editHeadquarterSchema = Joi.object().keys({
-  active: activeSchema,
-  name: nameSchema,
-  address: nameSchema,
-  postal_code: postalCodeSchema,
-  location: nameSchema,
-  province: nameSchema,
-  country: nameSchema
+  active: activeSchema.required(),
+  name: nameSchema.required(),
+  address: addressSchema.required(),
+  postal_code: postalCodeSchema.required(),
+  location: locationSchema.required(),
+  province: provinceSchema.required(),
+  country: countrySchema.required()
 });
 
-const editIncidenceSchema = Joi.object().keys({
-  description: descriptionSchema
+const editServiceSchema = Joi.object().keys({
+  description: descriptionSchema.required()
 });
 
 const editPasswordUserSchema = Joi.object().keys({
@@ -169,19 +231,20 @@ const editPasswordUserSchema = Joi.object().keys({
   newPassword: passwordSchema,
   newPasswordRepeat: Joi.any()
     .valid(Joi.ref('newPassword'))
-    .error(generateError('Las passwords debe ser iguales', 400))
+    .error(generateError('Las contraseñas introducidas no coinciden', 400))
 });
 
-const editServiceSchema = Joi.object().keys({
-  active: activeSchema,
-  section: sectionSchema,
-  type: serviceSchema,
-  description: descriptionSchema
+const edittypeSchema = Joi.object().keys({
+  active: activeSchema.required(),
+  section: serviceSchema.required(),
+  type: typeSchema.required(),
+  description: descriptionSchema.required()
 });
 
 const editUserSchema = Joi.object().keys({
-  name: nameSchema,
-  surname: nameSchema,
+  activo: activeSchema,
+  name: nameSchema.required(),
+  surname: surnameSchema.required(),
   identification_document: Joi.string()
     .max(10)
     .error(
@@ -190,41 +253,35 @@ const editUserSchema = Joi.object().keys({
         400
       )
     ),
-  email: emailSchema,
   avatar: Joi.string(),
-  address: nameSchema,
+  address: addressSchema,
   postal_code: postalCodeSchema,
-  location: nameSchema,
-  province: nameSchema,
-  country: nameSchema,
+  location: locationSchema,
+  province: provinceSchema,
+  country: countrySchema,
   phone: phoneSchema,
-  birthdate: Joi.date().error(
-    generateError(`El campo birthdate debe tener el formato yyyy-mm-dd`),
-    400
-  ),
-  headquarters: Joi.string()
-    .min(3)
-    .max(50)
-    .error(
-      generateError('El campo Sede debe de tener entre 3 y 50 carateres', 400)
-    )
+  birthdate: birthdateSchema,
+  headquarters: headquarterSchema.required()
+});
+
+const entryVotesSchema = Joi.object().keys({
+  service: serviceSchema.required(),
+  type: typeSchema.required()
 });
 
 const incidenceSchema = Joi.object().keys({
-  incidenceType: serviceSchema,
-  description: descriptionSchema
+  incidenceType: typeSchema.required(),
+  description: descriptionSchema.required()
 });
 
 const recoveryPasswordSchema = Joi.object().keys({
-  email: emailSchema,
-  postal_code: postalCodeSchema,
-  birthdate: Joi.date().error(
-    generateError(`El campo birthdate debe tener el formato yyyy-mm-dd`, 400)
-  )
+  email: emailSchema.required(),
+  postal_code: postalCodeSchema.required(),
+  birthdate: birthdateSchema
 });
 
 const reserveSchema = Joi.object().keys({
-  reserveType: serviceSchema,
+  reserveType: typeSchema,
   dateInit: dateSchema,
   dateEnd: dateSchema
     .greater(Joi.ref('dateInit'))
@@ -235,9 +292,7 @@ const reserveSchema = Joi.object().keys({
 });
 
 const searchDateSchema = Joi.object().keys({
-  date_init: Joi.date().error(
-    generateError('La fecha inicial tiene que ser menor que la final', 400)
-  ),
+  date_init: Joi.date(),
   date_end: Joi.date()
     .greater(Joi.ref('date_init'))
     .error(
@@ -246,25 +301,16 @@ const searchDateSchema = Joi.object().keys({
 });
 
 const userLoginSchema = Joi.object().keys({
-  email: emailSchema,
-  password: passwordSchema
+  email: emailSchema.required(),
+  password: passwordSchema.required()
 });
 
 const userSchema = Joi.object().keys({
-  name: nameSchema,
-  surname: nameSchema,
-  email: emailSchema,
-  password: passwordSchema,
-  headquarter: Joi.string()
-    .min(3)
-    .max(50)
-    .required()
-    .error(
-      generateError(
-        'El campo Sede es obligatorio y debe de tener entre 3 y 50 carateres',
-        400
-      )
-    )
+  name: nameSchema.required(),
+  surname: nameSchema.required(),
+  email: emailSchema.required(),
+  password: passwordSchema.required(),
+  headquarter: headquarterSchema.required()
 });
 
 const voteSchema = Joi.object().keys({
@@ -283,21 +329,23 @@ const voteSchema = Joi.object().keys({
 });
 
 module.exports = {
-  reserveSchema,
-  incidenceSchema,
-  voteSchema,
-  searchSchema,
-  searchDateSchema,
-  userSchema,
-  userLoginSchema,
-  editUserSchema,
-  editPasswordUserSchema,
-  editIncidenceSchema,
-  recoveryPasswordSchema,
-  createServiceSchema,
-  editServiceSchema,
-  createHeadquarterSchema,
-  editHeadquarterSchema,
+  attentionSchema,
   createAssignmentSchema,
-  attentionSchema
+  createHeadquarterSchema,
+  createtypeSchema,
+  editEmailUserSchema,
+  editHeadquarterSchema,
+  editServiceSchema,
+  editPasswordUserSchema,
+  edittypeSchema,
+  editUserSchema,
+  entryVotesSchema,
+  incidenceSchema,
+  recoveryPasswordSchema,
+  reserveSchema,
+  searchDateSchema,
+  searchSchema,
+  userLoginSchema,
+  userSchema,
+  voteSchema
 };

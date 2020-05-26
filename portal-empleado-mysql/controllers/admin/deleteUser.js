@@ -6,7 +6,7 @@ const { getConnection } = require('../../db');
 
 const { generateError } = require('../../helpers');
 
-// DELETE - /USERS/:id  ---DESACTIVATE USER
+// DELETE - /ADMIN/USERS/:id  ---DELETE USER
 async function deleteUser(req, res, next) {
   let connection;
 
@@ -24,11 +24,11 @@ async function deleteUser(req, res, next) {
       throw generateError(`El usuario con el número ${id} no existe`, 400);
     }
 
-    await connection.query('UPDATE usuarios SET activo=0 WHERE id=?', [id]);
+    await connection.query('DELETE FROM usuarios WHERE id=?', [id]);
 
     res.send({
       status: 'ok',
-      message: `El usuario con la id ${id} ha sido dado de baja`
+      message: `El usuario con la id ${id} ha sido borrado de la base de datos.`
     });
   } catch (error) {
     next(error);

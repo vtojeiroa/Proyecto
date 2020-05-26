@@ -1,33 +1,21 @@
 'use strict';
 
 const { getConnection } = require('../../db');
-const {
-  /*  formatDateToDB,
-        sendEmail,
-        randomString,  */
+const { generateError } = require('../../helpers');
 
-  generateError
-} = require('../../helpers');
+//GET - /VOTES
 
-/*  const {
-    reserveSchema,
-       voteSchema, 
-    searchSchema,
-     editReserveSchema  
-} = require('../validations');  */
-
-//GET - /RESERVES/votes
 async function getEntryVotes(req, res, next) {
   let connection;
   try {
-    const { serviceType } = req.body;
+    const { type } = req.query;
     connection = await getConnection();
 
     const [
       data
     ] = await connection.query(
       `SELECT id,tipo,seccion FROM servicios WHERE tipo LIKE ?`,
-      [`%${serviceType}%`]
+      [`%${type}%`]
     );
 
     if (!data.length) {
@@ -51,7 +39,7 @@ async function getEntryVotes(req, res, next) {
       [
         votes
       ] = await connection.query(
-        'SELECT (SELECT tipo FROM servicios WHERE id =? ) AS service, v.servicios_id,  v.valoracion,  v.comentario_valoracion, v.valoracion, v.valoracion FROM valoraciones v  INNER JOIN reservas r ON  v.reservas_id = r.id  WHERE v.servicios_id=? ',
+        'SELECT (SELECT tipo FROM servicios WHERE id =? ) AS servicio, v.servicios_id,  v.valoracion,  v.comentario_valoracion, v.valoracion, v.valoracion FROM valoraciones v  INNER JOIN reservas r ON  v.reservas_id = r.id  WHERE v.servicios_id=? ',
         [serviceId.id, serviceId.id]
       );
     }
@@ -66,7 +54,7 @@ async function getEntryVotes(req, res, next) {
 
     res.send({
       status: 'ok',
-      serviceType: serviceId.tipo,
+      type: serviceId.tipo,
       average_votes: average.avgvotes,
       data: votes
     });

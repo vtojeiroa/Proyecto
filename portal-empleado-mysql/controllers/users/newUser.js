@@ -9,7 +9,7 @@ const { userSchema } = require('../validations');
 
 const { randomString, sendEmail, generateError } = require('../../helpers');
 
-// POST - /USER --- NUEVO USUARIO
+// POST - /USER --- New User
 async function newUser(req, res, next) {
   let connection;
   try {

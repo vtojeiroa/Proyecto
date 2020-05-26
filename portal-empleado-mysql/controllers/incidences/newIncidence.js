@@ -46,8 +46,10 @@ async function newIncidence(req, res, next) {
     );
     // Send email with number of incidence
 
-    const incidenceNumber =
+    const incidenceCode =
       result.insertId + '-' + dataIncType.tipo + '-' + randomString(10);
+
+    const incidenceCodeURL = `${process.env.PUBLIC_HOST}/incidences/code/${incidenceCode}`;
 
     try {
       await sendEmail({
@@ -55,8 +57,8 @@ async function newIncidence(req, res, next) {
         title: 'Registro de incidencia en el Portal del Empleado',
         html: `<div>
          <h1>Incidencia registrada</h1>
-     <p>Hemos registrado tu incidencia al departamento  de ${dataIncType.tipo} con el código: <strong>${incidenceNumber}</strong> el día ${date}</p>  
-      <p>Si deseas modificarla, haz Login en el Portal, ve al apartado de incidencias, e introduce en el buscador el código que te hemos facilitado.</p>
+     <p>Hemos registrado tu incidencia al departamento  de ${dataIncType.tipo} con el código: <strong>${incidenceCode}</strong> el día ${date}</p>  
+      <p>Si deseas modificarla, haz click en el enlace: ${incidenceCodeURL}, o copialo en tu navegador. También puedes acceder al Portal, e ir al apartado de incidencias.</p>
     </div>`
       });
     } catch (error) {
@@ -69,7 +71,7 @@ async function newIncidence(req, res, next) {
       `
       UPDATE incidencias SET codigo_incidencia =? WHERE id=?
     `,
-      [incidenceNumber, result.insertId]
+      [incidenceCode, result.insertId]
     );
 
     res.send({
@@ -80,7 +82,7 @@ async function newIncidence(req, res, next) {
         user: req.auth.id,
         date: date,
         incidence: dataIncType.tipo,
-        incidence_Number: incidenceNumber,
+        incidence_Number: incidenceCode,
         description: description
       }
     });

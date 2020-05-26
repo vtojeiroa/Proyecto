@@ -1,20 +1,7 @@
 'use strict';
 
 const { getConnection } = require('../../db');
-const {
-  formatDateToDB,
-  /*      sendEmail,
-      randomString, */
-
-  generateError
-} = require('../../helpers');
-
-/*  const {
-    reserveSchema,
-       voteSchema, 
-    searchSchema,
-     editReserveSchema  
-} = require('../validations');  */
+const { formatDateToDB, generateError } = require('../../helpers');
 
 // DELETE - /RESERVES/: id
 async function deleteReserve(req, res, next) {
@@ -53,12 +40,7 @@ async function deleteReserve(req, res, next) {
         id
       ]);
       await connection.query('DELETE FROM reservas WHERE id=?', [id]);
-    } /*  else if (req.auth.role === 'admin') {
-      await connection.query('DELETE FROM valoraciones WHERE reservas_id=?', [
-        id
-      ]);
-      await connection.query('DELETE FROM reservas WHERE id=?', [id]);
-    } */ else {
+    } else {
       throw generateError(
         `No tienes permiso para borrar la reserva ${id}`,
         403

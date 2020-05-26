@@ -7,7 +7,7 @@ const { createServiceSchema } = require('../validations');
 // POST - /services
 async function createServices(req, res, next) {
   let connection;
-  //Meterlos en la base de datos
+
   try {
     await createServiceSchema.validateAsync(req.body);
 
