@@ -10,7 +10,7 @@ async function getIncidenceByCode(req, res, next) {
     const { code } = req.params;
 
     connection = await getConnection();
-
+    console.log(code);
     if (!code) {
       throw generateError(`No ha indicado ningún código de incidencia`, 404);
     }

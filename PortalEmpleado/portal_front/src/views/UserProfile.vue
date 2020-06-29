@@ -12,7 +12,7 @@
       </article>
     </section>
     <main id="container">
-      <section>
+      <section id="content">
         <!--  ANIMACIÓN DE CSS CARGANDO -->
 
         <div v-show="loading" class="lds-ripple">
@@ -20,17 +20,86 @@
           <div></div>
         </div>
 
-        <!-- BOTON QUE TE ENVIA A OTRA PÁGINA PARA MODIFICAR EL EMAIL-->
-        <p>
-          Si quieres cambiar el correo electrónico con el que inicias sesión,
-          pincha
-          <router-link :to="{ name: 'EditEmail' }">aquí</router-link>
-        </p>
-
         <!-- MODAL PARA EDITAR EL USUARIO -->
 
         <article class="content">
-          <h1>Mis datos</h1>
+          <h2>Mis datos</h2>
+          <!-- BOTON QUE TE ENVIA A OTRA PÁGINA PARA MODIFICAR EL EMAIL-->
+          <h3>
+            Si quieres cambiar el correo electrónico con el que inicias sesión,
+            pincha
+            <input
+              type="submit"
+              value="email"
+              class="button-go"
+              @click="openModalEmail()"
+            />
+          </h3>
+
+          <!-- IMPLEMENTACIÓN DEL MODAL PARA MODIFICAR EL EMAIL -->
+
+          <section class="email">
+            <div class="modal" v-show="modalEmail">
+              <div class="modalBox">
+                <h2>Cambio de correo electrónico</h2>
+                <h3>Por favor, introduce la nueva dirección de correo electrónico con la que te gustaría acceder al Portal del Empleado a partir de ahora. Te enviaremos un correo electrónico de verificación a la nueva dirección para que la puedas cambiar.</h3>
+                <p>Todos los campos marcados con * son obligatorios</p>
+
+                <form>
+                  <fieldset class="form">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <label for="email">Correo electrónico actual* :</label>
+                          </td>
+                          <td>
+                            <input id="email" name="email" type="email" v-model="oldEmail" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label for="newEmail">Correo electrónico nuevo* :</label>
+                          </td>
+                          <td>
+                            <input id="newEmail" name="newEmail" type="email" v-model="newEmail" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <label for="newEmail1">Repetir correo electrónico nuevo* :</label>
+                          </td>
+                          <td>
+                            <input
+                              id="newEmail1"
+                              name="newEmail1"
+                              type="email"
+                              v-model="newEmailRepeat"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </fieldset>
+                </form>
+
+                <div class="buttons">
+                  <input
+                    type="button"
+                    class="button-back"
+                    value="Cancelar"
+                    @click="closeModalEmail();"
+                  />
+                  <input
+                    type="submit"
+                    class="button-go"
+                    value="Modificar"
+                    @click="updateEmail(oldEmail,newEmail,newEmailRepeat)  "
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
 
           <!-- PERFIL DEL USUARIO -->
 
@@ -40,50 +109,14 @@
               openModalProfile();
               showEditText();
             "
+            v-on:drop="deleteUser()"
           ></profiledata>
           <div class="modal" v-show="modalProfile">
             <div class="modalBox" v-on:edit="showEditText">
-              <h3>¡Mantén actualizados tus datos!</h3>
+              <h2>¡Mantén actualizados tus datos!</h2>
               <form id="form">
                 <table class="form-table">
                   <tbody>
-                    <tr class="editAvatar">
-                      <td class="image">
-                        <label>Actualizar tu Imagen de perfil:</label>
-                      </td>
-                      <td class="tdFormField">
-                        <input
-                          id="avatar"
-                          type="file"
-                          ref="avatar"
-                          @change="handleFileUpload()"
-                        />
-                        <button
-                          class="input-button"
-                          type="button"
-                          @click="uploadImage()"
-                        >
-                          Actualizar Foto
-                        </button>
-                        <button class="cancel" @click="cancel()"></button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="status">
-                        <label for="newStatus">Status* :</label>
-                      </td>
-                      <td class="status">
-                        <input
-                          id="status"
-                          name="status"
-                          type="text"
-                          maxlength="255"
-                          autocomplete="off"
-                          v-model="newStatus"
-                          disabled
-                        />
-                      </td>
-                    </tr>
                     <tr>
                       <td class="name">
                         <label for="newName">Nombre* :</label>
@@ -211,9 +244,9 @@
                         <input
                           id="birthdate"
                           name="birthdate"
-                          type="date"
+                          type="text"
                           class="birthdate"
-                          autocomplete="off"
+                          autocomplete="on"
                           v-model="newBirthdate"
                         />
                       </td>
@@ -233,28 +266,13 @@
                         />
                       </td>
                     </tr>
-                    <!-- <tr>
-                      <td class="headquarter">
-                        <label class="headquarter" for="headquarter">Indica tu sede de trabajo *:</label>
-                      </td>
-                      <td>
-                        <select name="headquarter" id="headquarter" v-model="newHeadquarter">
-                          <option value>Selecciona...</option>
-                          <option value="coruña">Coruña</option>
-                          <option value="santiago">Santiago</option>
-                          <option value="malaga">Málaga</option>
-                          <option value="vigo">Vigo</option>
-                        </select>
-                      </td>
-                    </tr>-->
                   </tbody>
                 </table>
               </form>
-
               <div class="button-data">
                 <input
                   type="button"
-                  class="button"
+                  class="button-back"
                   value="Cancelar"
                   @click="closeModalProfile()"
                 />
@@ -262,27 +280,58 @@
                 <input
                   id="button-data"
                   type="submit"
-                  class="button"
+                  class="button-go"
                   value="Actualizar"
                   @click="updateUser()"
+                />
+
+                <input
+                  id="button-data"
+                  type="submit"
+                  class="button-go"
+                  value="Editar Foto"
+                  @click="openModalPhoto()"
                 />
               </div>
             </div>
           </div>
+
+          <div class="modal" v-show="modalProfilePhoto">
+            <div class="modalBox" v-on:edit="showEditText">
+              <table>
+                <tbody>
+                  <tr class="editAvatar">
+                    <td class="image">
+                      <label>
+                        Actualiza
+                        tu imagen de perfil:
+                      </label>
+                    </td>
+                    <td class="tdFormField">
+                      <input id="file" type="file" ref="file" @change="handleFileUpload()" />
+                    </td>
+                  </tr>
+                  <input class="button-go" type="button" value="Actualizar" @click="uploadImage()" />
+                  <input class="back" value="Cancelar" @click="closeModalPhoto()" />
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- IMPLEMENTACIÓN DEL MODAL PARA MODIFICAR LA CONTRASEÑA -->
-          <p>
+          <h3 class="password">
             Si quieres modificar tu contraseña, pincha
             <input
               type="submit"
-              value="modificar contraseña"
-              class="button"
+              value="modificar"
+              class="button-go"
               @click="openModal()"
             />
-          </p>
-          <div class="modal" v-show="modal">
-            <div class="modalBox">
-              <section class="password">
-                <h1>Cambiar contraseña</h1>
+          </h3>
+          <section class="password">
+            <div class="modal" v-show="modal">
+              <div class="modalBox">
+                <h2>Cambiar contraseña</h2>
                 <h3>En este apartado puedes modificar tu contraseña.</h3>
                 <form>
                   <table>
@@ -333,15 +382,10 @@
                   </table>
                 </form>
                 <div class="buttonPassword">
-                  <input
-                    type="button"
-                    class="button"
-                    value="Cancelar"
-                    @click="closeModal()"
-                  />
+                  <input type="button" class="button-back" value="Cancelar" @click="closeModal()" />
                   <input
                     type="submit"
-                    class="button"
+                    class="button-go"
                     value="Modificar"
                     @click="
                       updatePassword(
@@ -352,9 +396,9 @@
                     "
                   />
                 </div>
-              </section>
+              </div>
             </div>
-          </div>
+          </section>
         </article>
       </section>
     </main>
@@ -387,7 +431,9 @@ import {
   isLoggedIn,
   checkAdmin,
   setName,
-  formatDateShort,
+  setEmail,
+  setAvatar,
+  formatDateToFront
 } from "../api/utils";
 
 export default {
@@ -396,14 +442,14 @@ export default {
     menucustom,
     menulinks,
     profiledata,
-    footercustom,
+    footercustom
   },
   data() {
     return {
       errorMessage: "",
       //DATOS PARA ACTUALIZAR EL USUARIO
       dataUsers: {},
-      avatar: "",
+      modalProfilePhoto: false,
       modalProfile: false,
       correctData: false,
       loading: true,
@@ -421,7 +467,10 @@ export default {
       newCountry: "",
       newBirthdate: "",
       newMobile: "",
+      avatar: "",
       newAvatar: "",
+      file: "",
+      image: "",
       newHeadquarter: "",
       date: "",
       //DATOS PARA ACTUALIZAR LA CONTRASEÑA
@@ -430,6 +479,13 @@ export default {
       newPassword: "",
       newPasswordRepeat: "",
       correctDataPassword: false,
+      //DATOS PARA ACTUALIZAR EL EMAIL
+      errorMessage: "",
+      modalEmail: false,
+      correctDataEmail: false,
+      oldEmail: "",
+      newEmail: "",
+      newEmailRepeat: ""
     };
   },
   methods: {
@@ -440,34 +496,34 @@ export default {
       axios
         .get(`http://localhost:3000/users/` + data, {
           headers: {
-            authorization: `Bearer ${token}`,
-          },
+            authorization: `Bearer ${token}`
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
           self.dataUsers = response.data.data;
           const image = response.data.data.avatar;
+
           if (!!!self.dataUsers.avatar) {
             self.dataUsers.avatar =
-              "http://localhost:3000/uploads/" + "fotoVictor.jpg";
+              "http://localhost:3000/uploads/" + "fotoavatar.jpg";
           } else {
             self.dataUsers.avatar = "http://localhost:3000/uploads/" + image;
           }
         })
 
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
 
     showEditText() {
-      this.newAvatar = this.dataUsers.avatar;
       this.newStatus = this.dataUsers.active;
       this.newName = this.dataUsers.name;
       this.newSurname = this.dataUsers.surname;
@@ -477,7 +533,7 @@ export default {
       this.newLocation = this.dataUsers.location;
       this.newProvince = this.dataUsers.province;
       this.newCountry = this.dataUsers.country;
-      this.newBirthdate = this.dataUsers.birthdate_formated;
+      this.newBirthdate = this.dataUsers.birthdate;
       this.newMobile = this.dataUsers.phone;
       this.newAvatar = this.dataUsers.avatar;
       this.newHeadquarter = this.dataUsers.headquarters;
@@ -500,16 +556,11 @@ export default {
 
     //ACTUALIZAMOS LOS DATOS DEL USUARIO Y LA FOTO
 
-    handleFileUpload() {
-      this.avatar = this.$refs.avatar.files[0];
-      console.log(this.avatar);
-    },
     uploadImage() {
-      const self = this;
-      /*  const token = getAuthToken(); */
+      let self = this;
       let data = localStorage.getItem("id");
+
       let formData = new FormData();
-      /* formData.append("avatar", self.avatar); */
       formData.append("activo", self.newStatus);
       formData.append("name", self.newName);
       formData.append("surname", self.newSurname);
@@ -521,78 +572,83 @@ export default {
       formData.append("country", self.newCountry);
       formData.append("birthdate", self.newBirthdate);
       formData.append("phone", self.newMobile);
-      formData.append("avatar", self.newfileImage);
       formData.append("headquarters", self.newHeadquarter);
+      formData.append("avatar", self.file);
 
       axios
         .put("http://localhost:3000/" + "users/" + data, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         })
         .then(function(response) {
           self.getUser();
+          self.closeModalPhoto();
           self.closeModalProfile();
           Swal.fire({
             icon: "success",
-            title: "Cambio de foto de perfil realizado correctamente.",
+            title: "Datos de perfil actualizados correctamente.",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         })
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+    },
+
+    //ACTUALIZAMOS LOS DATOS DEL USUARIO SIN LA FOTO
 
     updateUser() {
       this.validatingData(); //VALIDANDO DATOS DEL FORMULARIO
       if (this.correctData) {
-        const token = getAuthToken();
-        let data = localStorage.getItem("id");
         let self = this;
-        axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+        let data = localStorage.getItem("id");
+
+        let formData = new FormData();
+        formData.append("activo", self.newStatus);
+        formData.append("name", self.newName);
+        formData.append("surname", self.newSurname);
+        formData.append("document", self.newDocument);
+        formData.append("address", self.newAddress);
+        formData.append("postal_code", self.newPostalCode);
+        formData.append("location", self.newLocation);
+        formData.append("province", self.newProvince);
+        formData.append("country", self.newCountry);
+        formData.append("birthdate", self.newBirthdate);
+        formData.append("phone", self.newMobile);
+        formData.append("headquarters", self.newHeadquarter);
 
         axios
-          .put("http://localhost:3000/users/" + data, {
-            activo: self.newStatus,
-            name: self.newName,
-            surname: self.newSurname,
-            document: self.newDocument,
-            address: self.newAddress,
-            postal_code: self.newPostalCode,
-            location: self.newLocation,
-            province: self.newProvince,
-            country: self.newCountry,
-            birthdate: self.newBirthdate,
-            phone: self.newMobile,
-            /*  avatar: self.newfileImage, */
-            avatar: self.newAvatar,
-            headquarters: self.newHeadquarter,
+          .put("http://localhost:3000/" + "users/" + data, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
           })
           .then(function(response) {
             self.getUser();
             self.closeModalProfile();
-            console.log(response);
-            //MOSTRAR UN MENSAJE CON EL RESULTADOS.
             Swal.fire({
               icon: "success",
-              title: "Cambios registrados correctamente en su perfil",
+              title: "Datos de perfil actualizados correctamente.",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             });
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -600,9 +656,52 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
+    },
+
+    //FUNCION PARA ELIMINAR QUE UN USUARIO SE DE DE BAJA
+    deleteUser() {
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¡No podrás deshacerlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, bórralo!"
+      }).then(result => {
+        if (result.value) {
+          const token = getAuthToken();
+          axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+          let data = localStorage.getItem("id");
+          let self = this;
+          axios
+            .delete("http://localhost:3000/users/" + data)
+            //  SI SALE BIEN
+            .then(function(response) {
+              //MOSTRAR UN MENSAJE CON EL RESULTADO
+              Swal.fire({
+                icon: "success",
+                title: `Acabas de borrar los datos del usuario `,
+                showConfirmButton: false,
+                timer: 2500
+              }).then(result => {
+                self.$router.push("/");
+              });
+            })
+            //SI SALE MAL
+            .catch(error =>
+              Swal.fire({
+                icon: "error",
+                title: error.response.data.message,
+                showConfirmButton: false,
+                timer: 2500
+              })
+            );
+        }
+      });
     },
 
     tagIsAdmin() {
@@ -624,14 +723,26 @@ export default {
       this.headquarters = "";
     },
 
-    //  ABRE EL MODAL PARA MODIFICAR LA CONTRASEÑA
+    //  ABRE EL MODAL PARA MODIFICAR EL PERFIL
     openModalProfile() {
       this.modalProfile = true;
     },
-    // CIERRA EL MODAL DESPUES DE MODIFICAR LA CONTRASEÑA
+    // CIERRA EL MODAL DESPUES DE MODIFICAR EL PERFIL
     closeModalProfile() {
       this.modalProfile = false;
     },
+
+    //  ABRE EL MODAL PARA MODIFICAR LA FOTO
+    openModalPhoto() {
+      this.modalProfilePhoto = true;
+    },
+    // CIERRA EL MODAL DESPUES DE MODIFICAR LA FOTO
+    closeModalPhoto() {
+      this.modalProfilePhoto = false;
+    },
+
+    //CAMBIO DE CONTRASEÑA
+
     //FUNCIONES PARA VALIDAR LOS DATOS QUE PASAMOS PARA EL CAMBIO DE CONTRASEÑA
     validatingDataPassword() {
       if (!this.oldPassword || !this.newPassword || !this.newPasswordRepeat) {
@@ -655,17 +766,18 @@ export default {
     updatePassword(oldPassword, newPassword, newPasswordRepeat) {
       this.validatingDataPassword(); //VALIDANDO DATOS DEL FORMULARIO
       if (this.correctDataPassword) {
+        const token = getAuthToken();
         let data = localStorage.getItem("id");
         let self = this;
+        axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+
         axios
           .post(`http://localhost:3000/users/${data}/password`, {
-            /*  headers: { authorization: localStorage.getItem("authToken") }, */
             oldPassword: self.oldPassword,
             newPassword: self.newPassword,
-            newPasswordRepeat: self.newPasswordRepeat,
+            newPasswordRepeat: self.newPasswordRepeat
           })
           .then(function(response) {
-            console.log(response);
             logOut();
             self.emptyFieldsPassword();
             //Lanzar modal de confirmación
@@ -674,17 +786,17 @@ export default {
               title:
                 "Cambio de contraseña realizado correctamente. Todos tus tokens quedan invalidados. Haz login de nuevo para conseguir un token válido. ",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             }),
               //Ir a la página de login
               self.$router.push("/");
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -692,7 +804,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
     },
@@ -712,16 +824,95 @@ export default {
       this.newPassword = "";
       this.newPasswordRepeat = "";
     },
-  },
-  computed: {
-    birthdate_formated() {
-      return dateFormat(this.dataUsers.birthdate, "mm/dd/yyyy");
+
+    //CAMBIO DE EMAIL
+    validatingDataEmail() {
+      if (!this.oldEmail || !this.newEmail || !this.newEmailRepeat) {
+        this.errorMessage = "No has rellenado todos los datos."; //Establecer mensaje de error
+        this.correctDataEmail = false; //NO ENVIAR
+      } else if (this.newEmail === this.oldEmail) {
+        this.errorMessage =
+          "El nuevo correo electrónico no puede ser igual al actual."; //Establecer mensaje de error
+        this.correctDataEmail = false; //NO ENVIAR
+      } else if (this.newEmail !== this.newEmailRepeat) {
+        this.errorMessage = "Los correos electrónicos nuevos no coinciden."; //Establecer mensaje de error
+        this.correctDataEmail = false; //NO ENVIAR
+      } else {
+        this.correctDataEmail = true; //ENVIAR
+        this.errorMessage = ""; //NO SE MUESTRA EL MENSAJE
+      }
     },
+
+    //FUNCION PARA ACTUALIZAR EL EMAIL DEL USUARIO
+
+    updateEmail(oldEmail, newEmail, newEmailRepeat) {
+      this.validatingDataEmail();
+      if (this.correctDataEmail) {
+        let self = this;
+        const token = getAuthToken();
+        const data = localStorage.getItem("id");
+        axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+
+        axios
+          .post(`http://localhost:3000/users/${data}/email`, {
+            oldEmail: self.oldEmail,
+            newEmail: self.newEmail,
+            newEmailRepeat: self.newEmailRepeat
+          })
+          //SI SALE BIEN
+          .then(function(response) {
+            //MOSTRAR UN MENSAJE CON EL RESULTADOS.
+
+            Swal.fire({
+              icon: "success",
+              title: `Modificación del correo electrónico realizada correctamente. `,
+              showConfirmButton: false,
+              timer: 2500
+            });
+            setEmail(newEmail);
+            self.getUser();
+            self.closeModalEmail();
+            self.emptyFieldsEmail();
+          })
+          .catch(error =>
+            Swal.fire({
+              icon: "error",
+              title: error.response.data.message,
+              showConfirmButton: false,
+              timer: 2500
+            })
+          );
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: this.errorMessage,
+          showConfirmButton: false,
+          timer: 2500
+        });
+      }
+    },
+
+    //  ABRE EL MODAL PARA MODIFICAR EL EMAIL
+    openModalEmail() {
+      this.modalEmail = true;
+    },
+    // CIERRA EL MODAL DESPUES DE MODIFICAR EL EMAIL
+    closeModalEmail() {
+      this.modalEmail = false;
+    },
+
+    // VACIA LOS CAMPOS DESPUES DE MODIFICAR EL EMAIL
+    emptyFieldsEmail() {
+      this.oldEmail = "";
+      this.newEmail = "";
+      this.newEmailRepeat = "";
+    }
   },
+
   created() {
     this.getUser();
     this.loading = false;
-  },
+  }
 };
 </script>
 
@@ -759,22 +950,6 @@ export default {
     opacity: 0;
   }
 }
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
 
 body main {
   background: #fff;
@@ -787,136 +962,37 @@ body main {
   padding: 15px 30px;
   width: 95%;
   max-width: 900px;
+  border-radius: 10px;
+  margin-bottom: 81px;
 }
 body main section#content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-body main section#content h2 {
-  color: #333;
-  font-weight: 800;
-  font-size: 29px;
-  align-self: flex-start;
-  margin-left: 10px;
-}
-body main section#content h3 {
-  color: #333;
-  font-weight: 500;
-  font-size: 16px;
-  text-align: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-}
-body main section#content p.error {
-  font-size: 14px;
-  color: red;
+body main section article ul.link {
   align-self: center;
-  padding-top: 15px;
+  width: 100%;
 }
-body main section#content p {
-  font-size: 11px;
-  display: block;
-  align-self: flex-end;
-  color: #8b8b8b;
-  margin-right: 20px;
-}
-
-body main section form fieldset {
-  border: none;
-}
-body main section form fieldset ul {
-  list-style: none;
-  text-align: start;
-  padding: 10px 0px;
+body section article.links {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section form fieldset ul li {
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
-body main section form fieldset ul li label {
-  font-size: 14px;
-  padding: 5px;
-  font-weight: 700;
-  color: #333;
+  justify-content: center;
 }
 
-body main section form fieldset ul li input {
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #d4d4d4;
-  color: #a7a7a7;
-  font-size: 1rem;
-  font-weight: 500px;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 300px;
-  margin-left: 5px;
-}
-
-body main section form fieldset ul li.checkbox {
-  margin-top: 15px;
-  text-align: left;
-  display: block;
-  align-self: center;
-}
-body main section form fieldset ul li.checkbox input {
-  width: 1rem;
+tr {
   vertical-align: middle;
-  margin: 0px 5px 0px 0px;
-  color: #8b8b8b;
-  border: 1px solid #4d4d4d;
-  cursor: pointer;
 }
-body main section form fieldset ul li.checkbox label {
-  font-size: 0.9rem;
-  font-weight: 500;
+
+input.button-go {
+  padding: 0.75px;
+  vertical-align: middle;
 }
-body main section form fieldset ul li.checkbox a {
-  color: #333;
-  text-decoration: none;
-  font-weight: 700;
+h2 {
+  padding: 1rem 0;
 }
-body main section form fieldset ul li.button {
-  padding-top: 20px;
+
+h3.password {
   text-align: center;
-  display: block;
-}
-body main section form fieldset ul li.button input {
-  background: #142850;
-  color: #dae1e7;
-  font-size: 1rem;
-  font-weight: 900;
-  padding: 1rem;
-  line-height: 15px;
-  border-radius: 50px;
-  cursor: pointer;
-  width: 100px;
-  border: none;
-}
-
-body main section form fieldset ul li.button input[type="button"] {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
-}
-
-body main section form fieldset ul li.button input[type="button"]:hover {
-  background: #142850;
-  color: #dae1e7;
-}
-body main section form fieldset ul li.button input[type="submit"]:hover {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
-}
-body main section form fieldset ul li.headquarter {
-  display: flex;
-  flex-direction: column;
+  padding: 1rem 0;
 }
 </style>

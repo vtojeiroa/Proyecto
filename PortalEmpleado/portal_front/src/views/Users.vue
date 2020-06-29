@@ -12,10 +12,10 @@
         <menulinksAdmin v-on:showusers="showUsersMenu"></menulinksAdmin>
       </article>
     </section>
-
+<main>
     <!-- LISTA DE CLIENTES -->
     <div class="users" v-show="seeUsers">
-      <h2>Listado de usuarios</h2>
+      <h2>Gestión de usuarios</h2>
 
       <!--  ANIMACIÓN DE CSS CARGANDO -->
 
@@ -23,17 +23,18 @@
         <div></div>
         <div></div>
       </div>
-      <div class="button-search">
-        <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
-        <button class="search" @click="openModalSearch()">Abrir el buscador</button>
-
+      <h3>Buscador de usuarios</h3>
+      <div class="buttons" id="search">
         <!-- BOTON PARA RECARGAR LOS CLIENTES -->
 
-        <button class="reset" @click="search = ''">reiniciar</button>
+        <input class="button-back" value="Reiniciar" @click="search = ''" />
+        <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
+        <input class="button-go" value="Abrir" @click="openModalSearch()" />
+
       </div>
       <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
-      <div class="modalSearch" v-show="modalSearch">
-        <div class="modalSearchBox">
+      <div class="modal" v-show="modalSearch">
+        <div class="modalBox">
           <label for="bySearch">Buscador de usuarios:</label>
           <input
             v-model="search"
@@ -43,8 +44,10 @@
             placeholder="Introduce algún dato del cliente"
           />
           <br />
-          <button class="reset" @click="search = ''">Limpiar el buscador</button>
-          <button @click="closeModalSearch()">Cerrar el buscador</button>
+          <div class="buttons">
+            <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+            <input class="button-go" value="Limpiar" @click="search = ''" />
+          </div>
         </div>
       </div>
       <!-- VISTA DE LOS CLIENTES -->
@@ -54,79 +57,158 @@
       <div class="modal" v-show="modal">
         <div class="modalBox" v-on:edit="showEditText">
           <h2>Actualiza los datos</h2>
-          <label for="newId">ID :</label>
-          <input type="text" v-model="newId" placeholder="Introduce el id" />
-          <br />
-          <label for="newStatus">Estado:</label>
-          <input type="text" v-model="newStatus" placeholder="Introduce el estado" />
-          <br />
-          <br />
-          <label for="newRole">Tipo de usuario:</label>
-          <input type="text" v-model="newRole" placeholder="Introduce el estado" />
-          <br />
-          <br />
-          <label for="newName">Nombre:</label>
-          <input type="text" v-model="newName" placeholder="Introduce el nombre" />
-          <br />
-          <br />
-          <label for="newSurname">Apellido:</label>
-          <input type="text" v-model="newSurname" placeholder="Introduce el apellido" />
-          <br />
-          <br />
-          <label for="newDocument">Documento de identidad:</label>
-          <input
-            type="text"
-            v-model="newDocument"
-            placeholder="Introduce el documento de identidad"
-          />
-          <br />
-          <br />
-          <label for="newEmail">Correo electrónico:</label>
-          <input type="email" v-model="newEmail" placeholder="Introduce el correo electrónico" />
-          <br />
-          <br />
-          <label for="newAvatar">Foto:</label>
-          <input type="text" v-model="newAvatar" placeholder="Introduce una foto" />
-          <br />
-          <br />
-          <label for="newAddress">Dirección:</label>
-          <input type="text" v-model="newAddress" placeholder="Introduce la dirección" />
-          <br />
-          <br />
-          <label for="newPostalCode">Código postal:</label>
-          <input type="text" v-model="newPostalCode" placeholder="Introduce el código postal" />
-          <br />
-          <br />
-          <label for="newLocation">Ciudad:</label>
-          <input type="text" v-model="newLocation" placeholder="Introduce la ciudad" />
-          <br />
-          <br />
-          <label for="newProvince">Provincia:</label>
-          <input type="text" v-model="newProvince" placeholder="Introduce la provinia" />
-          <br />
-          <br />
-          <label for="newCountry">Pais:</label>
-          <input type="text" v-model="newCountry" placeholder="Introduce el pais" />
-          <br />
-          <br />
+          <fieldset>
+            <form>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                    <label for="newId">ID :</label></td>
+                   <td> <input type="text" v-model="newId" placeholder="Introduce el id" />
+                    </td>
+                    </tr>
+                      <tr>
+                        <td>
+                    <label for="newStatus">Estado:</label>
+                     </td>
 
-          <label for="newPhone">Teléfono:</label>
-          <input type="text" v-model="newPhone" placeholder="Introduce el teléfono" />
-          <br />
-          <br />
-          <label for="newBirthdate">Fecha de nacimiento:</label>
-          <input type="date" v-model="newBirthdate" placeholder="Introduce la fecha de nacimiento" />
-          <br />
-          <br />
-          <label for="newHeadquarter">Sede:</label>
-          <input type="text" v-model="newHeadquarter" placeholder="Introduce la sede de trabajo" />
-          <br />
-          <br />
-          <button @click="updateUser()">Actualizar</button>
-          <button @click="closeModal()">Cerrar</button>
+                   <td> <input type="text" v-model="newStatus" placeholder="Introduce el estado" />
+                  </td>
+                  </tr>
+                    <tr><td>
+                    <label for="newRole">Tipo de usuario:</label> 
+                    </td>
+                    <td>
+                    <input type="text" v-model="newRole" placeholder="Introduce el estado" />
+                  </td>
+                  </tr>
+                  <tr><td>
+                    <label for="newName">Nombre:</label>
+                    </td>
+                    <td>
+                      <input type="text" v-model="newName" placeholder="Introduce el nombre" />
+                    </td>
+                    </tr>
+                    <tr>
+                      <td>
+                       
+                    <label for="newSurname">Apellido:</label>
+                    </td>
+                    <td>
+                       <input type="text" v-model="newSurname" placeholder="Introduce el apellido" />
+                  </td>
+                  </tr>
+                    <tr>
+                      <td>
+                    <label for="newDocument">Documento de identidad:</label>
+                    </td>
+                    <td>
+                      <input
+                      type="text"
+                      v-model="newDocument"
+                      placeholder="Introduce el documento de identidad"
+                    />
+                    </td>
+                    </tr>
+                    <tr>
+                      <td>
+                    <label for="newEmail">Correo electrónico:</label>
+                    </td>
+                   <td>
+                      <input
+                      type="email"
+                      v-model="newEmail"
+                      placeholder="Introduce el correo electrónico"
+                    />
+                    </td>
+                    </tr>
+                 
+                    <tr>
+                    <td>
+                       <label for="newAvatar">Foto:</label>
+                   </td>
+                   <td> <input type="text" v-model="newAvatar" placeholder="Introduce una foto" />
+                   
+                   </td><tr>
+                     <td>
+                    <label for="newAddress">Dirección:</label>
+                    </td>
+                   <td> <input type="text" v-model="newAddress" placeholder="Introduce la dirección" />
+                   </td></tr>
+                    <tr>
+                    <td>
+                    <label for="newPostalCode">Código postal:</label></td>
+                   <td> <input
+                      type="text"
+                      v-model="newPostalCode"
+                      placeholder="Introduce el código postal"
+                    />
+                    </td>
+                    </tr>
+                    <tr>
+                      <td>
+                    <label for="newLocation">Ciudad:</label>
+                    </td>
+                   <td> 
+                     <input type="text" v-model="newLocation" placeholder="Introduce la ciudad" />
+                   </td>
+                   </tr>
+                   <tr>
+                     
+                   <td> 
+                     <label for="newProvince">Provincia:</label>
+                   </td>
+                   <td> 
+                     <input type="text" v-model="newProvince" placeholder="Introduce la provinia" />
+                     </td>
+                   </tr>
+                   <tr>
+                     <td>
+                      <label for="newCountry">Pais:</label>
+                      </td>
+                      <td>
+                    <input type="text" v-model="newCountry" placeholder="Introduce el pais" />
+                    </td>
+                    </tr>
+                  <tr>
+                    
+                   <td> <label for="newPhone">Teléfono:</label>
+                   </td>
+                   <td>                    <input type="text" v-model="newPhone" placeholder="Introduce el teléfono" />
+                    </td>
+                    </tr>
+                      <tr>
+                      <td>
+                    <label for="newBirthdate">Fecha de nacimiento:</label>
+                    </td>
+                    <td><input
+                      type="text"
+                      v-model="newBirthdate"
+                      placeholder="Introduce la fecha de nacimiento"
+                    /></td>
+                    </tr>
+                        <tr
+                        ><td>
+                    <label for="newHeadquarter">Sede:</label>
+                    </td>
+                    <td><input
+                      type="text"
+                      v-model="newHeadquarter"
+                      placeholder="Introduce la sede de trabajo"
+                    /></td></tr>
+                  </ul>
+                </tbody>
+              </table>
+            </form>
+          </fieldset>
+          <div class="buttons">
+            <input class="button-back" value="Cerrar" @click="closeModal()" />
+            <input class="button-go" value="Actualizar" @click="updateUser()" />
+          </div>
         </div>
       </div>
     </div>
+    </main>
     <!-- VISTA DEL FOOTER -->
     <footercustom></footercustom>
   </div>
@@ -152,7 +234,7 @@ import listusers from "../components/ListUsers.vue";
 import Swal from "sweetalert2";
 
 //IMPORTO LA FUNCION DEL TOKEN
-import { getAuthToken } from "../api/utils";
+import { getAuthToken,formatDateToFront } from "../api/utils";
 export default {
   name: "Users",
   components: { menucustom, menulinksAdmin, footercustom, listusers },
@@ -190,11 +272,9 @@ export default {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
       let self = this;
+       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
         .get("http://localhost:3000/admin/users", {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -234,15 +314,13 @@ export default {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
       let self = this;
+       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
         .put("http://localhost:3000/users/" + this.newId, {
-          headers: {
-            authorization: `Bearer ${token}`
-          },
-          activo: self.newStatus,
+           activo: self.newStatus,
           name: self.newName,
           surname: self.newSurname,
-          identification_document: self.newDocument,
+          document: self.newDocument,
           address: self.newAddress,
           postal_code: self.newPostalCode,
           location: self.newLocation,
@@ -264,8 +342,8 @@ export default {
             //recarga la página
             result => {
               self.closeModal();
-              self.location;
-              console.log(response);
+             self.getUsers()
+   
             }
           );
         })
@@ -281,28 +359,20 @@ export default {
     },
     //FUNCION PARA ELIMINAR UN CLIENTE DE LA BBDD
     deleteUsers(data) {
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: "btn btn-success",
-          cancelButton: "btn btn-danger"
-        },
-        buttonsStyling: false
-      });
-
-      swalWithBootstrapButtons
-        .fire({
-          title: "¿Estás seguro?",
-          text: "¡No podrás deshacerlo!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Si, bórralo!",
-          cancelButtonText: "No, cancélalo!",
-          reverseButtons: true
-        })
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¡No podrás deshacerlo!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, bórralo!"
+      })
         .then(result => {
           if (result.value) {
             const token = getAuthToken();
-            const data = localStorage.getItem("id");
+            axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+            let self = this
             axios
               .delete("http://localhost:3000/admin/users/" + data, {
                 headers: {
@@ -320,7 +390,8 @@ export default {
                   timer: 2500
                 }).then(result => {
                   search = "";
-                  console.log(response);
+                  self.getUsers()
+                  
                 });
               })
               //SI SALE MAL
@@ -332,21 +403,7 @@ export default {
                   timer: 2500
                 })
               );
-            swalWithBootstrapButtons.fire(
-              "¡Eliminado!",
-              "El usuario ha sido borrado.",
-              "success"
-            );
-          } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-          ) {
-            swalWithBootstrapButtons.fire(
-              "Cancelado",
-              "El usuario sigue en la BBDD :)",
-              "error"
-            );
-          }
+            }
         });
     },
     //  ABRE EL MODAL PARA EDITAR LOS DATOS DEL CLIENTE Y MUESTRA LOS DATOS ORIGINALES
@@ -379,7 +436,7 @@ export default {
   computed: {
     filteredUsers() {
       let result = this.users;
-      console.log(result);
+     
       if (!this.search) {
         return result;
       } else {
@@ -388,7 +445,8 @@ export default {
             user.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
             user.id === parseInt(this.search) ||
             user.apellidos.toLowerCase().includes(this.search.toLowerCase()) ||
-            user.localidad.toLowerCase().includes(this.search.toLowerCase()) ||
+            /*             user.localidad.toLowerCase().includes(this.search.toLowerCase()) ||
+             */user.activo === parseInt(this.search) ||
             user.sedes_id === parseInt(this.search)
         );
         if (!result.length) {
@@ -407,42 +465,6 @@ export default {
 };
 </script>
 <style scoped>
-.modalSearch {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalSearchBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .lds-ripple {
   display: inline-block;
   align-self: center;
@@ -477,48 +499,134 @@ export default {
   }
 }
 
-.home {
+body main {
+  background: #fff;
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  box-shadow: 0 0 4px 0 #d4d4d4;
+  box-sizing: border-box;
+  margin: 30px auto;
+  padding: 15px 30px;
+  width: 95%;
+  max-width: 900px;
+  border-radius: 10px;
+  padding-bottom: 81px;
+
+}
+body main section#content {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+body main section article ul.link {
+  align-self: center;
+  width: 100%;
+}
+body section article.links {
+  display: flex;
+  justify-content: center;
 }
 
-article {
+tr {
+  vertical-align: middle;
+}
+
+input.button-go {
+  padding: 0.75px;
+  vertical-align: middle;
+}
+h2 {
+  text-transform: uppercase;
+  padding: 1rem 0;
+  text-align:center;
+  font-size:28px;
+}
+
+h3 {
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+input.button-go,
+ input.button-back {
+
+  text-align: center; 
+}
+.modalBox input.button-go,
+.modalBox input.button-back {
+
+  text-align: center; 
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-self: center;
-  border: 2px solid red;
-  color: whitesmoke;
-  /*   width: 300px; */
+  justify-content: center;
   align-items: center;
-  padding: 0.5rem;
-  margin: 1rem;
 }
-label {
-  padding: 1rem;
-  font-size: 1.25rem;
-}
-input {
-  padding: 0.5rem;
-  width: 17rem;
-  height: 1.75rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-button {
-  padding: 0.2rem;
-  width: 8rem;
-  background: red;
-  color: whitesmoke;
+
+.modalBox {
+  background: #dae1e7;
+  color: #142850;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   border-radius: 10px;
-  font-weight: bolder;
 }
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
+.modalBox  input {
+  width: 405px;
 }
-button.search {
+
+
+.modalBox fieldset form table tbody tr{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+} 
+
+.modalBox  fieldset form form table tbody td label ,
+.modalBox div  label{
+  font-size: 18px;
+  font-weight: 700;
+  color: #555;
+}
+.modalBox fieldset form form table tbody td select,
+.modalBox  fieldset form form table tbody td input,
+.modalBox input {
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #d4d4d4;
+  padding: 5px 10px;
+  transition: all 0.2s ease 0s;
+  width: 350px;
+} 
+
+.modalBox input.button-go,
+.modalBox input.button-back
+ {
+  min-width: 100px;
   text-align: center;
+}
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.5rem 0;
 }
 </style>

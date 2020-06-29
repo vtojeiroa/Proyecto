@@ -109,7 +109,7 @@ app.post('/headquarters', userIsAuthenticated, userIsAdmin, createHeadquarter); 
 app.get('/headquarters', userIsAuthenticated, userIsAdmin, getHeadquarter); //Listar las Sedes- solo Admin
 app.put('/headquarters/:id', userIsAuthenticated, userIsAdmin, editHeadquarter); //Editar una Sede - solo Admin
 app.delete(
-  '/eadquarters/:id',
+  '/headquarters/:id',
   userIsAuthenticated,
   userIsAdmin,
   deleteHeadquarter
@@ -137,7 +137,7 @@ app.post('/users/:id/password', userIsAuthenticated, updatePasswordUser); // Cam
 app.post('/users/:id/email', userIsAuthenticated, updateEmailUser); // Cambiar Email de registro
 app.get('/users/:id', userIsAuthenticated, getUser); //Listar perfil
 app.put('/users/:id', userIsAuthenticated, editUser); //Editar perfil
-app.delete('/users/:id', userIsAuthenticated, userIsAdmin, disableUser); //Dar de baja un usuario -User o  Admin-
+app.delete('/users/:id', userIsAuthenticated, disableUser); //Dar de baja un usuario -User o  Admin-
 
 // Incidences routes
 app.get('/incidences', searchIncidences); //Buscar incidencias

@@ -13,65 +13,71 @@
         <!-- MODAL PARA EDITAR EL USUARIO -->
 
         <article class="content">
-          <h1>Registrar una nueva incidencia</h1>
+          <h2>Registrar una nueva incidencia</h2>
 
-          <!-- PERFIL DEL USUARIO -->
+          <!-- CONTENIDO DE LA INCIDENCIA -->
 
           <h3>¡Debes cumplimentar todos los campos!</h3>
-          <form id="form">
-            <table class="form-table">
-              <tbody>
-                <tr>
-                  <td class="type">
-                    <label class="typeIncidence" for="typeIncidence">Indica el tipo de incidencia *:</label>
-                  </td>
-                  <td>
-                    <select name="newType" id="NewType" v-model="newType">
-                      <option value>Selecciona...</option>
-                      <option value="informatica">Informática</option>
-                      <option value="mantenimiento">Mantenimiento</option>
-                      <option value="seguridad">Seguridad</option>
-                      <option value="limpieza">Limpieza</option>
-                      <option value="otras">Otras</option>
-                    </select>
-                  </td>
-                </tr>
+          <fieldset class="form">
+            <form class="form">
+              <table class="form-table">
+                <tbody>
+                  <tr>
+                    <td class="text">
+                      <label
+                        class="typeIncidence"
+                        for="typeIncidence"
+                      >Indica el tipo de incidencia *:</label>
+                    </td>
+                    <td class="data">
+                      <select name="newType" id="NewType" v-model="newType">
+                        <option value>Selecciona...</option>
+                        <option value="informatica">Informática</option>
+                        <option value="mantenimiento">Mantenimiento</option>
+                        <option value="seguridad">Seguridad</option>
+                        <option value="limpieza">Limpieza</option>
+                        <option value="otras">Otras</option>
+                      </select>
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td class="description">
-                    <label for="newDescription">Descripcion de la incidencia:</label>
-                  </td>
-                  <td class="description">
-                    <textarea
-                      id="description"
-                      name="description"
-                      type="text"
-                      maxlength="500"
-                      rows="5"
-                      cols="40"
-                      v-model="newDescription"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </form>
+                  <tr>
+                    <td class="text">
+                      <label for="newDescription">Descripcion de la incidencia:</label>
+                    </td>
+                    <td class="data">
+                      <textarea
+                        id="description"
+                        name="description"
+                        type="text"
+                        maxlength="500"
+                        rows="5"
+                        cols="40"
+                        v-model="newDescription"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
 
-          <div class="button-data">
-            <input type="button" class="button" value="Cancelar" @click="$router.go(-1)" />
+            <div class="buttons">
+              <input type="button" class="button" value="Cancelar" @click="$router.go(-1)" />
 
-            <input
-              id="button"
-              type="submit"
-              class="button"
-              value="Registrar"
-              @click="
+              <input
+                id="button"
+                type="submit"
+                class="button-go"
+                value="Registrar"
+                @click="
                 registerIncidence()"
-            />
-          </div>
+              />
+            </div>
+          </fieldset>
         </article>
       </section>
     </main>
+    <!-- VISTA DEL FOOTER -->
     <footercustom></footercustom>
   </div>
 </template>
@@ -144,7 +150,6 @@ export default {
           .then(function(response) {
             self.$router.go(-1);
 
-            console.log(response);
             //MOSTRAR UN MENSAJE CON EL RESULTADOS.
             Swal.fire({
               icon: "success",
@@ -187,136 +192,94 @@ body main {
   padding: 15px 30px;
   width: 95%;
   max-width: 900px;
-}
-body main section#content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section#content h2 {
-  color: #333;
-  font-weight: 800;
-  font-size: 29px;
-  align-self: flex-start;
-  margin-left: 10px;
-}
-body main section#content h3 {
-  color: #333;
-  font-weight: 500;
-  font-size: 16px;
-  text-align: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-}
-body main section#content p.error {
-  font-size: 14px;
-  color: red;
-  align-self: center;
-  padding-top: 15px;
-}
-body main section#content p {
-  font-size: 11px;
-  display: block;
-  align-self: flex-end;
-  color: #8b8b8b;
-  margin-right: 20px;
+  border-radius: 10px;
+  margin-bottom: 81px;
 }
 
-body main section form fieldset {
+fieldset {
   border: none;
-}
-body main section form fieldset ul {
-  list-style: none;
-  text-align: start;
-  padding: 10px 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section form fieldset ul li {
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
-body main section form fieldset ul li label {
-  font-size: 14px;
-  padding: 5px;
-  font-weight: 700;
-  color: #333;
+  padding: 1rem;
+  border-radius: 10px;
 }
 
-body main section form fieldset ul li input {
+h2 {
+  padding: 1rem 0;
+}
+h3 {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+ul li label,
+ul li select {
+  display: block;
+  align-self: initial;
+}
+.modalBox fieldset input {
+  width: 405px;
+}
+.modalBox article fieldset form ul li label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #555;
+}
+.modalBox article fieldset form ul li select,
+.modalBox article fieldset form ul li input {
   background: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 500;
   border: 1px solid #d4d4d4;
-  color: #a7a7a7;
-  font-size: 1rem;
-  font-weight: 500px;
   padding: 5px 10px;
   transition: all 0.2s ease 0s;
-  width: 300px;
-  margin-left: 5px;
+  width: 250px;
 }
-
-body main section form fieldset ul li.checkbox {
-  margin-top: 15px;
-  text-align: left;
-  display: block;
-  align-self: center;
-}
-body main section form fieldset ul li.checkbox input {
-  width: 1rem;
-  vertical-align: middle;
-  margin: 0px 5px 0px 0px;
-  color: #8b8b8b;
-  border: 1px solid #4d4d4d;
-  cursor: pointer;
-}
-body main section form fieldset ul li.checkbox label {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-body main section form fieldset ul li.checkbox a {
-  color: #333;
-  text-decoration: none;
-  font-weight: 700;
-}
-body main section form fieldset ul li.button {
-  padding-top: 20px;
+.modalBox input.button-go,
+.modalBox input.button-back {
+  min-width: 120px;
   text-align: center;
-  display: block;
-}
-body main section form fieldset ul li.button input {
-  background: #142850;
-  color: #dae1e7;
-  font-size: 1rem;
-  font-weight: 900;
-  padding: 1rem;
-  line-height: 15px;
-  border-radius: 50px;
-  cursor: pointer;
-  width: 100px;
-  border: none;
 }
 
-body main section form fieldset ul li.button input[type="button"] {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.5rem 0;
+}
+table {
+  min-width: 300px;
 }
 
-body main section form fieldset ul li.button input[type="button"]:hover {
-  background: #142850;
-  color: #dae1e7;
-}
-body main section form fieldset ul li.button input[type="submit"]:hover {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
-}
-body main section form fieldset ul li.headquarter {
+tbody {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+
+  margin: 5px;
+}
+tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  vertical-align: center;
+}
+td {
+  padding: 1rem 0.2rem;
+}
+td.text {
+  text-transform: uppercase;
+  font-size: 14px;
+  align-self: flex-start;
+}
+td.data {
+  font-weight: bold;
+}
+
+label {
+  font-size: 18px;
+}
+select,
+textarea {
+  padding: 10px;
+  font-size: 15px;
 }
 </style>

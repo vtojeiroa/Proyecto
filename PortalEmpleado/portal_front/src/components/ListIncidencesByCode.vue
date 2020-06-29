@@ -2,73 +2,88 @@
   <div class="home">
     <main>
       <section>
-        <div class="myreserves" v-show="seeReserves">
-          <article class="myreserves">
-            <div class="myreserve" v-for="(myreserve, index) in myreserves" :key="myreserve.id">
+        <div class="incidencesbycode" v-show="seeIncidencesbycode">
+          <article class="incidencesbycode">
+            <div>
               <table>
                 <tbody>
                   <tr>
-                    <td class="text">Id reserva:</td>
-                    <td class="data">{{myreserve.id }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text">Servicio:</td>
-                    <td class="data">{{ myreserve.servicio }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text">Tipo:</td>
-                    <td class="data">{{myreserve.tipo }}</td>
+                    <td class="text">Id incidencia:</td>
+                    <td class="data">{{incidencebycode.id }}</td>
                   </tr>
                   <!--  <tr>
-                    <td class="text">usuario:</td>
-                    <td class="data">{{ myreserve.usuarios_id}}</td>
+                    <td class="text">Servicio:</td>
+                    <td class="data">{{incidencebycode.servicio }}</td>
                   </tr>-->
                   <tr>
-                    <td class="text">Fecha inicio reserva:</td>
+                    <td class="text">Tipo:</td>
+                    <td class="data">{{incidencebycode.tipo }}</td>
+                  </tr>
+                  <!--  <tr>
+                    <td class="text">Servicio:</td>
+                    <td class="data">{{ incidencebycode.servicios_id}}</td>
+                  </tr>-->
+                  <!-- <tr>
+                    <td class="text">usuario:</td>
+                    <td class="data">{{ incidencebycode.usuarios_id}}</td>
+                  </tr>-->
+                  <tr>
+                    <td class="text">Descripción:</td>
+                    <td class="data">{{incidencebycode.descripcion }}</td>
+                  </tr>
+                  <!-- <tr>
+                    <td class="text">Activo:</td>
+                    <td class="data">{{incidencebycode.activo }}</td>
+                  </tr>-->
+                  <tr>
+                    <td class="text">Fecha de resolución:</td>
                     <td
                       class="data"
-                    >{{ myreserve.fecha_hora_inicio_reserva | moment("DD-MM-YYYY HH:mm" ) }}</td>
+                    >{{incidencebycode.fecha_resolucion | moment("DD-MM-YYYY HH:MM") }}</td>
                   </tr>
                   <tr>
-                    <td class="text">Fecha fin reserva:</td>
-                    <td
-                      class="data"
-                    >{{myreserve.fecha_hora_fin_reserva | moment("DD-MM-YYYY HH:mm") }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text">Motivo reserva:</td>
-                    <td class="data">{{myreserve.motivo_reserva }}</td>
+                    <td class="text">Comentario:</td>
+                    <td class="data">{{incidencebycode.comentario_resolucion }}</td>
                   </tr>
                   <tr>
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{myreserve.valoracion }}</td>
+                    <td class="data">{{incidencebycode.valoracion }}</td>
                   </tr>
                   <tr>
                     <td class="text">Comentario valoración:</td>
-                    <td class="data">{{myreserve.comentario_valoracion }}</td>
+                    <td class="data">{{ incidencebycode.comentario_valoracion }}</td>
                   </tr>
                   <tr>
                     <td class="text">Fecha valoración:</td>
                     <td
                       class="data"
-                    >{{ myreserve.fecha_registro_valoracion | moment("DD-MM-YYYY HH:mm") }}</td>
+                    >{{incidencebycode.fecha_registro_valoracion | moment("DD-MM-YYYY hh:mm") }}</td>
                   </tr>
                   <tr>
-                    <td class="text">Código reserva:</td>
-                    <td class="data">{{myreserve.codigo_reserva }}</td>
+                    <td class="text">Código incidencia:</td>
+                    <td class="data">{{ incidencebycode.codigo_incidencia }}</td>
                   </tr>
                   <tr>
                     <td class="text">Fecha de registro:</td>
-                    <td class="data">{{ myreserve.fecha_registro | moment("DD-MM-YYYY HH:mm")}}</td>
+                    <td
+                      class="data"
+                    >{{ incidencebycode.fecha_registro | moment("DD-MM-YYYY HH:MM")}}</td>
                   </tr>
                   <div class="buttons">
-                    <input class="button-back" @click="deleteReserveEvent(index)" value="BORRAR" />
-                    <input class="button-go" @click="editedEvent(index)" value="EDITAR" />
-
+                    <input
+                      class="button-back"
+                      @click="deleteIncidenceByCodeEvent(index)"
+                      value="BORRAR"
+                    />
                     <input
                       class="button-go"
-                      @click="seeVoteEvent(index);openModalVote()"
-                      v-show="!myreserve.valoracion  "
+                      @click="editIncidenceByCodeEvent(index)"
+                      value="EDITAR"
+                    />
+                    <input
+                      class="button-go"
+                      @click="seeVoteByCodeEvent(index);openModalVoteByCode()"
+                      v-show="incidencebycode.fecha_resolucion && !incidencebycode.valoracion"
                       value="VOTAR"
                     />
                   </div>
@@ -78,19 +93,18 @@
           </article>
         </div>
       </section>
-
       <section>
-        <div class="vote" v-show="seeVote">
-          <div class="modal" style="overflow-y: scroll;" v-show="modalVote">
+        <div class="vote" v-show="seeVoteByCode">
+          <div class="modal" style="overflow-y: scroll;" v-show="modalVoteByCode">
             <div class="modalBox">
               <article class="search-input">
                 <h2>Valora esta reserva</h2>
                 <div class="form">
-                  <fieldset class="valoration">
+                  <fieldset>
                     <form>
                       <ul>
-                        <li class="star">
-                          <!-- <label for="vote">Valoración :</label> -->
+                        <li>
+                          <label for="vote">Valoración :</label>
 
                           <star-rating
                             inactive-color="#142850"
@@ -98,7 +112,7 @@
                             :rating="rating"
                           ></star-rating>
                         </li>
-                        <li class>
+                        <li>
                           <!--  <label for="description">Comentario:</label> -->
                           <textarea
                             type="text"
@@ -110,15 +124,16 @@
                         </li>
                       </ul>
                     </form>
+
                     <div class="buttons">
                       <input
                         class="button-back"
-                        @click="closeVoteEvent();closeModalVote()"
+                        @click="closeVoteByCodeEvent();closeModalVoteByCode()"
                         value="CERRAR"
                       />
                       <input
                         class="button-go"
-                        @click="voteReserveEvent(newReserve, voteDescription)"
+                        @click="voteIncidenceByCodeEvent(incidencecode, voteDescriptione)"
                         value="VOTAR"
                       />
                     </div>
@@ -137,52 +152,54 @@
 // @ is an alias to /src
 
 export default {
-  name: "ListMyReserves",
+  name: "ListIncidencesByCode",
   data() {
     return {
       rating: 0,
       voteDescription: "",
-      newReserve: {},
-      modalVote: false
+      incidenceCode: {},
+      modalVoteByCode: false
     };
   },
-
   props: {
-    myreserves: Array,
-    seeVote: Boolean,
-    seeReserves: Boolean
+    incidencebycode: Object,
+    seeVoteByCode: Boolean,
+    seeIncidencesbycode: Boolean
   },
   methods: {
-    //FUNCION QUE EMITE UN EVENTO PARA EDITAR UNA RESERVA
-    editedEvent(index) {
-      this.$emit("edited", index);
+    //FUNCION QUE EMITE UN EVENTO PARA EDITAR UNA INCIDENCIA
+    editIncidencebyCodeEvent(index) {
+      //GUARDANDO LA INFORMACIÓN DEL INCIDENCIA SELECCIONADO
+      let data = this.bycode[index];
+      //ENVIANDO LA INFORMACIÓN DEL INCIDENCIA A LA VISTA
+      this.$emit("editbycode", data);
     },
 
-    //FUNCION QUE EMITE UN EVENTO PARA BORRAR UNA RESERVA
-    deleteReserveEvent(index) {
-      let data = this.myreserves[index].id;
-      this.$emit("delete", data);
+    //FUNCION QUE EMITE UN EVENTO PARA BORRAR UNA INCIDENCIA
+    deleteIncidenceByCodeEvent(index) {
+      let data = this.bycode[index].id;
+      this.$emit("deletebycode", data);
     },
-    //FUNCION QUE EMITE UN EVENTO PARA VOTAR UNA RESERVA
-    seeVoteEvent(index) {
-      this.newReserve = this.myreserves[index];
-      this.$emit("showvote");
+    //FUNCION QUE EMITE UN EVENTO PARA VOTAR UNA INCIDENCIA
+    seeVoteByCodeEvent(index) {
+      this.incidencecode = this.bycode[index];
+      this.$emit("showvotebycode");
     },
 
-    voteReserveEvent(newReserve, voteDescription, rating) {
-      this.$emit("vote", newReserve, voteDescription, this.rating);
+    voteIncidenceByCodeEvent(incidenceCode, voteDescription, rating) {
+      this.$emit("votebycode", incidenceCode, voteDescription, this.rating);
     },
-    //FUNCION QUE EMITE UN EVENTO PARA VOTAR UNA RESERVA
-    closeVoteEvent() {
-      this.$emit("closevote");
+    //FUNCION QUE EMITE UN EVENTO PARA VOTAR UNA INCIDENCIA
+    closeVoteByCodeEvent() {
+      this.$emit("closevotebycode");
     },
-    //  ABRE EL MODAL PARA VOTAR LA RESERVA
-    openModalVote() {
-      this.modalVote = true;
+    //  ABRE EL MODAL PARA VOTAR LA INCIDNCIEA
+    openModalVoteByCode() {
+      this.modalVoteByCode = true;
     },
-    // CIERRA EL MODAL DESPUES DE VOTAR LA RESERVA
-    closeModalVote() {
-      this.modalVote = false;
+    // CIERRA EL MODAL DESPUES DE VOTAR LA INCIDNCIEA
+    closeModalVoteByCode() {
+      this.modalVoteByCode = false;
     }
   }
 };
@@ -194,7 +211,7 @@ export default {
   align-items: center;
 }
 
-.myreserve {
+.myincidence {
   border: 4px solid #142850;
   margin: 2rem auto;
   padding: 1rem;
@@ -204,10 +221,10 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 2%;
-  min-width: 300px;
+  min-width: 95%px;
 }
 table {
-  min-width: 300px;
+  min-width: 350px;
 }
 
 tbody {
@@ -231,6 +248,8 @@ td.text {
 }
 td.data {
   font-weight: bold;
+  max-width: 200px;
+  text-align: end;
 }
 
 input {
@@ -258,7 +277,6 @@ li {
   align-content: center;
 }
 .modalBox fieldset {
-  /*  border: none; */
   padding: 2rem 2rem;
   background: #dae1e7;
 }

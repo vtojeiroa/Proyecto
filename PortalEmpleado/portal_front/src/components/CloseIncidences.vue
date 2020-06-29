@@ -1,20 +1,41 @@
 <template>
   <div class="home">
-    <article class="closeIncidences">
-      <div
-        class="closeIncidence"
-        v-for="(closeincidence, index) in closeincidences"
-        :key="closeincidence.active"
-      >
-        <p>Id incidencia: {{ closeincidence.id }}</p>
-        <p>usuario: {{ closeincidence.usuarios_id }}</p>
-        <p>Descripción: {{ closeincidence.descripcion }}</p>
-        <p>Activo: {{ closeincidence.activo }}</p>
-        <div class="buttons">
-          <button @click="closeIncidenceEvent(index)">CERRAR INCIDENCIA</button>
-        </div>
-      </div>
-    </article>
+    <main>
+      <section>
+        <article class="closeIncidences">
+          <div
+            class="closeIncidence"
+            v-for="(closeincidence, index) in closeincidences"
+            :key="closeincidence.active"
+          >
+            <table>
+              <tbody>
+                <tr>
+                  <td class="text">Id incidencia:</td>
+                  <td class="data">{{closeincidence.id}}</td>
+                </tr>
+
+                <tr>
+                  <td class="text">usuario:</td>
+                  <td class="data">{{closeincidence.usuarios_id}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Descripción:</td>
+                  <td class="data">{{closeincidence.descripcion }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Activo:</td>
+                  <td class="data">{{closeincidence.activo}}</td>
+                </tr>
+                <div class="buttons">
+                  <input class="button-go" value="Responder" @click="closeIncidenceEvent(index)" />
+                </div>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
   </div>
 </template>
 
@@ -38,49 +59,48 @@ export default {
 <style scoped>
 .home {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
-.closeincidences {
+
+.closeIncidence {
+  border: 4px solid #142850;
+  margin: 2rem auto;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  /*   background: whitesmoke; */
-  color: red;
-  width: 60%;
+  border-radius: 2%;
+  min-width: 350px;
 }
 
-.closeincidence {
-  border: 1rem solid rgba(238, 13, 24, 0.808);
-  border-radius: 50;
-  margin: 2rem auto;
-  padding: 1rem;
-  width: 350px;
+tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
-  border-radius: 10%;
+  margin: 5px;
 }
-
-p {
-  color: blue;
-  font-weight: bolder;
-  padding: 0.3rem;
+tr {
+  display: flex;
+  justify-content: space-between;
 }
-button {
-  padding: 0.3rem;
-  width: 6rem;
-  background: red;
-  color: whitesmoke;
+td.text {
+  text-transform: uppercase;
+  font-size: 14px;
+  align-self: flex-start;
+}
+td.data {
+  font-weight: bold;
+}
+img {
+  width: 200px;
   border-radius: 10px;
-  font-weight: bolder;
-  margin: 1rem 1rem;
 }
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
+input {
+  text-align: center;
+  min-width: 120px;
+  white-space: normal;
 }
 </style>

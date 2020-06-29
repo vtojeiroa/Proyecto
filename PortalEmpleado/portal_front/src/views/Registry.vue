@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- CAMBIAR TITULO DE LA PAGINA -->
-    <vue-headful title="Portal del Empleado" description="Página de inicio del Portal." />
+    <vue-headful title="Registro" description="Página de registro de nuevos usuarios del Portal." />
     <!-- /CAMBIAR TITULO DE LA PAGINA -->
 
     <!-- MENU -->
@@ -24,7 +24,6 @@
           <fieldset class="form">
             <ul class="form">
               <li class="name">
-                <!--  <label class="name" for="name">Nombre *:</label> -->
                 <input
                   id="name"
                   name="name"
@@ -36,7 +35,6 @@
                   v-model="name"
                 />
 
-                <!-- <label class="surname" for="surname">Apellidos *:</label> -->
                 <input
                   id="surname"
                   name="surname"
@@ -50,7 +48,6 @@
               </li>
 
               <li class="email">
-                <!-- <label class="email" for="email">Correo electrónico *:</label> -->
                 <input
                   id="field-contact-email"
                   name="contactEmail"
@@ -62,9 +59,6 @@
                   v-model="email"
                 />
 
-                <!--  <label class="email2" for="email2"
-                  >Repetir correo electrónico *:</label
-                >-->
                 <input
                   id="email2"
                   name="contactEmail2"
@@ -77,7 +71,6 @@
                 />
               </li>
               <li class="password">
-                <!--  <label class="password" for="password">contraseña *:</label> -->
                 <input
                   id="password"
                   name="password"
@@ -89,9 +82,6 @@
                   v-model="password"
                 />
 
-                <!-- <label class="passwordRepeat" for="passwordRepeat"
-                  >Repetir contraseña *:</label
-                >-->
                 <input
                   id="passwordRepeat"
                   name="passwordRepeat"
@@ -123,15 +113,11 @@
                 />
                 <label id="checkbox" for="checkbox">
                   Al enviar mis datos acepto la
-                  <a
-                    class="checkbox"
-                    href="/privacidad.html"
-                    target="_blank"
-                  >
+                  <a class="checkbox" href target="_blank">
                     <strong>política de privacidad</strong>
                   </a>
                   y las
-                  <a href="/uso.html" target="_blank">
+                  <a href target="_blank">
                     <strong>condiciones de uso</strong>
                   </a>.
                 </label>
@@ -232,11 +218,9 @@ export default {
         const token = getAuthToken();
         const data = localStorage.getItem("id");
         let self = this;
+        axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
         axios
           .post("http://localhost:3000/users", {
-            headers: {
-              authorization: `Bearer ${token}`
-            },
             name: self.name,
             surname: self.surname,
             email: self.email,
@@ -244,7 +228,6 @@ export default {
             headquarter: self.headquarter
           })
           .then(function(response) {
-            console.log(response);
             //Lanzar modal de confirmación
             Swal.fire({
               icon: "success",
@@ -301,6 +284,7 @@ body main {
   padding: 15px 30px;
   width: 95%;
   max-width: 900px;
+  border-radius: 10px;
 }
 body main section#content {
   display: flex;

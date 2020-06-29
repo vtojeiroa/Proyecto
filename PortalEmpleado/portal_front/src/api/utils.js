@@ -15,13 +15,15 @@ const ID = "id";
 
 const ROLE = "role";
 
-const ISADMIN = "role";
-
 const NAME = "name";
 
 const EMAIL = "email";
 
 const HEADQUARTER = "headquarter";
+
+const ISADMIN = "isadmin";
+
+const AVATAR = "avatar";
 
 //FUNCION DE LOGIN
 
@@ -43,7 +45,6 @@ export function loginUser(email, password) {
       setRole(res.data.role);
       setHeadquarter(res.data.headquarter);
       setEmail(res.data.email);
-      setIsAdmin(res.data.role);
       resolve();
     } catch (error) {
       /*    console.log("Error en login:", err);
@@ -97,6 +98,7 @@ export function setEmail(email) {
 export function setHeadquarter(headquarter) {
   localStorage.setItem(HEADQUARTER, headquarter);
 }
+
 // LOGOUT -  DESCONECTAR USUARIO
 
 export function logOut() {
@@ -174,7 +176,7 @@ export function clearHeadquarter() {
 
 // RECUPERAR EL ROL QUE HE GUARDADO EN LOCAL STORAGE
 
-export function getIsAdmin() {
+export function getRole() {
   return localStorage.getItem(ROLE);
 }
 
@@ -189,25 +191,37 @@ export function getEmail() {
   return localStorage.getItem(EMAIL);
 }
 
-//GUARDAR SI ES ADMIN EN EL LOCAL STORAGE
+/* //GUARDAR SI ES ADMIN EN EL LOCAL STORAGE
 
-export function setIsAdmin(isAdmin) {
-  localStorage.setItem(ISADMIN, isAdmin);
+export function setIsAdmin(isadmin) {
+  localStorage.setItem(ISADMIN, isadmin);
+} */
+
+// RECUPERAR EL ROL QUE HE GUARDADO EN LOCAL STORAGE
+
+export function getIsAdmin() {
+  return localStorage.getItem(ROLE);
 }
+
 // COMPROBAR ROL
 
 export function checkAdmin() {
-  let role = false;
+  let Admin = false;
   let isAdmin = getIsAdmin();
-  if (isAdmin === "true") {
-    role = true;
+  if (isAdmin === "admin") {
+    Admin = true;
   } else {
-    role = false;
+    Admin = false;
   }
-  return role;
+  return Admin;
+}
+
+// Format a date to Front
+export function formatDateToFront(date) {
+  return format(date, "dd-MM-yyyy");
 }
 
 // Format a date to DB
-function formatDateToFront(date) {
+export function formatDateToBD(date) {
   return format(date, "dd-MM-yyyy");
 }

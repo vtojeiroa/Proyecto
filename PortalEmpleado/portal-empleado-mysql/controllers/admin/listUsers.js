@@ -11,18 +11,20 @@ async function listUsers(req, res, next) {
 
   try {
     connection = await getConnection();
-    const { active } = req.query;
+    /*  const { active } = req.query; */
 
     let result;
 
-    if (active) {
+    /* if (active) {
       result = await connection.query(
         `SELECT * FROM usuarios WHERE activo = ?`,
         [active]
       );
     } else {
       result = await connection.query(`SELECT * FROM usuarios`);
-    }
+    } */
+
+    result = await connection.query(`SELECT * FROM usuarios`);
 
     let [users] = result;
 

@@ -6,13 +6,6 @@
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
-    <!--  ANIMACIÓN DE CSS CARGANDO -->
-
-    <div v-show="loading" class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
-
     <!-- VISTA DEL MENÚLINKS -->
     <section class="links">
       <article class="links">
@@ -20,83 +13,115 @@
         <router-link :to="{ name: 'NewReserve' }">Nueva Reserva</router-link>
       </article>
     </section>
-    <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
-    <section id="content">
-      <article class="search-input">
-        <h1>Busqueda avanzada</h1>
-        <div class="form">
-          <form>
-            <ul>
-              <li>
-                <label for="type">Tipo de reserva:</label>
-                <select id="type" name="type" v-model="type">
-                  <option value>Selecciona...</option>
-                  <option value="vehiculo">Vehículo</option>
-                  <option value="sala de reunion">Sala de Reunión</option>
-                  <option value="Plaza en el comedor">Plaza en el comedor</option>
-                </select>
-              </li>
-              <li>
-                <label for="to">Fecha de inicio de la reserva &#62;&#61;:</label>
-                <input type="datetime-local" id="until" name="until" v-model="dateEndReserve" />
-              </li>
-              <h3>Intervalo de fechas de registro de la reserva</h3>
-              <li>
-                <label for="from">Fecha inicial &#62;&#61;</label>
-                <input type="datetime-local" id="from" name="from" v-model="dateInit" />
-              </li>
-              <li>
-                <label for="to">Fecha final &#60;</label>
-                <input type="datetime-local" id="to" name="to" v-model="dateEnd" />
-              </li>
-            </ul>
-          </form>
-          <div class="buttons">
-            <input
-              type="submit"
-              class="button"
-              value="Consultar"
-              @click="getReserves(type, dateEndReserve, dateInit, dateEnd)"
-            />
-          </div>
-          <input type="submit" class="button" value="Limpiar" @click="emptyFields()" />
-        </div>
-      </article>
-      <article class="search-data">
-        <h1 class="title">Mis reservas</h1>
+    <!--  ANIMACIÓN DE CSS CARGANDO -->
 
-        <!-- VISTA DE LAS RESERVAS -->
-        <listmyreserves
-          :myreserves="myreserves"
-          :myreserve="myreserve"
-          :rating="rating"
-          :seeReserves="seeReserves"
-          :seeVote="seeVote"
-          :voteDescription="voteDescription"
-          v-on:edited="openModal"
-          v-on:edit="updateReserve"
-          v-on:delete="deleteReserves"
-          v-on:showvote="showVoteView"
-          v-on:closevote="closeVoteView"
-          v-on:vote="voteReserve"
-        ></listmyreserves>
-      </article>
-    </section>
-
-    <!-- MODAL PARA EDITAR LA RESERVA -->
-    <div class="modal" v-show="modal">
-      <div class="modalBox">
-        <h2>Actualiza los datos</h2>
-
-        <label for="newDescription">Comentario:</label>
-        <input type="text" v-model="newDescription" placeholder="Introduce el comentario" />
-        <br />
-        <br />
-        <button @click="updateReserve()">Actualizar</button>
-        <button @click="closeModal()">Cerrar</button>
-      </div>
+    <div v-show="loading" class="lds-ripple">
+      <div></div>
+      <div></div>
     </div>
 
+    <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
+    <main id="container">
+      <section id="content">
+        <article class="search-input">
+          <h2>Busqueda avanzada</h2>
+          <fieldset class="form">
+            <form class="form">
+              <ul class="search">
+                <li class="search">
+                  <label for="type">Tipo de reserva:</label>
+                  <select id="type" name="type" v-model="type">
+                    <option value>Selecciona...</option>
+                    <option value="vehiculo">Vehículo</option>
+                    <option value="sala de reunion">Sala de Reunión</option>
+                    <option value="Plaza en el comedor">Plaza en el comedor</option>
+                  </select>
+                </li>
+                <li>
+                  <label for="to">Fecha inicio de reserva &#62;&#61;:</label>
+                  <input type="datetime-local" id="until" name="until" v-model="dateEndReserve" />
+                </li>
+                <h3>Intervalo de fechas de registro de la reserva</h3>
+                <li>
+                  <label for="from">Fecha inicial &#62;&#61;</label>
+                  <input type="datetime-local" id="from" name="from" v-model="dateInit" />
+                </li>
+                <li>
+                  <label for="to">Fecha final &#60;</label>
+                  <input type="datetime-local" id="to" name="to" v-model="dateEnd" />
+                </li>
+              </ul>
+            </form>
+            <div class="buttons">
+              <input type="submit" class="button-back" value="Limpiar" @click="emptyFields()" />
+              <input
+                type="submit"
+                class="button-go"
+                value="Consultar"
+                @click="getReserves(type, dateEndReserve, dateInit, dateEnd)"
+              />
+            </div>
+            <p>
+              Si tienes el código de la reserva, pulsa
+              <input
+                type="submit"
+                class="button-go"
+                value="Aquí"
+                @click="openModalSearch()"
+              />
+            </p>
+          </fieldset>
+        </article>
+        <article class="search-data">
+          <h1 class="title">Mis reservas</h1>
+
+          <!-- VISTA DE LAS RESERVAS -->
+          <listmyreserves
+            :myreserves="filteredReserves"
+            :myreserve="myreserve"
+            :rating="rating"
+            :seeReserves="seeReserves"
+            :seeVote="seeVote"
+            :voteDescription="voteDescription"
+            v-on:edited="openModal"
+            v-on:edit="updateReserve"
+            v-on:delete="deleteReserves"
+            v-on:showvote="showVoteView"
+            v-on:closevote="closeVoteView"
+            v-on:vote="voteReserve"
+          ></listmyreserves>
+        </article>
+      </section>
+
+      <!-- MODAL PARA EDITAR LA RESERVA -->
+      <div class="modal" v-show="modal">
+        <div class="modalBox">
+          <h2>Actualiza los datos del motivo de la reserva</h2>
+          <fieldset>
+            <label for="newDescription">Comentario:</label>
+            <input type="text" v-model="newDescription" placeholder="Introduce el nuevo comentario" />
+          </fieldset>
+          <div class="buttons">
+            <input class="button-back" value="Cerrar" @click="closeModal()" />
+            <input class="button-go" value="Actualizar" @click="updateReserve()" />
+          </div>
+        </div>
+      </div>
+      <!-- MODAL PARA BUSCAR UNA INCIDENCIA POR EL CÓDIGO -->
+      <div class="modal" v-show="modalSearch">
+        <div class="modalBox">
+          <h2>Introduce el código que has recibido por correo eléctronico</h2>
+          <fieldset>
+            <label for="search">Código:</label>
+            <input v-model="search" class="text" type="text" placeholder="Introduce el código" />
+          </fieldset>
+          <div class="buttons">
+            <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+            <input class="button-go" value="Limpiar" @click="search = ''" />
+          </div>
+        </div>
+      </div>
+    </main>
     <!-- VISTA DEL FOOTER -->
     <footercustom></footercustom>
   </div>
@@ -129,6 +154,7 @@ export default {
       //ARRAY DE LAS RESERVAS DE LA BBDD
       myreserves: [],
       modal: false,
+      modalSearch: false,
       loading: true,
       seeVote: false,
       seeReserves: true,
@@ -142,7 +168,8 @@ export default {
       dateEndReserve: "",
       dateInit: "",
       dateEnd: "",
-      vote: ""
+      vote: "",
+      search: ""
     };
   },
   methods: {
@@ -165,7 +192,6 @@ export default {
         })
         //SI SALE BIEN
         .then(function(response) {
-          console.log(response);
           self.myreserves = response.data.data;
         })
         //SI SALE MAL
@@ -207,7 +233,6 @@ export default {
             result => {
               self.closeModal();
               self.getReserves();
-              console.log(response);
             }
           );
         })
@@ -230,10 +255,19 @@ export default {
     closeModal() {
       this.modal = false;
     },
+
+    //  ABRE EL MODAL PARA BUSCAR UNA RESERVA POR EL CÓDIGO
+    openModalSearch() {
+      this.modalSearch = true;
+    },
+    // CIERRA EL MODAL DESPUES DE BUSCAR LA RESERVA POR EL CÓDIGO
+    closeModalSearch() {
+      this.modalSearch = false;
+    },
     //FUNCION PARA ELIMINAR UNA RESERVA DE LA BBDD
     deleteReserves(data) {
       const token = getAuthToken();
-
+      let self = this;
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       Swal.fire({
         title: "¿Estás seguro?",
@@ -256,7 +290,9 @@ export default {
                 title: `Acabas de borrar la reserva `,
                 showConfirmButton: false,
                 timer: 2500
-              }).then(result => this.getReserves());
+              }).then(result => {
+                self.getReserves();
+              });
             })
             //SI SALE MAL
             .catch(error =>
@@ -296,8 +332,6 @@ export default {
             result => {
               this.closeVoteView();
               this.getReserves();
-
-              console.log(response);
             }
           );
         })
@@ -331,28 +365,34 @@ export default {
   created() {
     this.getReserves();
     this.loading = false;
+  },
+  computed: {
+    filteredReserves() {
+      let result = this.myreserves;
+
+      if (!this.search) {
+        return result;
+      } else {
+        result = result.filter(
+          myreserve =>
+            myreserve.codigo_reserva === parseInt(this.search) ||
+            myreserve.id === parseInt(this.search)
+        );
+        if (!result.length) {
+          Swal.fire({
+            title: "El código introducido no corresponde a ninguna reserva",
+            text: "Vuelve a intentarlo",
+            showConfirmButton: false,
+            timer: 2500
+          });
+        }
+        return result;
+      }
+    }
   }
 };
 </script>
 <style scoped>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  display: flex;
-  flex-wrap: wrap;
-}
 .lds-ripple {
   display: inline-block;
   align-self: center;
@@ -387,48 +427,129 @@ export default {
   }
 }
 
-.home {
+section article.links {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+section article.links a {
+  background: #142850;
+  color: #dae1e7;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 0.75rem;
+  line-height: 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  border: 2px solid #142850;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 1rem;
 }
 
-article {
+body main {
+  background: #fff;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 0 4px 0 #d4d4d4;
+  box-sizing: border-box;
+  margin: 30px auto;
+  padding: 15px 30px;
+  width: 95%;
+  max-width: 900px;
+  border-radius: 10px;
+  padding-bottom: 81px;
+}
+body main section#content {
   display: flex;
   flex-direction: column;
-  align-self: center;
-  border: 2px solid red;
-  color: blue;
-  /*   width: 300px; */
   align-items: center;
-  padding: 0.5rem;
-  margin: 1rem;
 }
-label {
+body main section article ul.link {
+  align-self: center;
+  width: 100%;
+}
+body section article.links {
+  display: flex;
+  justify-content: center;
+}
+
+fieldset {
+  border: none;
   padding: 1rem;
-  font-size: 1.25rem;
-}
-input {
-  padding: 0.5rem;
-  width: 17rem;
-  height: 1.75rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-button {
-  padding: 0.2rem;
-  width: 8rem;
-  background: red;
-  color: whitesmoke;
   border-radius: 10px;
-  font-weight: bolder;
 }
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
-button.search {
+
+ul li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0;
+}
+
+input.button-go {
+  padding: 0.75px;
+  vertical-align: middle;
+}
+h2 {
+  padding: 1rem 0;
   text-align: center;
+}
+h3 {
+  padding: 1rem 0;
+  text-align: center;
+}
+fieldset.form {
+  border-radius: 0;
+  border: none;
+  border-bottom: 3px solid #142850;
+}
+
+ul li label,
+ul li select {
+  display: block;
+  align-self: initial;
+}
+.modalBox fieldset input {
+  width: 405px;
+}
+.modalBox article fieldset form ul li label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #555;
+}
+.modalBox article fieldset form ul li select,
+.modalBox article fieldset form ul li input {
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #d4d4d4;
+  padding: 5px 10px;
+  transition: all 0.2s ease 0s;
+  width: 250px;
+}
+
+.modalBox input.button-go,
+.modalBox input.button-back {
+  min-width: 120px;
+  text-align: center;
+}
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.5rem 0;
 }
 </style>

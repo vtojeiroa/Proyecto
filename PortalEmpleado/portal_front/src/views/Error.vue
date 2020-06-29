@@ -7,11 +7,11 @@
     <!-- MENU -->
     <menucustom></menucustom>
     <!-- /MENU -->
-
-    <!-- CONTENIDO -->
-    <h1>Error 404</h1>
-    <h2>Página web no encontrada</h2>
-
+    <main>
+      <!-- CONTENIDO -->
+      <h1>Error 404</h1>
+      <h2>Página web no encontrada</h2>
+    </main>
     <!-- /CONTENIDO -->
 
     <!-- FOOTER -->

@@ -2,9 +2,7 @@
   <div>
     <nav id="nav">
       <router-link :to="{ name: 'UserAttention' }">Atención al usuario</router-link>
-      <!--   <router-link :to="{ name: 'Help' }">Ayuda</router-link> -->
-      <router-link :to="{ name: 'Login' }">Inicio</router-link>
-      <router-link :to="{ name: 'About' }">Sobre mí</router-link>
+      <router-link v-show="loggedIn()" :to="{ name: 'About' }">Sobre mí</router-link>
     </nav>
     <section id="header">
       <h1>PORTAL DEL EMPLEADO</h1>
@@ -13,10 +11,18 @@
 </template>
 
 <script>
+import { isLoggedIn } from "../api/utils";
 export default {
   name: "MenuCustomInitial",
   data() {
     return {};
+  },
+  methods: {
+    // ESTA LOGADO??
+
+    loggedIn() {
+      return isLoggedIn();
+    }
   }
 };
 </script>
@@ -30,11 +36,12 @@ section#header h1 {
   padding: 1rem;
   height: 15vh;
 }
-#nav {
+nav#nav {
   font-family: "Noto Sans KR", sans-serif;
   padding: 1rem;
   display: flex;
-  justify-content: center;
+  text-align: end;
+  margin: 0 1rem;
 }
 
 #nav a {

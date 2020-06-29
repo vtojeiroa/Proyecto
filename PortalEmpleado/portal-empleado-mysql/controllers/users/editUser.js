@@ -9,7 +9,8 @@ const { editUserSchema } = require('../validations');
 const {
   processAndSavePhoto,
   deletePhoto,
-  generateError
+  generateError,
+  formatDateToDB
 } = require('../../helpers');
 
 // PUT - /USERS/:id  --- EDIT USER (ONLY USERS AND ADMIN)
@@ -94,7 +95,7 @@ async function editUser(req, res, next) {
         );
       }
     } else {
-      savedFileName = current.avatar;
+      savedFileName = current[0].foto;
     }
 
     // Update user
@@ -125,7 +126,7 @@ async function editUser(req, res, next) {
         province,
         country,
         phone,
-        birthdate,
+        formatDateToDB(new Date(birthdate)),
         sede.id,
         id
       ]

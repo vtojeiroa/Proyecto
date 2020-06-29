@@ -80,66 +80,61 @@
               <router-link :to="{ name: 'Registry' }" class="button">Crea tu cuenta</router-link>
             </fieldset>
           </form>
-
-          <!-- /CONTENIDO -->
+        </section>
+        <!-- /CONTENIDO -->
+        <section id="search">
           <article class="searchvalorations">
-            <h2>Valoraciones por tipo de servicio</h2>
+            <h3>Visualiza las valoraciones que han registrado los usuarios</h3>
             <!-- MODAL PARA  LA IMPLEMENTACIÓN DEL BUSCADOR DE INCIDENCIAS -->
-            <button @click="openModalValorations()">BUSCADOR DE VALORACIONES</button>
+            <button class="button-search" @click="openModalValorations()">BUSCAR</button>
 
             <div class="modal" style="overflow-y: scroll;" v-show="modalValorations">
               <div class="modalBox">
                 <fieldset class="searchValorations">
-                  <h1>Filtra las valoraciones por servicio</h1>
+                  <h2>Selecciona el servicio para visualizar sus valoraciones</h2>
 
-                  <form>
-                    <table>
-                      <tr>
-                        <td>
-                          <label for="service">Tipo de servicio:</label>
-                          <select id="typeservice" name="typeservice" v-model="typeService">
-                            <option value>Selecciona...</option>
-                            <option value="vehiculo">Reserva de vehículo</option>
-                            <option value="sala de reunion">Reserva de sala de Reunión</option>
-                            <option value="Plaza en el comedor">Reserva de plaza en el comedor</option>
-                            <option value="informatica">Incidencia informática</option>
-                            <option value="limpieza">Incidencia Limpieza</option>
-                            <option value="mantenimiento">Incidencia Mantenimiento</option>
-                            <option value="seguridad">Seguridad</option>
-                            <option value="otras">Otras</option>
-                          </select>
-                        </td>
-                      </tr>
+                  <form class="searchValorations">
+                    <table class="searchValorations">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <label for="service">Tipo de servicio:</label>
+                            <select id="typeservice" name="typeservice" v-model="typeService">
+                              <option value>Selecciona...</option>
+                              <option value="vehiculo">Reserva de vehículo</option>
+                              <option value="sala de reunion">Reserva de sala de Reunión</option>
+                              <option value="Plaza en el comedor">Reserva de plaza en el comedor</option>
+                              <option value="informatica">Incidencia informática</option>
+                              <option value="limpieza">Incidencia Limpieza</option>
+                              <option value="mantenimiento">Incidencia Mantenimiento</option>
+                              <option value="seguridad">Seguridad</option>
+                              <option value="otras">Otras</option>
+                            </select>
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </form>
                   <div class="buttons">
                     <input
                       type="submit"
-                      class="buttonOk"
-                      value="CONSULTAR"
+                      class="back"
+                      value="CERRAR"
+                      @click="closeModalValorations(); closeValorationsView(); emptyFieldsValorations()"
+                    />
+                    <input
+                      type="submit"
+                      class="search"
+                      value="VER"
                       @click="getValorations();showValorationsView()"
                     />
                   </div>
-                  <input
-                    type="submit"
-                    class="buttonClean"
-                    value="LIMPIAR"
-                    @click="emptyFieldsValorations()"
-                  />
-
-                  <input
-                    type="submit"
-                    class="buttonBack"
-                    value="CERRAR BÚSQUEDA"
-                    @click="closeModalValorations(); closeValorationsView()"
-                  />
                 </fieldset>
 
                 <searchvalorations
                   :searchincs="searchincs"
                   :valorations="valorations"
                   :values="values"
-                  :loading="loading"
                   v-show="seeValorations"
                 ></searchvalorations>
               </div>
@@ -183,7 +178,6 @@ export default {
       searchincs: [],
       valorations: {},
       values: {},
-      loading: true,
       modalValorations: false,
       typeService: "",
       seeValorations: false
@@ -199,12 +193,12 @@ export default {
         await loginUser(this.email, this.password);
         Swal.fire({
           icon: "success",
-          title: `Login realizado con éxito`,
+          title: `Login realizado con éxito!`,
           showConfirmButton: false,
           timer: 2000
         });
         //SI HAY LOGIN, QUE ME LLEVE AL HOME
-        this.$router.push("/UserProfile");
+        this.$router.push("HomePortal");
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -279,6 +273,9 @@ export default {
   background-size: cover;
   background-position: center center;
 }
+main {
+  padding-bottom: 81px;
+}
 
 main section#content {
   display: flex;
@@ -287,7 +284,16 @@ main section#content {
   justify-content: center;
 }
 
-main section#content h2 {
+main section#search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+main section#content h2,
+main section#search h2 {
   padding: 1rem 0;
   font-size: 1.5rem;
   width: 375px;
@@ -303,7 +309,7 @@ main section article.login {
   border: none;
 }
 
-main section article.searchValorations {
+main section article.searchvalorations {
   background: rgba(255, 255, 255, 0.4);
   padding: 20px;
   width: 500px;
@@ -311,10 +317,13 @@ main section article.searchValorations {
   float: left;
   border-radius: 10px;
   border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 main section article.login form.login,
-main section article.searchValorations fieldset form,
+main section article.searchvalorations fieldset form.searchValorations,
 main section form.box-create-account {
   display: flex;
   font-size: 1rem;
@@ -325,10 +334,12 @@ main section form.box-create-account {
   align-items: center;
   padding: 10px 0;
 }
-main section form fieldset.box-login {
+main section form fieldset.box-login,
+main section article fieldset.searchValorations {
   border: none;
 }
-main section article form fieldset.box-login h2 {
+main section article form fieldset.box-login h2,
+main section article h3 {
   color: #333;
   text-transform: uppercase;
   text-align: center;
@@ -338,7 +349,8 @@ main section article form fieldset.box-login table tbody tr.email {
 }
 
 main section article form fieldset.box-login table tbody td label.email,
-main section form fieldset.box-login table tbody td label.password {
+main section form fieldset.box-login table tbody td label.password,
+main section form fieldset.searchValorations table tbody tr td select label {
   font-size: 14px;
   font-weight: 700;
   color: #555;
@@ -361,36 +373,15 @@ main section#content article p.warning {
   align-self: flex-end;
   color: #8b8b8b;
 }
-main
-  section
-  article
-  form
-  fieldset.box-login
-  table
-  tbody
-  td
-  input.field-checkbox {
-  margin: 10px 10px 5px 0;
-}
-main
-  section
-  article
-  form
-  fieldset.box-login
-  table
-  tbody
-  td
-  label.field-checkbox {
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
-}
-main section article div.button-login {
+
+main section article div.button-login,
+main section article button.button-search {
   display: flex;
   justify-content: center;
   margin: 10px;
 }
-main section article div input.button-login {
+main section article div input.button-login,
+main section article button.button-search {
   background: #142850;
   color: #dae1e7;
   font-size: 1rem;
@@ -403,7 +394,8 @@ main section article div input.button-login {
   border: none;
   border: 2px solid #142850;
 }
-main section article input.button-login:hover {
+main section article input.button-login:hover,
+main section article button.button-search:hover {
   background: #dae1e7;
   color: #142850;
   border: 2px solid #142850;
@@ -470,13 +462,47 @@ main
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .modalBox {
-  background: #fefefe;
+  background: #dae1e7;
+  color: #142850;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+.modalBox h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.modalBox h2 {
+  color: #333;
+  text-transform: uppercase;
+  text-align: center;
+}
+.modalBox label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #555;
+}
+.modalBox select {
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #d4d4d4;
+  padding: 5px 10px;
+  transition: all 0.2s ease 0s;
+  width: 250px;
 }
 </style>

@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const { getConnection } = require('../../db');
 
-const { generateError } = require('../../helpers');
+const { generateError, formatDateToFront } = require('../../helpers');
 
 // GET - /USERS/:id  --- LIST USER PROFILE (ONLY USER OR ADMIN)
 
@@ -59,7 +59,7 @@ async function getUser(req, res, next) {
         province: userData.provincia,
         country: userData.pais,
         phone: userData.telefono,
-        birthdate: userData.fecha_nacimiento,
+        birthdate: formatDateToFront(new Date(userData.fecha_nacimiento)),
         headquarters: nombre.nombre
       };
     } else {

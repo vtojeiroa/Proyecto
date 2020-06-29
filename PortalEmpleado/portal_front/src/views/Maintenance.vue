@@ -9,62 +9,75 @@
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
-    <!-- LISTA DE CLIENTES -->
-    <div class="maintenance">
-      <h2>Listado de Incidencias</h2>
+    <!--  LINKS DATOS -->
+    <section class="linksAdmin">
+      <article class="linksAdmin">
+        <menulinksAdmin></menulinksAdmin>
+      </article>
+    </section>
+    <main>
+      <!-- LISTA DE INCIDENCIAS PENDIENTES DE RESPUESTA -->
+      <div class="maintenance">
+        <h2>Incidencias pendientes de respuesta</h2>
 
-      <!--  ANIMACIÓN DE CSS CARGANDO -->
+        <!--  ANIMACIÓN DE CSS CARGANDO -->
 
-      <div v-show="loading" class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-      <div class="button-search">
-        <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
-        <button class="search" @click="openModalSearch()">Abrir el buscador</button>
+        <div v-show="loading" class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
+        <h3>Buscador de incidencias</h3>
+        <div class="buttons">
+          <!-- BOTON PARA RECARGAR LAS INCIDENCIAS -->
 
-        <!-- BOTON PARA RECARGAR LOS CLIENTES -->
+          <input class="button-back" value="Reiniciar" @click="search = ''" />
+          <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
+          <input class="button-go" value="Abrir" @click="openModalSearch()" />
+        </div>
+        <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
+        <div class="modal" v-show="modalSearch">
+          <div class="modalBox">
+            <label for="bySearch">Buscador de incidencias:</label>
+            <input
+              v-model="search"
+              id="search"
+              name="bySearch"
+              type="search"
+              placeholder="Introduce el ID o algún dato de la incidencia"
+            />
+            <br />
+            <div class="buttons">
+              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input class="button-go" value="Limpiar" @click="search = ''" />
+            </div>
+          </div>
+        </div>
+        <!-- VISTA DE LAS INCIDENCIAS PENDIENTES DE CERRAR -->
+        <closeincidences :closeincidences="filteredCloseIncidences" v-on:close="openModal"></closeincidences>
 
-        <button class="reset" @click="search = ''">reiniciar</button>
-      </div>
-      <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
-      <div class="modalSearch" v-show="modalSearch">
-        <div class="modalSearchBox">
-          <label for="bySearch">Buscador de incidencias:</label>
-          <input
-            v-model="search"
-            id="search"
-            name="bySearch"
-            type="search"
-            placeholder="Introduce el ID o algún dato de la incidencia"
-          />
-          <br />
-          <button class="reset" @click="search = ''">Limpiar el buscador</button>
-          <button @click="closeModalSearch()">Cerrar el buscador</button>
+        <!-- MODAL PARA REPONDER LA INCIDENCIA-->
+        <div class="modal" v-show="modal">
+          <div class="modalBox" v-on:close="showEditText">
+            <h2>Responde la incidencia</h2>
+
+            <label for="newDescription">Comentario :</label>
+            <textarea
+              type="text"
+              v-model="newDescription"
+              rows="10"
+              cols="50"
+              placeholder="Introduce el comentario de cierre"
+            />
+            <br />
+            <br />
+            <div class="buttons">
+              <input class="button-back" value="Cerrar" @click="closeModal()" />
+              <input class="button-go" value="Responder" @click="closeIncidences()" />
+            </div>
+          </div>
         </div>
       </div>
-      <!-- VISTA DE LOS CLIENTES -->
-      <closeincidences :closeincidences="filteredCloseIncidences" v-on:close="openModal"></closeincidences>
-
-      <!-- MODAL PARA EDITAR CLIENTES -->
-      <div class="modal" v-show="modal">
-        <div class="modalBox" v-on:close="showEditText">
-          <h2>Actualiza los datos</h2>
-
-          <label for="newDescription">Comentario :</label>
-          <input
-            type="text"
-            v-model="newDescription"
-            placeholder="Introduce el comentario de cierre"
-          />
-          <br />
-          <br />
-
-          <button @click="closeIncidences()">Cerrar Incidencia</button>
-          <button @click="closeModal()">Cerrar</button>
-        </div>
-      </div>
-    </div>
+    </main>
     <!-- VISTA DEL FOOTER -->
     <footercustom></footercustom>
   </div>
@@ -76,6 +89,9 @@ import axios from "axios";
 
 //IMPORTO EL MENU
 import menucustom from "../components/MenuCustom.vue";
+
+//IMPORTO EL MENU
+import menulinksAdmin from "../components/MenuLinksAdmin.vue";
 
 //IMPORTO EL FOOTER
 import footercustom from "../components/FooterCustom.vue";
@@ -90,7 +106,7 @@ import Swal from "sweetalert2";
 import { getAuthToken } from "../api/utils";
 export default {
   name: "Maintenance",
-  components: { menucustom, footercustom, closeincidences },
+  components: { menucustom, menulinksAdmin, footercustom, closeincidences },
   data() {
     return {
       //ARRAY DE LOS CLIENTES DE LA BBDD
@@ -157,7 +173,7 @@ export default {
             result => {
               self.closeModal();
               self.getCloseIncidences();
-              console.log(response);
+              self.emptyFields();
             }
           );
         })
@@ -170,6 +186,10 @@ export default {
             timer: 2500
           })
         );
+    },
+
+    emptyFields() {
+      this.newDescription = "";
     },
 
     //  ABRE EL MODAL PARA EDITAR LOS DATOS DEL CLIENTE Y MUESTRA LOS DATOS ORIGINALES
@@ -226,42 +246,6 @@ export default {
 };
 </script>
 <style scoped>
-.modalSearch {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalSearchBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .lds-ripple {
   display: inline-block;
   align-self: center;
@@ -296,48 +280,112 @@ export default {
   }
 }
 
-.home {
+body main {
+  background: #fff;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 0 4px 0 #d4d4d4;
+  box-sizing: border-box;
+  margin: 30px auto;
+  padding: 15px 30px;
+  width: 95%;
+  max-width: 900px;
+  border-radius: 10px;
+  padding-bottom: 81px;
+}
+body main section#content {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+body main section article ul.link {
+  align-self: center;
+  width: 100%;
+}
+body section article.links {
+  display: flex;
+  justify-content: center;
 }
 
-article {
+fieldset {
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+ul {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  align-self: center;
-  border: 2px solid red;
-  color: whitesmoke;
-  /*   width: 300px; */
-  align-items: center;
-  padding: 0.5rem;
-  margin: 1rem;
+  justify-content: space-evenly;
 }
-label {
-  padding: 1rem;
-  font-size: 1.25rem;
+
+ul li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0;
 }
 input {
-  padding: 0.5rem;
-  width: 17rem;
-  height: 1.75rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-button {
-  padding: 0.2rem;
-  width: 8rem;
-  background: red;
-  color: whitesmoke;
-  border-radius: 10px;
-  font-weight: bolder;
-}
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
-}
-button.search {
   text-align: center;
+}
+
+input.button-go {
+  padding: 0.75px;
+  vertical-align: middle;
+}
+h2 {
+  padding: 1rem 0;
+  text-align: center;
+}
+h3 {
+  padding: 1rem 0;
+  text-align: center;
+}
+fieldset.form {
+  border-radius: 0;
+  border: none;
+  border-bottom: 3px solid #142850;
+}
+
+ul li label,
+ul li select {
+  display: block;
+  align-self: initial;
+}
+.modalBox {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.modalBox label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #555;
+}
+.modalBox select,
+.modalBox input,
+.modalBox textarea {
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #d4d4d4;
+  padding: 5px 10px;
+  transition: all 0.2s ease 0s;
+  width: 405px;
+}
+
+.modalBox input.button-go,
+.modalBox input.button-back {
+  min-width: 120px;
+  text-align: center;
+}
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.5rem 0;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <section class="links">
-      <article class="links">
-        <ul class="links">
+    <section class="linksAdmin">
+      <article class="linksAdmin">
+        <ul class="linksAdmin">
           <li>
             <router-link :to="{ name: 'Users' }">Usuarios</router-link>
           </li>
@@ -42,12 +42,16 @@ export default {
 
 <style scoped>
 ul {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
   color: #8b8b8b;
   font-size: 13px;
 }
 li {
-  background: #0055a5;
+  background: #142850;
   border-radius: 3px;
   box-shadow: 0 1px 5px -1px #333333;
   height: 45px;

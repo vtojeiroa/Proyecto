@@ -1,23 +1,65 @@
 <template>
   <div class="home">
-    <article class="headquarters">
-      <div class="headquarter" v-for="(headquarter, index) in headquarters" :key="headquarter.id">
-        <p>Id servicio: {{ headquarter.id }}</p>
-        <p>Activo: {{ headquarter.activo }}</p>
-        <p>Nombre: {{ headquarter.nombre }}</p>
-        <p>Dirección: {{ headquarter.direccion }}</p>
-        <p>Código postal: {{ headquarter.codigo_postal }}</p>
-        <p>Localidad: {{ headquarter.localidad }}</p>
-        <p>Provincia: {{ headquarter.provincia }}</p>
-        <p>Pais: {{ headquarter.pais }}</p>
-        <p>Fecha creación:{{headquarter.fecha_registro | moment("DD-MM-YYYY")}}</p>
-        <p>ultima actualizacion: {{headquarter.ultima_actualizacion | moment("DD-MM-YYYY")}}</p>
-        <div class="buttons">
-          <button @click="deleteHeadquarterEvent(index)">BORRAR</button>
-          <button @click="editHeadquarterEvent(index)">EDITAR</button>
-        </div>
-      </div>
-    </article>
+    <main>
+      <section>
+        <article class="headquarters">
+          <div
+            class="headquarter"
+            v-for="(headquarter, index) in headquarters"
+            :key="headquarter.id"
+          >
+            <table>
+              <tbody>
+                <tr>
+                  <td class="text">Id servicio:</td>
+                  <td class="data">{{headquarter.id}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Activo:</td>
+                  <td class="data">{{headquarter.activo}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Nombre:</td>
+                  <td class="data">{{ headquarter.nombre}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Dirección:</td>
+                  <td class="data">{{headquarter.direccion}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Código postal:</td>
+                  <td class="data">{{ headquarter.codigo_postal }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Localidad:</td>
+                  <td class="data">{{headquarter.localidad}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Provincia:</td>
+                  <td class="data">{{ headquarter.provincia }}</td>
+                </tr>
+                <tr>
+                  <td class="text">País:</td>
+                  <td class="data">{{headquarter.pais}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Fecha creación:</td>
+                  <td class="data">{{headquarter.fecha_registro | moment("DD-MM-YYYY")}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Última actualizacion:</td>
+                  <td class="data">{{headquarter.ultima_actualizacion | moment("DD-MM-YYYY")}}</td>
+                </tr>
+                <div class="buttons">
+                  <input class="button-back" value="Borrar" @click="deleteHeadquarterEvent(index)" />
+                  <input class="button-go" value="Editar" @click="editHeadquarterEvent(index)" />
+                </div>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
   </div>
 </template>
 
@@ -47,49 +89,48 @@ export default {
 <style scoped>
 .home {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
-.headquarters {
+
+.headquarter {
+  border: 4px solid #142850;
+  margin: 2rem auto;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  /*   background: whitesmoke; */
-  color: red;
-  width: 60%;
+  border-radius: 2%;
+  min-width: 350px;
 }
 
-.headquarter {
-  border: 1rem solid rgba(238, 13, 24, 0.808);
-  border-radius: 50;
-  margin: 2rem auto;
-  padding: 1rem;
-  width: 350px;
+tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
-  border-radius: 10%;
+  margin: 5px;
+}
+tr {
+  display: flex;
+  justify-content: space-between;
+}
+td.text {
+  text-transform: uppercase;
+  font-size: 14px;
+  align-self: flex-start;
+}
+td.data {
+  max-width: 300px;
+  font-weight: bold;
+}
+img {
+  width: 200px;
+  border-radius: 10px;
 }
 
-p {
-  color: blue;
-  font-weight: bolder;
-  padding: 0.3rem;
-}
-button {
-  padding: 0.3rem;
-  width: 6rem;
-  background: red;
-  color: whitesmoke;
-  border-radius: 10px;
-  font-weight: bolder;
-  margin: 1rem 1rem;
-}
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
+input {
+  text-align: center;
 }
 </style>

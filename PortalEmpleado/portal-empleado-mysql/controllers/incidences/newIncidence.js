@@ -57,7 +57,7 @@ async function newIncidence(req, res, next) {
         title: 'Registro de incidencia en el Portal del Empleado',
         html: `<div>
          <h1>Incidencia registrada</h1>
-     <p>Hemos registrado tu incidencia al departamento  de ${dataIncType.tipo} con el código: <strong>${incidenceCode}</strong> el día ${date}</p>  
+     <p>Hemos registrado tu incidencia al departamento  de ${dataIncType.tipo} con el comentario ${description} el día ${date}. Le hemos asignado el código: <strong>${incidenceCode}</strong> </p>  
       <p>Si deseas revisarla, haz click en el enlace: ${incidenceCodeURL}, o copialo en tu navegador. También puedes revisarla en el apartado de incidencias de tu Portal.</p>
     </div>`
       });

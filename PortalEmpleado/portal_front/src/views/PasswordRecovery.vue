@@ -126,12 +126,10 @@ export default {
       if (this.correctData) {
         const token = getAuthToken();
         const data = localStorage.getItem("id");
+        axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
         let self = this;
         axios
           .post("http://localhost:3000/users/password/recovery", {
-            headers: {
-              authorization: `Bearer ${token}`
-            },
             email: self.email,
             postal_code: self.postalZip,
             birthdate: self.birthdate

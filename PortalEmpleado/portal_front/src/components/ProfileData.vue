@@ -1,26 +1,77 @@
 <template>
   <div class="home">
-    <article class="user">
-      <img :src="dataUsers.avatar" width="100" alt="Foto de perfil" />
-
-      <!--   <p>Id usuario: {{ dataUsers.id }}</p>
-      <p>Activo: {{ dataUsers.active }}</p>-->
-      <p>Nombre: {{ dataUsers.name }}</p>
-      <p>Apellido: {{ dataUsers.surname }}</p>
-      <p>Doc. Identidad: {{ dataUsers.identification_document }}</p>
-      <p>Email: {{ dataUsers.email }}</p>
-      <p>Direción: {{ dataUsers.address }}</p>
-      <p>Código postal: {{ dataUsers.postal_code }}</p>
-      <p>Localidad: {{ dataUsers.location }}</p>
-      <p>Provincia: {{ dataUsers.province }}</p>
-      <p>Pais: {{ dataUsers.country }}</p>
-      <p>Teléfono: {{ dataUsers.phone }}</p>
-      <p>Fecha de nacimiento:{{ dataUsers.birthdate }}</p>
-      <p>Sede: {{ dataUsers.headquarters }}</p>
-      <div class="buttons">
-        <button @click="editUserEvent()">EDITAR</button>
-      </div>
-    </article>
+    <main>
+      <section>
+        <article class="user">
+          <img :src="dataUsers.avatar" width="100" alt="Foto de perfil" />
+          <table>
+            <tbody>
+              <tr>
+                <td class="text">Nombre:</td>
+                <td class="data">{{ dataUsers.name }}</td>
+              </tr>
+              <tr>
+                <td class="text">Apellido:</td>
+                <td class="data">{{ dataUsers.surname }}</td>
+              </tr>
+              <tr>
+                <td class="text">Doc. Identidad:</td>
+                <td class="data">{{ dataUsers.identification_document }}</td>
+              </tr>
+              <tr>
+                <td class="text">Email:</td>
+                <td class="data">{{ dataUsers.email }}</td>
+              </tr>
+              <tr>
+                <td class="text">Direción:</td>
+                <td class="data">{{ dataUsers.address }}</td>
+              </tr>
+              <tr>
+                <td class="text">Código postal:</td>
+                <td class="data">{{ dataUsers.postal_code }}</td>
+              </tr>
+              <tr>
+                <td class="text">Localidad:</td>
+                <td class="data">{{ dataUsers.location }}</td>
+              </tr>
+              <tr>
+                <td class="text">Provincia:</td>
+                <td class="data">{{ dataUsers.province }}</td>
+              </tr>
+              <tr>
+                <td class="text">Pais:</td>
+                <td class="data">{{ dataUsers.country }}</td>
+              </tr>
+              <tr>
+                <td class="text">Teléfono:</td>
+                <td class="data">{{ dataUsers.phone }}</td>
+              </tr>
+              <tr>
+                <td class="text">Fecha de nacimiento:</td>
+                <td class="data">{{ dataUsers.birthdate }}</td>
+              </tr>
+              <tr>
+                <td class="text">Sede:</td>
+                <td class="data">{{ dataUsers.headquarters }}</td>
+              </tr>
+            </tbody>
+            <div class="buttons">
+              <input class="button-go" value="EDITAR" @click="editUserEvent()" />
+            </div>
+          </table>
+          <p>
+            ¿
+            Quieres darte de baja del Portal de Empleado? pincha
+            <input
+              type="submit"
+              value="Baja"
+              class="button-go"
+              @click="dropUserEvent()"
+            />
+          </p>
+        </article>
+      </section>
+    </main>
   </div>
 </template>
 
@@ -37,55 +88,60 @@ export default {
       //ENVIANDO LA INFORMACIÓN DEL CLIENTE A LA VISTA
       this.$emit("edit", data);
     },
-  },
+    //FUNCION QUE EMITE UN EVENTO PARA EDITAR UN CLIENTE
+    dropUserEvent(index) {
+      let data = this.dataUsers[index];
+      this.$emit("drop", data);
+    }
+  }
 };
 </script>
 <style scoped>
 .home {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
-.users {
+
+.user {
+  border: 4px solid #142850;
+  margin: 2rem auto;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  /*   background: whitesmoke; */
-  color: red;
-  width: 60%;
+  border-radius: 2%;
 }
 
-.user {
-  border: 1rem solid rgba(238, 13, 24, 0.808);
-  border-radius: 50;
-  margin: 2rem auto;
-  padding: 1rem;
-  width: 350px;
+tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
-  border-radius: 10%;
+  margin: 5px;
 }
-
-p {
-  color: blue;
-  font-weight: bolder;
-  padding: 0.3rem;
+tr {
+  display: flex;
+  justify-content: space-between;
 }
-button {
-  padding: 0.3rem;
-  width: 6rem;
-  background: red;
-  color: whitesmoke;
+td.text {
+  text-transform: uppercase;
+  font-size: 14px;
+  align-self: flex-start;
+}
+td.data {
+  font-weight: bold;
+}
+img {
+  width: 175px;
   border-radius: 10px;
-  font-weight: bolder;
-  margin: 1rem 1rem;
 }
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
+input {
+  text-align: center;
+}
+input.button-go {
+  padding: 0.75px;
+  vertical-align: middle;
 }
 </style>

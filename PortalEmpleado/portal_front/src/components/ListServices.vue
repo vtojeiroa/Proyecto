@@ -1,20 +1,50 @@
 <template>
   <div class="home">
-    <article class="users">
-      <div class="user" v-for="(service, index) in services" :key="service.id">
-        <p>Id servicio: {{ service.id }}</p>
-        <p>Activo: {{ service.activo }}</p>
-        <p>Sección: {{ service.seccion }}</p>
-        <p>Tipo: {{ service.tipo }}</p>
-        <p>Descripción: {{ service.descripcion }}</p>
-        <p>Fecha creación:{{service.fecha_registro | moment("DD-MM-YYYY")}}</p>
-        <p>ultima actualizacion: {{service.ultima_actualizacion | moment("DD-MM-YYYY")}}</p>
-        <div class="buttons">
-          <button @click="deleteServiceEvent(index)">BORRAR</button>
-          <button @click="editServiceEvent(index)">EDITAR</button>
-        </div>
-      </div>
-    </article>
+    <main>
+      <section>
+        <article class="services">
+          <div class="service" v-for="(service, index) in services" :key="service.id">
+            <table>
+              <tbody>
+                <tr>
+                  <td class="text">Id servicio:</td>
+                  <td class="data">{{service.id}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Activo:</td>
+                  <td class="data">{{service.activo}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Sección:</td>
+                  <td class="data">{{service.seccion}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Tipo:</td>
+                  <td class="data">{{service.tipo}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Descripción:</td>
+                  <td class="data">{{service.descripcion}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Fecha creación:</td>
+                  <td class="data">{{service.fecha_registro | moment("DD-MM-YYYY")}}</td>
+                </tr>
+                <tr>
+                  <td class="text">ultima actualizacion:</td>
+                  <td class="data">{{service.ultima_actualizacion | moment("DD-MM-YYYY")}}</td>
+                </tr>
+
+                <div class="buttons">
+                  <input class="button-back" value="Borrar" @click="deleteServiceEvent(index)" />
+                  <input class="button-go" value="Editar" @click="editServiceEvent(index)" />
+                </div>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
   </div>
 </template>
 
@@ -44,49 +74,48 @@ export default {
 <style scoped>
 .home {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
-.users {
+
+.service {
+  border: 4px solid #142850;
+  margin: 2rem auto;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  /*   background: whitesmoke; */
-  color: red;
-  width: 60%;
+  border-radius: 2%;
+  min-width: 350px;
 }
 
-.user {
-  border: 1rem solid rgba(238, 13, 24, 0.808);
-  border-radius: 50;
-  margin: 2rem auto;
-  padding: 1rem;
-  width: 350px;
+tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
-  border-radius: 10%;
+  margin: 5px;
+}
+tr {
+  display: flex;
+  justify-content: space-between;
+}
+td.text {
+  text-transform: uppercase;
+  font-size: 14px;
+  align-self: flex-start;
+}
+td.data {
+  max-width: 300px;
+  font-weight: bold;
+}
+img {
+  width: 200px;
+  border-radius: 10px;
 }
 
-p {
-  color: blue;
-  font-weight: bolder;
-  padding: 0.3rem;
-}
-button {
-  padding: 0.3rem;
-  width: 6rem;
-  background: red;
-  color: whitesmoke;
-  border-radius: 10px;
-  font-weight: bolder;
-  margin: 1rem 1rem;
-}
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
+input {
+  text-align: center;
 }
 </style>

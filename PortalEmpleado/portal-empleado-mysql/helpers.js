@@ -73,9 +73,9 @@ function generateError(message, code) {
   return error;
 }
 
-// Format a date to DB
+// Format a date to Front
 function formatDateToFront(date) {
-  return format(date, 'dd-MM-yyyy');
+  return format(date, 'MM/dd/yyyy');
 }
 
 function search(queryParams) {

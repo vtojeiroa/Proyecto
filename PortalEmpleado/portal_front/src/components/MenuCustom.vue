@@ -2,15 +2,15 @@
   <div>
     <nav id="nav">
       <router-link :to="{ name: 'UserAttention' }">Atención al usuario</router-link>
-      <router-link :to="{ name: 'Login' }">Inicio</router-link>
-      <router-link :to="{ name: 'About' }">Sobre mí</router-link>
-      <router-link :to="{ name: 'Users' }">Admin</router-link>
-      <p class="userName">
+      <router-link v-show="loggedIn()" :to="{ name: 'HomePortal' }">Inicio</router-link>
+      <router-link v-show="loggedIn()" :to="{ name: 'About' }">Sobre mí</router-link>
+      <p class="userName" v-show="loggedIn()">
         Hola,
-        <strong>{{ nombre }}!!!</strong>
+        {{ nombre }}!!!
       </p>
-      <router-link :to="{ name: 'UserProfile' }">Perfil</router-link>
-      <a href="/" @click="logoutUser()">Cerrar sesión</a>
+      <router-link v-show="tagIsAdmin()" :to="{ name: 'Users' }">Admin</router-link>
+      <router-link v-show="loggedIn()" :to="{ name: 'UserProfile' }">Perfil</router-link>
+      <a href="/" @click="logoutUser()" v-show="loggedIn()">Cerrar sesión</a>
     </nav>
     <section id="header">
       <h1>PORTAL DEL EMPLEADO</h1>
@@ -40,12 +40,12 @@ export default {
       this.nombre = "";
       return logOut();
       this.$router.push("/");
-      Swal.fire({
+      /*  Swal.fire({
         icon: "success",
-        title: "Desconexión realizada con éxito! Hasta pronto!!",
+        title: `Desconexión realizada con éxito! Hasta pronto ${this.nombre}!!`,
         showConfirmButton: false,
         timer: 2500
-      });
+      }); */
     },
 
     // ESTA LOGADO??
@@ -73,7 +73,7 @@ section#header {
   background-size: cover;
   background-position: center center;
   flex-basis: 100%;
-  height: 15vh;
+  height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,11 +85,12 @@ section#header h1 {
   text-align: center;
   padding: 1rem;
 }
-#nav {
+nav#nav {
   font-family: "Noto Sans KR", sans-serif;
   padding: 1rem;
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 #nav a {
@@ -98,6 +99,7 @@ section#header h1 {
   color: #27496d;
   margin: 0 0.5rem;
   text-decoration: none;
+  margin: 0 1rem;
 }
 #nav a:hover {
   color: #00909e;
@@ -106,23 +108,15 @@ section#header h1 {
 #nav a.router-link-exact-active {
   color: #00909e;
 }
-button {
-  padding: 0.3rem;
-  width: 8rem;
-  background: red;
-  color: whitesmoke;
-  border-radius: 10px;
-  font-weight: bolder;
-  margin: 0 1rem;
-}
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolderf;
-}
 
 p.userName {
-  color: mediumblue;
+  color: #142850;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  flex-grow: 0.3;
+  text-align: center;
 }
 
 p {

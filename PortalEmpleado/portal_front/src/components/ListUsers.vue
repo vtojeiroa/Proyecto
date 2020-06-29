@@ -1,29 +1,81 @@
 <template>
   <div class="home">
-    <article class="users">
-      <div class="user" v-for="(user, index) in users" :key="user.id">
-        <img :src="user.avatar" />
-        <p>Id usuario: {{ user.id }}</p>
-        <p>Activo: {{ user.activo }}</p>
-        <p>Tipo de usuario: {{ user.tipo_usuario }}</p>
-        <p>Nombre: {{ user.nombre }}</p>
-        <p>Apellido: {{ user.apellidos }}</p>
-        <p>Doc. Identidad: {{ user.num_doc_identidad }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Direción: {{ user.direccion }}</p>
-        <p>Código postal: {{ user.codigo_postal }}</p>
-        <p>Localidad: {{ user.localidad }}</p>
-        <p>Provincia: {{ user.provincia }}</p>
-        <p>Pais: {{ user.pais }}</p>
-        <p>Teléfono: {{ user.telefono }}</p>
-        <p>Fecha de nacimiento:{{user.fecha_nacimiento | moment("DD-MM-YYYY")}}</p>
-        <p>Sede: {{ user.sedes_id }}</p>
-        <div class="buttons">
-          <button @click="deleteUserEvent(index)">BORRAR</button>
-          <button @click="editUserEvent(index)">EDITAR</button>
-        </div>
-      </div>
-    </article>
+    <main>
+      <section>
+        <article class="users">
+          <div class="user" v-for="(user, index) in users" :key="user.id">
+            <table>
+              <tbody>
+                <tr>
+                  <td class="text">Id usuario:</td>
+                  <td class="data">{{ user.id }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Activo:</td>
+                  <td class="data">{{ user.activo }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Tipo de usuario:</td>
+                  <td class="data">{{ user.tipo_usuario }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Nombre:</td>
+                  <td class="data">{{ user.nombre }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Apellido:</td>
+                  <td class="data">{{ user.apellidos }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Doc. Identidad:</td>
+                  <td class="data">{{ user.num_doc_identidad }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Email:</td>
+                  <td class="data">{{ user.email }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Direción:</td>
+                  <td class="data">{{ user.direccion }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Código postal:</td>
+                  <td class="data">{{ user.codigo_postal }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Localidad:</td>
+                  <td class="data">{{ user.localidad }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Provincia:</td>
+                  <td class="data">{{ user.provincia }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Pais:</td>
+                  <td class="data">{{ user.pais }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Teléfono:</td>
+                  <td class="data">{{ user.telefono}}</td>
+                </tr>
+                <tr>
+                  <td class="text">Fecha de nacimiento:</td>
+                  <td class="data">{{ user.fecha_nacimiento | moment("DD-MM-YYYY") }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Sede:</td>
+                  <td class="data">{{ user.sedes_id }}</td>
+                </tr>
+              </tbody>
+              <div class="buttons">
+                <input class="button-back" value="Borrar" @click="deleteUserEvent(index)" />
+                <input class="button-go" value="Editar" @click="editUserEvent(index)" />
+              </div>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
   </div>
 </template>
 
@@ -53,49 +105,46 @@ export default {
 <style scoped>
 .home {
   display: flex;
+  justify-content: center;
   align-items: center;
 }
-.users {
+
+.user {
+  border: 4px solid #142850;
+  margin: 2rem auto;
+  padding: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  /*   background: whitesmoke; */
-  color: red;
-  width: 60%;
+  border-radius: 2%;
+  min-width: 350px;
 }
 
-.user {
-  border: 1rem solid rgba(238, 13, 24, 0.808);
-  border-radius: 50;
-  margin: 2rem auto;
-  padding: 1rem;
-  width: 350px;
+tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
-  border-radius: 10%;
+  margin: 5px;
 }
-
-p {
-  color: blue;
-  font-weight: bolder;
-  padding: 0.3rem;
+tr {
+  display: flex;
+  justify-content: space-between;
 }
-button {
-  padding: 0.3rem;
-  width: 6rem;
-  background: red;
-  color: whitesmoke;
+td.text {
+  text-transform: uppercase;
+  font-size: 14px;
+  align-self: flex-start;
+}
+td.data {
+  font-weight: bold;
+}
+img {
+  width: 200px;
   border-radius: 10px;
-  font-weight: bolder;
-  margin: 1rem 1rem;
 }
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
+input {
+  text-align: center;
 }
 </style>

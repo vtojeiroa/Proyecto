@@ -25,7 +25,7 @@ async function loginUser(req, res, next) {
     const [
       dbUser
     ] = await connection.query(
-      'SELECT id, nombre, email, contraseña, tipo_usuario, sedes_id  from usuarios where email=? AND activo=1',
+      'SELECT id, nombre, email, contraseña, tipo_usuario,foto, sedes_id  from usuarios where email=? AND activo=1',
       [email]
     );
 
@@ -50,7 +50,8 @@ async function loginUser(req, res, next) {
       name: user.nombre,
       role: user.tipo_usuario,
       email: user.email,
-      headquarter: user.sedes_id
+      headquarter: user.sedes_id,
+      avatar: user.foto
     };
     const token = jwt.sign(tokenPayload, process.env.SECRET, {
       expiresIn: '30d'
@@ -65,6 +66,7 @@ async function loginUser(req, res, next) {
       role: user.tipo_usuario,
       email: user.email,
       headquarter: user.sedes_id,
+      avatar: user.foto,
       data: {
         token
       }

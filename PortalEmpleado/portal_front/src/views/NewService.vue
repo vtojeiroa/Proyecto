@@ -155,7 +155,6 @@ export default {
           .then(function(response) {
             self.$router.go(-1);
 
-            console.log(response);
             //MOSTRAR UN MENSAJE CON EL RESULTADOS.
             Swal.fire({
               icon: "success",

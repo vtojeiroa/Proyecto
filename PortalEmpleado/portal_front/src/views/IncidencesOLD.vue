@@ -6,68 +6,68 @@
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
-    <!-- LISTA DE CLIENTES -->
-
-    <h2>Listado de incidencias</h2>
-
-    <!--  ANIMACIÓN DE CSS CARGANDO -->
-
     <div v-show="loading" class="lds-ripple">
       <div></div>
       <div></div>
     </div>
-    <div class="button-search">
-      <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
-      <button class="search" @click="openModalSearch()">Abrir el buscador</button>
+    <!-- LISTA DE CLIENTES -->
+    <main>
+      <h2>Listado de incidencias</h2>
 
-      <!-- BOTON PARA RECARGAR LAS INCIDENCIAS -->
+      <!--  ANIMACIÓN DE CSS CARGANDO -->
 
-      <button class="reset" @click="search = ''">reiniciar</button>
-    </div>
-    <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
-    <div class="modalSearch" v-show="modalSearch">
-      <div class="modalSearchBox">
-        <label for="bySearch">Buscador de clientes:</label>
-        <input
-          v-model="search"
-          id="search"
-          name="bySearch"
-          type="search"
-          placeholder="Introduce algún dato de la incidencia"
-        />
-        <br />
-        <button class="reset" @click="search = ''">Limpiar el buscador</button>
-        <button @click="closeModalSearch()">Cerrar el buscador</button>
+      <div class="button-search">
+        <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
+        <input class="button-go" value="Abrir" @click="openModalSearch()" />
+
+        <!-- BOTON PARA RECARGAR LAS INCIDENCIAS -->
+
+        <input class="button-back" value="Reiniciar" @click="search = ''" />
       </div>
-    </div>
-    <!-- VISTA DE LAS INCIDENCIAS -->
-    <clienteslista :clientes="filteredClients" v-on:edit="openModal" v-on:delete="deleteClients"></clienteslista>
-
-    <!-- MODAL PARA EDITAR CLIENTES -->
-    <div class="modal" v-show="modal">
-      <div class="modalBox" v-on:edit="showEditText">
-        <h2>Actualiza los datos</h2>
-        <label for="newName">Nombre:</label>
-        <input type="text" v-model="newName" placeholder="Introduce el nombre" />
-        <br />
-        <br />
-        <label for="newSurname">Apellido:</label>
-        <input type="text" v-model="newSurname" placeholder="Introduce el apellido" />
-        <br />
-        <br />
-        <label for="newCity">Ciudad:</label>
-        <input type="text" v-model="newCity" placeholder="Introduce la ciudad" />
-        <br />
-        <br />
-        <label for="newCompany">Empresa:</label>
-        <input type="text" v-model="newCompany" placeholder="Introduce la empresa" />
-        <br />
-        <br />
-        <button @click="updateClient()">Actualizar</button>
-        <button @click="closeModal()">Cerrar</button>
+      <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
+      <div class="modalSearch" v-show="modalSearch">
+        <div class="modalSearchBox">
+          <label for="bySearch">Buscador de clientes:</label>
+          <input
+            v-model="search"
+            id="search"
+            name="bySearch"
+            type="search"
+            placeholder="Introduce algún dato de la incidencia"
+          />
+          <br />
+          <button class="reset" @click="search = ''">Limpiar el buscador</button>
+          <button @click="closeModalSearch()">Cerrar el buscador</button>
+        </div>
       </div>
-    </div>
+      <!-- VISTA DE LAS INCIDENCIAS -->
+      <clienteslista :clientes="filteredClients" v-on:edit="openModal" v-on:delete="deleteClients"></clienteslista>
 
+      <!-- MODAL PARA EDITAR INCIDENCIAS -->
+      <div class="modal" v-show="modal">
+        <div class="modalBox" v-on:edit="showEditText">
+          <h2>Actualiza los datos</h2>
+          <label for="newName">Nombre:</label>
+          <input type="text" v-model="newName" placeholder="Introduce el nombre" />
+          <br />
+          <br />
+          <label for="newSurname">Apellido:</label>
+          <input type="text" v-model="newSurname" placeholder="Introduce el apellido" />
+          <br />
+          <br />
+          <label for="newCity">Ciudad:</label>
+          <input type="text" v-model="newCity" placeholder="Introduce la ciudad" />
+          <br />
+          <br />
+          <label for="newCompany">Empresa:</label>
+          <input type="text" v-model="newCompany" placeholder="Introduce la empresa" />
+          <br />
+          <br />
+          <input class="button-go" value="Actualizar" @click="updateClient()" />
+          <input class="button-back" value="Cerrar" @click="closeModal()" />/>
+        </div>
+      </div>
+    </main>
     <!-- VISTA DEL FOOTER -->
     <footercustom></footercustom>
   </div>

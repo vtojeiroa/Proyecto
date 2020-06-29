@@ -7,7 +7,7 @@ import vueHeadful from "vue-headful";
 
 Vue.component("vue-headful", vueHeadful);
 
-/* IMPORTO STARTRATING PARA TRABAJAR LAS VALORACIONES  */
+/* IMPORTO START RATING PARA TRABAJAR LAS VALORACIONES  */
 import StarRating from "vue-star-rating";
 
 Vue.component("star-rating", StarRating);

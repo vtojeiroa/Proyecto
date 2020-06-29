@@ -7,181 +7,184 @@
     <menucustom></menucustom>
 
     <!--  LINKS DATOS -->
-    <section class="links">
-      <article class="links">
+    <section class="linksAdmin">
+      <article class="linksAdmin">
         <menulinksAdmin></menulinksAdmin>
         <router-link :to="{ name: 'NewHeadquarter' }">Nueva Sede</router-link>
       </article>
     </section>
+    <main>
+      <!-- LISTA DE CLIENTES -->
+      <div class="headquarters">
+        <h2>Gestión de sedes</h2>
 
-    <!-- LISTA DE CLIENTES -->
-    <div class="headquarters">
-      <h2>Listado de sedes</h2>
+        <!--  ANIMACIÓN DE CSS CARGANDO -->
 
-      <!--  ANIMACIÓN DE CSS CARGANDO -->
-
-      <div v-show="loading" class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-      <div class="button-search">
-        <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
-        <button class="search" @click="openModalSearch()">Abrir el buscador</button>
-
-        <!-- BOTON PARA RECARGAR LOS CLIENTES -->
-
-        <button class="reset" @click="search = ''">reiniciar</button>
-      </div>
-      <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
-      <div class="modalSearch" v-show="modalSearch">
-        <div class="modalSearchBox">
-          <label for="bySearch">Buscador de sedes:</label>
-          <input
-            v-model="search"
-            id="search"
-            name="bySearch"
-            type="search"
-            placeholder="Introduce algún dato de la sede"
-          />
-          <br />
-          <button class="reset" @click="search = ''">Limpiar el buscador</button>
-          <button @click="closeModalSearch()">Cerrar el buscador</button>
+        <div v-show="loading" class="lds-ripple">
+          <div></div>
+          <div></div>
         </div>
-      </div>
-      <!-- VISTA DE LOS CLIENTES -->
-      <listheadquarters
-        :headquarters="filteredHeadquarters"
-        v-on:edit="openModal"
-        v-on:delete="deleteHeadquarters"
-      ></listheadquarters>
+        <h3>Buscador de sedes</h3>
+        <div class="buttons">
+          <!-- BOTON PARA RECARGAR -->
+          <input class="button-back" value="Reiniciar" @click="search = ''" />
+          <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
+          <input class="button-go" value="Abrir" @click="openModalSearch()" />
+        </div>
 
-      <!-- MODAL PARA EDITAR CLIENTES -->
-      <div class="modal" v-show="modal">
-        <div class="modalBox" v-on:edit="showEditText">
-          <h3>Actualiza los datos</h3>
-
-          <form id="form">
-            <table class="form-table">
-              <tbody>
-                <tr class="status">
-                  <td class="image">
-                    <label for="newStatus">Estado:</label>
-                  </td>
-                  <td class="tdFormField">
-                    <select name="newStatus" id="newStatus" v-model="newStatus">
-                      <option value>Selecciona...</option>
-                      <option value="1">Activo</option>
-                      <option value="0">Inactivo</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="name">
-                    <label for="newName">Nombre* :</label>
-                  </td>
-                  <td class="name">
-                    <input
-                      id="name"
-                      name="name"
-                      type="text"
-                      maxlength="255"
-                      autocomplete="off"
-                      v-model="newName"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td class="address">
-                    <label for="newAddress">Dirección :</label>
-                  </td>
-                  <td class="address">
-                    <input
-                      id="address"
-                      name="address"
-                      type="text"
-                      maxlength="255"
-                      autocomplete="off"
-                      v-model="newAddress"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td class="postal_code">
-                    <label for="newPostalCode">Código postal* :</label>
-                  </td>
-                  <td class="postal_code">
-                    <input
-                      id=" postal_code"
-                      name=" postal_code"
-                      type="text"
-                      maxlength="15"
-                      autocomplete="off"
-                      v-model="newPostalCode"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td class="location">
-                    <label for="newLocation">Localidad :</label>
-                  </td>
-                  <td class="location">
-                    <input
-                      id=" location"
-                      name=" location"
-                      type="text"
-                      maxlength="50"
-                      autocomplete="off"
-                      v-model="newLocation"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td class="province">
-                    <label for="newProvince">Provincia :</label>
-                  </td>
-                  <td class="province">
-                    <input
-                      id=" province"
-                      name=" province"
-                      type="text"
-                      maxlength="50"
-                      autocomplete="off"
-                      v-model="newProvince"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td class="newCountry">
-                    <label for="country">Pais :</label>
-                  </td>
-                  <td class="country">
-                    <input
-                      id=" country"
-                      name=" country"
-                      type="text"
-                      autocomplete="off"
-                      v-model="newCountry"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </form>
-
-          <div class="button-data">
-            <input type="button" class="button" value="Cerrar" @click="closeModal()" />
-
+        <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
+        <div class="modal" v-show="modalSearch">
+          <div class="modalBox">
+            <label for="bySearch">Buscador de sedes:</label>
             <input
-              id="button-data"
-              type="submit"
-              class="button"
-              value="Actualizar"
-              @click="updateHeadquarters()"
+              v-model="search"
+              id="search"
+              name="bySearch"
+              type="search"
+              placeholder="Introduce algún dato de la sede"
             />
+
+            <div class="buttons">
+              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input class="button-go" value="Limpiar" @click="search = ''" />
+            </div>
+          </div>
+        </div>
+        <!-- VISTA DE LOS CLIENTES -->
+        <listheadquarters
+          :headquarters="filteredHeadquarters"
+          v-on:edit="openModal"
+          v-on:delete="deleteHeadquarters"
+        ></listheadquarters>
+
+        <!-- MODAL PARA EDITAR CLIENTES -->
+        <div class="modal" v-show="modal">
+          <div class="modalBox" v-on:edit="showEditText">
+            <h3>Actualiza los datos</h3>
+
+            <form id="form">
+              <table class="form-table">
+                <tbody>
+                  <tr class="status">
+                    <td class="text">
+                      <label for="newStatus">Estado:</label>
+                    </td>
+                    <td class="data">
+                      <select name="newStatus" id="newStatus" v-model="newStatus">
+                        <option value>Selecciona...</option>
+                        <option value="1">Activo</option>
+                        <option value="0">Inactivo</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newName">Nombre* :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        maxlength="255"
+                        autocomplete="off"
+                        v-model="newName"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newAddress">Dirección :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        maxlength="255"
+                        autocomplete="off"
+                        v-model="newAddress"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newPostalCode">Código postal* :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" postal_code"
+                        name=" postal_code"
+                        type="text"
+                        maxlength="15"
+                        autocomplete="off"
+                        v-model="newPostalCode"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newLocation">Localidad :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" location"
+                        name=" location"
+                        type="text"
+                        maxlength="50"
+                        autocomplete="off"
+                        v-model="newLocation"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newProvince">Provincia :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" province"
+                        name=" province"
+                        type="text"
+                        maxlength="50"
+                        autocomplete="off"
+                        v-model="newProvince"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="country">Pais :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" country"
+                        name=" country"
+                        type="text"
+                        autocomplete="off"
+                        v-model="newCountry"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+
+            <div class="button-data">
+              <input type="button" class="button" value="Cerrar" @click="closeModal()" />
+
+              <input
+                id="button-data"
+                type="submit"
+                class="button"
+                value="Actualizar"
+                @click="updateHeadquarters()"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
     <!-- VISTA DEL FOOTER -->
     <footercustom></footercustom>
   </div>
@@ -266,7 +269,7 @@ export default {
     //FUNCION PARA ACTUALIZAR UN CLIENTE
     updateHeadquarters(data) {
       const token = getAuthToken();
-      /* const data = localStorage.getItem("id"); */
+
       let self = this;
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
@@ -291,8 +294,6 @@ export default {
             //recarga la página
             result => {
               self.closeModal();
-              self.getHeadquarters();
-              console.log(response);
             }
           );
         })
@@ -308,6 +309,7 @@ export default {
     },
     //FUNCION PARA ELIMINAR UN CLIENTE DE LA BBDD
     deleteHeadquarters(data) {
+      let self = this;
       const token = getAuthToken();
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       Swal.fire({
@@ -331,7 +333,7 @@ export default {
                 showConfirmButton: false,
                 timer: 2500
               }).then(result => {
-                location.reload();
+                self.getHeadquarters();
               });
             })
             //SI SALE MAL
@@ -354,6 +356,7 @@ export default {
     // CIERRA EL MODAL DESPUES DE EDITAR LOS DATOS DEL SERVICIO
     closeModal() {
       this.modal = false;
+      this.getHeadquarters();
     },
     //  ABRE EL MODAL DEL BUSCADOR
     openModalSearch() {
@@ -362,7 +365,6 @@ export default {
 
     //CIERRA EL MODAL DEL BUSCADOR
     closeModalSearch() {
-      this.search = "";
       this.modalSearch = false;
     }
   },
@@ -373,7 +375,7 @@ export default {
   computed: {
     filteredHeadquarters() {
       let result = this.headquarters;
-      console.log(result);
+
       if (!this.search) {
         return result;
       } else {
@@ -401,42 +403,6 @@ export default {
 };
 </script>
 <style scoped>
-.modalSearch {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalSearchBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-}
-
-.modalBox {
-  background: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .lds-ripple {
   display: inline-block;
   align-self: center;
@@ -471,48 +437,136 @@ export default {
   }
 }
 
-.home {
+.linksAdmin {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+article.linksAdmin a {
+  background: #142850;
+  color: #dae1e7;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 0.75rem;
+  line-height: 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  border: 2px solid #142850;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 1rem;
 }
 
-article {
+main {
+  background: #fff;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 0 4px 0 #d4d4d4;
+  box-sizing: border-box;
+  margin: 30px auto;
+  padding: 15px 30px;
+  width: 95%;
+  max-width: 900px;
+  border-radius: 10px;
+  padding-bottom: 81px;
+}
+body main section#content {
   display: flex;
   flex-direction: column;
-  align-self: center;
-  border: 2px solid red;
-  color: whitesmoke;
-  /*   width: 300px; */
   align-items: center;
-  padding: 0.5rem;
-  margin: 1rem;
 }
-label {
+body main section article ul.link {
+  align-self: center;
+  width: 100%;
+}
+body section article.links {
+  display: flex;
+  justify-content: center;
+}
+
+fieldset {
   padding: 1rem;
-  font-size: 1.25rem;
+  border-radius: 10px;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+ul li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0;
 }
 input {
-  padding: 0.5rem;
-  width: 17rem;
-  height: 1.75rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-button {
-  padding: 0.2rem;
-  width: 8rem;
-  background: red;
-  color: whitesmoke;
-  border-radius: 10px;
-  font-weight: bolder;
-}
-button:hover {
-  background: whitesmoke;
-  color: red;
-  font-weight: bolder;
-}
-button.search {
   text-align: center;
+}
+
+input.button-go {
+  padding: 0.75px;
+  vertical-align: middle;
+}
+h2 {
+  padding: 1rem 0;
+  text-align: center;
+}
+h3 {
+  padding: 1rem 0;
+  text-align: center;
+}
+fieldset.form {
+  border-radius: 0;
+  border: none;
+  border-bottom: 3px solid #142850;
+}
+
+ul li label,
+ul li select {
+  display: block;
+  align-self: initial;
+}
+.modalBox {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.modalBox label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #555;
+}
+.modalBox select,
+.modalBox input,
+.modalBox textarea {
+  background: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  font-weight: 500;
+  border: 1px solid #d4d4d4;
+  padding: 5px 10px;
+  transition: all 0.2s ease 0s;
+  width: 405px;
+}
+
+.modalBox input.button-go,
+.modalBox input.button-back {
+  min-width: 120px;
+  text-align: center;
+}
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.5rem 0;
 }
 </style>

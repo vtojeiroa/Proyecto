@@ -6,7 +6,7 @@
       <a class="link link-terms" href="/uso.html" target="_blank">Condiciones de uso</a>
     </nav>-->
 
-    <p>Copyright © 2020 Portal del Empleado • Todos los derechos reservados</p>
+    <p>Copyright © 2020 Portal del Empleado para HackaBoss • Todos los derechos reservados</p>
   </div>
 </template>
 
