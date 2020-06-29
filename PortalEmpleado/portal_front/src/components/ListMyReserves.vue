@@ -231,6 +231,7 @@ td.text {
 }
 td.data {
   font-weight: bold;
+  max-width: 200px;
 }
 
 input {

@@ -95,9 +95,9 @@ async function newReserve(req, res, next) {
     const reserveCode =
       result.insertId +
       '-' +
-      dataReserve.tipo.replace(/ /g, '') +
+      dataReserve.tipo.replace(/ /g, '').slice(0, 4) +
       '-' +
-      randomString(20);
+      randomString(10);
 
     const reserveCodeURL = `${process.env.PUBLIC_HOST}/reserves/code/${reserveCode}`;
 

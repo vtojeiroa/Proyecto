@@ -376,6 +376,7 @@ export default {
       this.status = "";
       this.dateInit = "";
       this.dateEnd = "";
+      this.search = "";
       this.getIncidences();
     },
     emptyFieldsVotes() {

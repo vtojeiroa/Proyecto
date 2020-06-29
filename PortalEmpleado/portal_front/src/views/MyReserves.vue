@@ -351,6 +351,7 @@ export default {
       this.dateEndReserve = "";
       this.dateInit = "";
       this.dateEnd = "";
+      this.search = "";
       this.getReserves();
     },
     showVoteView() {

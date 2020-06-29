@@ -621,7 +621,7 @@ input.button-go,
 .modalBox input.button-go,
 .modalBox input.button-back
  {
-  min-width: 100px;
+  min-width: 120px;
   text-align: center;
 }
 h1 {

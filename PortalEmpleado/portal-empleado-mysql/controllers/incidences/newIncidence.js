@@ -47,7 +47,11 @@ async function newIncidence(req, res, next) {
     // Send email with number of incidence
 
     const incidenceCode =
-      result.insertId + '-' + dataIncType.tipo + '-' + randomString(10);
+      result.insertId +
+      '-' +
+      dataIncType.tipo.slice(0, 4) +
+      '-' +
+      randomString(10);
 
     const incidenceCodeURL = `${process.env.PUBLIC_HOST}/incidences/code/${incidenceCode}`;
 

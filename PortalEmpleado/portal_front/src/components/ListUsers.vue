@@ -119,7 +119,7 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 2%;
-  min-width: 350px;
+  min-width: 400px;
 }
 
 tbody {
@@ -130,12 +130,13 @@ tbody {
 }
 tr {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 td.text {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: flex-start;
+  align-self: s;
 }
 td.data {
   font-weight: bold;
