@@ -23,7 +23,7 @@ async function searchIncidences(req, res, next) {
                ORDER BY fecha_registro DESC;` */
 
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
           (SELECT d.id FROM sedes d WHERE d.nombre LIKE ?))  AND (i.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?))  AND (i.fecha_registro >=  ? AND  i.fecha_registro <  ?) ORDER BY i.fecha_registro DESC;`,
 
         [
@@ -42,7 +42,7 @@ async function searchIncidences(req, res, next) {
                  WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;` */
 
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id  WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id  WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
            (SELECT d.id FROM sedes d WHERE d.nombre LIKE ?)) AND (i.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?)) ORDER BY i.fecha_registro DESC;`,
 
         [`%${headquarter}%`, `%${type}%`]
@@ -54,7 +54,7 @@ async function searchIncidences(req, res, next) {
                     FROM valoraciones v WHERE v.incidencias_id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.incidencias_id = i.id) AS fecha_registro_valoracion 
                      FROM incidencias i WHERE (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) AND (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC;` */
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id   WHERE (i.servicios_id = (SELECT d.id FROM servicios d WHERE d.tipo LIKE ?))
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id   WHERE (i.servicios_id = (SELECT d.id FROM servicios d WHERE d.tipo LIKE ?))
           AND (i.fecha_registro >=  ? AND  i.fecha_registro <  ?) ORDER BY i.fecha_registro DESC;`,
 
         [
@@ -73,7 +73,7 @@ async function searchIncidences(req, res, next) {
         ; `*/
 
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id  WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id  WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
           (SELECT d.id FROM sedes d WHERE d.nombre LIKE ?)) AND (i.fecha_registro >=  ? AND  i.fecha_registro <  ?) ORDER BY i.fecha_registro DESC;`,
 
         [
@@ -90,7 +90,7 @@ async function searchIncidences(req, res, next) {
                      FROM incidencias i WHERE usuarios_id IN (SELECT id FROM usuarios WHERE sedes_id IN (SELECT id FROM sedes WHERE nombre LIKE ?)) ORDER BY fecha_registro DESC;` */
 
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id   WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id   WHERE i.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
            (SELECT d.id FROM sedes d WHERE d.nombre LIKE ?))  ORDER BY i.fecha_registro DESC;`,
 
         [`%${headquarter}%`]
@@ -101,7 +101,7 @@ async function searchIncidences(req, res, next) {
                     FROM valoraciones v WHERE v.incidencias_id = i.id) AS comentario_valoracion, (SELECT v.fecha_registro FROM valoraciones v WHERE v.incidencias_id = i.id) AS fecha_registro_valoracion 
                      FROM incidencias i WHERE (servicios_id = (SELECT id FROM servicios WHERE tipo LIKE ?)) ORDER BY fecha_registro DESC;` */
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id WHERE (i.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?)) ORDER BY i.fecha_registro DESC;`,
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id WHERE (i.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?)) ORDER BY i.fecha_registro DESC;`,
 
         [`%${type}%`]
       );
@@ -113,7 +113,7 @@ async function searchIncidences(req, res, next) {
                       FROM incidencias i WHERE (fecha_registro >=  ? AND  fecha_registro <  ?) ORDER BY fecha_registro DESC
         ;` */
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id WHERE (i.fecha_registro >=  ? AND  i.fecha_registro <  ?) ORDER BY i.fecha_registro DESC;`,
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id WHERE (i.fecha_registro >=  ? AND  i.fecha_registro <  ?) ORDER BY i.fecha_registro DESC;`,
 
         [
           formatDateToDB(new Date(date_init)),
@@ -123,7 +123,7 @@ async function searchIncidences(req, res, next) {
     } else {
       result = await connection.query(
         `SELECT i.id ,(select s.tipo from servicios s where s.id = i.servicios_id) as tipo, i.usuarios_id, i.descripcion, i.activo, i.fecha_resolucion, i.comentario_resolucion, i.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i INNER JOIN valoraciones v ON v.incidencias_id=i.id  ORDER BY i.fecha_registro DESC;`
+         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM incidencias i LEFT JOIN valoraciones v ON v.incidencias_id=i.id  ORDER BY i.fecha_registro DESC;`
       );
     }
 

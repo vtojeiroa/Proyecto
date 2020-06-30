@@ -10,7 +10,10 @@
     <section class="links">
       <article class="links">
         <menulinks></menulinks>
-        <router-link :to="{ name: 'NewReserve' }">Nueva Reserva</router-link>
+        <div class="buttons">
+          <router-link class="button-go" :to="{ name: 'NewReserve' }">Nueva Reserva</router-link>
+          <input type="submit" class="button-go" value="Listar Reservas" @click="openAll()" />
+        </div>
       </article>
     </section>
     <!--  ANIMACIÓN DE CSS CARGANDO -->
@@ -20,10 +23,66 @@
       <div></div>
     </div>
 
-    <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
     <main id="container">
-      <section id="content">
+      <!-- MODAL PARA LISTAR TODAS LAS RESERVAS-->
+      <section v-show="seeAllReserves">
+        <article class="searchAll">
+          <h1>Reservas</h1>
+          <h2>Busqueda avanzada</h2>
+          <fieldset class="form">
+            <form class="form">
+              <ul class="searchall">
+                <li class="searchall">
+                  <label for="typeAll">Tipo de reserva:</label>
+                  <select id="typeAll" name="typeAll" v-model="typeAll">
+                    <option value>Selecciona...</option>
+                    <option value="vehiculo">Vehículo</option>
+                    <option value="sala de reunion">Sala de Reunión</option>
+                    <option value="Plaza en el comedor">Plaza en el comedor</option>
+                  </select>
+                </li>
+                <li class="headquarter">
+                  <label class="headquarter" for="headquarter">Sede :</label>
+                  <select name="headquarter" id="headquarter" v-model="headquarterAll">
+                    <option value>Selecciona...</option>
+                    <option value="coruña">Coruña</option>
+                    <option value="santiago">Santiago</option>
+                    <option value="malaga">Málaga</option>
+                    <option value="vigo">Vigo</option>
+                  </select>
+                </li>
+                <h3>Intervalo de fechas de inicio de la reserva</h3>
+                <li>
+                  <label for="from">Fecha inicial &#62;&#61;</label>
+                  <input type="datetime-local" id="fromAll" name="fromAll" v-model="dateInitAll" />
+                </li>
+                <li>
+                  <label for="to">Fecha final &#60;</label>
+                  <input type="datetime-local" id="toAll" name="toAll" v-model="dateEndAll" />
+                </li>
+              </ul>
+            </form>
+            <div class="buttons">
+              <input type="submit" class="button-back" value="Limpiar" @click="emptyFieldsAll()" />
+              <input
+                type="submit"
+                class="button-go"
+                value="Consultar"
+                @click="getReservesAll(typeAll, headquarterAll, dateInitAll, dateEndAll)"
+              />
+            </div>
+            <div class="buttons">
+              <input type="submit" class="button-back" value="Cerrar" @click="openAll()" />
+            </div>
+          </fieldset>
+          <h1 class="title">Reservas</h1>
+          <listallreserves :allreserves="allreserves"></listallreserves>
+        </article>
+      </section>
+      <section id="content" v-show="seeMyReserves">
+        <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
         <article class="search-input">
+          <h1>Mis reservas</h1>
           <h2>Busqueda avanzada</h2>
           <fieldset class="form">
             <form class="form">
@@ -141,6 +200,9 @@ import footercustom from "../components/FooterCustom.vue";
 //IMPORTO LA LISTA DE RESERVAS
 import listmyreserves from "../components/ListMyReserves.vue";
 
+//IMPORTO LA LISTA DE TODAS LAS RESERVAS
+import listallreserves from "../components/ListAllReserves.vue";
+
 //IMPORTO SWAL
 import Swal from "sweetalert2";
 
@@ -148,13 +210,21 @@ import { getAuthToken } from "../api/utils";
 
 export default {
   name: "MyReserves",
-  components: { menucustom, menulinks, footercustom, listmyreserves },
+  components: {
+    menucustom,
+    menulinks,
+    footercustom,
+    listmyreserves,
+    listallreserves
+  },
   data() {
     return {
       //ARRAY DE LAS RESERVAS DE LA BBDD
       myreserves: [],
+      allreserves: [],
       modal: false,
       modalSearch: false,
+      /*     modalAll: false, */
       loading: true,
       seeVote: false,
       seeReserves: true,
@@ -169,7 +239,13 @@ export default {
       dateInit: "",
       dateEnd: "",
       vote: "",
-      search: ""
+      search: "",
+      typeAll: "",
+      headquarterAll: "",
+      dateInitAll: "",
+      dateEndAll: "",
+      seeMyReserves: true,
+      seeAllReserves: false
     };
   },
   methods: {
@@ -307,6 +383,51 @@ export default {
       });
     },
 
+    getReservesAll(typeAll, headquarterAll, dateInitAll, dateEndAll) {
+      const token = getAuthToken();
+      /*  const data = localStorage.getItem("id"); */
+      let self = this;
+      axios
+        .get("http://localhost:3000/reserves", {
+          headers: {
+            authorization: `Bearer ${token}`
+          },
+          params: {
+            type: this.typeAll,
+            headquarter: this.headquarterAll,
+            date_init: this.dateInitAll,
+            date_end: this.dateEndAll
+          }
+        })
+        //SI SALE BIEN
+        .then(function(response) {
+          self.allreserves = response.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    },
+    emptyFieldsAll() {
+      this.typeAll = "";
+      this.headquarterAll = "";
+      this.dateInitAll = "";
+      this.dateEndAll = "";
+      this.searchAll = "";
+      this.getReservesAll();
+    },
+
+    //  CAMBIA LA VISTA PARA lISTAR TODAS LAS RESERVAS
+    openAll() {
+      this.seeMyReserves = !this.seeMyReserves;
+      this.seeAllReserves = !this.seeAllReserves;
+    },
+
     //FUNCIÓN PARA VOTAR LAS RESERVAS
     voteReserve(myreserve, voteDescription, rating) {
       const token = getAuthToken();
@@ -434,7 +555,8 @@ section article.links {
   justify-content: center;
   align-items: center;
 }
-section article.links a {
+section article.links a,
+section article.links input {
   background: #142850;
   color: #dae1e7;
   font-size: 0.75rem;
@@ -524,6 +646,12 @@ ul li select {
   display: block;
   align-self: initial;
 }
+
+.modal {
+  position: absolute;
+  overflow-y: auto;
+}
+
 .modalBox fieldset input {
   width: 405px;
 }
@@ -544,8 +672,9 @@ ul li select {
 }
 
 .modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
+.modalBox input.button-back,
+input.button-go {
+  min-width: 100px;
   text-align: center;
 }
 h1 {

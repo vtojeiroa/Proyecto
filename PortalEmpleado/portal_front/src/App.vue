@@ -170,6 +170,7 @@ div.buttonPassword {
   padding: 1rem;
   /*  flex-grow: 1; */
 }
+div.buttons a.button-go,
 div.buttons input,
 div.buttons input.button-go,
 input.button-go {
@@ -188,6 +189,7 @@ input.button-go {
 }
 div.buttons input.search:hover,
 div.buttons input.button-go:hover,
+div.buttons a.button-go:hover,
 input.button-go:hover {
   background: #dae1e7;
   color: #142850;

@@ -15,30 +15,17 @@
                     <td class="text">Id incidencia:</td>
                     <td class="data">{{myincidence.id }}</td>
                   </tr>
-                  <!--  <tr>
-                    <td class="text">Servicio:</td>
-                    <td class="data">{{myincidence.servicio }}</td>
-                  </tr>-->
+
                   <tr>
                     <td class="text">Tipo:</td>
                     <td class="data">{{myincidence.tipo }}</td>
                   </tr>
-                  <!--  <tr>
-                    <td class="text">Servicio:</td>
-                    <td class="data">{{ myincidence.servicios_id}}</td>
-                  </tr>-->
-                  <!-- <tr>
-                    <td class="text">usuario:</td>
-                    <td class="data">{{ myincidence.usuarios_id}}</td>
-                  </tr>-->
+
                   <tr>
                     <td class="text">Descripción:</td>
                     <td class="data">{{myincidence.descripcion }}</td>
                   </tr>
-                  <!-- <tr>
-                    <td class="text">Activo:</td>
-                    <td class="data">{{myincidence.activo }}</td>
-                  </tr>-->
+
                   <tr>
                     <td class="text">Fecha de resolución:</td>
                     <td class="data">{{myincidence.fecha_resolucion | moment("DD-MM-YYYY HH:MM") }}</td>

@@ -204,16 +204,15 @@ export default {
 </script>
 
 <style scoped>
-body main {
+body main#container {
   background: #fff;
-  margin: 10px;
   display: flex;
   justify-content: center;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
-  margin: 30px auto;
-  padding: 15px 30px;
-  width: 95%;
+  margin: 20px auto;
+  padding: 15px 15px;
+  width: 90%;
   max-width: 900px;
   border-radius: 10px;
   padding-bottom: 81px;

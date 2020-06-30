@@ -1,22 +1,27 @@
 <template>
-  <div class="home">
-    <!-- CAMBIAR TITULO DE LA PAGINA -->
-    <vue-headful title="Error 404" description="Página no encontrada." />
-    <!-- CAMBIAR TITULO DE LA PAGINA -->
+  <div id="app">
+    <div class="home">
+      <!-- CAMBIAR TITULO DE LA PAGINA -->
+      <vue-headful title="Error 404" description="Página no encontrada." />
+      <!-- CAMBIAR TITULO DE LA PAGINA -->
 
-    <!-- MENU -->
-    <menucustom></menucustom>
-    <!-- /MENU -->
-    <main>
-      <!-- CONTENIDO -->
-      <h1>Error 404</h1>
-      <h2>Página web no encontrada</h2>
-    </main>
-    <!-- /CONTENIDO -->
+      <!-- MENU -->
+      <menucustom></menucustom>
+      <!-- /MENU -->
+      <main>
+        <!-- CONTENIDO -->
+        <h1>Error 404</h1>
+        <h2>Hemos buscado a conciencia, pero no encotramos la página que deseas.</h2>
+        <h2>
+          <router-link :to="{ name: 'Login' }">¡¡¡Volvamos a empezar.!!!</router-link>
+        </h2>
+      </main>
+      <!-- /CONTENIDO -->
 
-    <!-- FOOTER -->
-    <footercustom></footercustom>
-    <!-- /FOOTER -->
+      <!-- FOOTER -->
+      <footercustom></footercustom>
+      <!-- /FOOTER -->
+    </div>
   </div>
 </template>
 
@@ -34,16 +39,33 @@ export default {
 };
 </script>
 <style scoped>
+#app {
+  background-image: url("../assets/Desierto2.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
 .home {
   text-align: center;
 }
-h1 {
-  color: #ff6666;
-  font-size: 80px;
-  padding: 8px 16px;
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
-p {
-  font-size: 12px;
+h1 {
+  color: #142850;
+  /*  color: #ff6666; */
+  font-size: 80px;
+  padding: 30px 16px;
+}
+h2 {
+  font-size: 35px;
   padding: 16px 0 0;
+}
+a {
+  color: #142850;
 }
 </style>

@@ -9,7 +9,10 @@
     <section class="links">
       <article class="links">
         <menulinks></menulinks>
-        <router-link :to="{ name: 'NewIncidence' }">Nueva Incidencia</router-link>
+        <div class="buttons">
+          <router-link class="button-go" :to="{ name: 'NewIncidence' }">Nueva Incidencia</router-link>
+          <input type="submit" class="button-go" value="Listar Incidencias" @click="openAll()" />
+        </div>
       </article>
     </section>
 
@@ -19,12 +22,69 @@
       <div></div>
       <div></div>
     </div>
-    <!-- LISTA DE CLIENTES -->
 
-    <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
     <main id="container">
-      <section id="content">
+      <!-- MODAL PARA LISTAR TODAS LAS RESERVAS-->
+      <section v-show="seeAllIncidences">
+        <article class="searchAll">
+          <h1>Mis Incidencias</h1>
+          <h2>Busqueda avanzada</h2>
+          <fieldset class="form">
+            <form class="form">
+              <ul class="searchall">
+                <li>
+                  <label for="typeAll">Tipo de incidencia:</label>
+                  <select id="typeAll" name="typeAll" v-model="typeAll">
+                    <option value>Selecciona...</option>
+                    <option value="informatica">Informática</option>
+                    <option value="limpieza">Limpieza</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                    <option value="seguridad">Seguridad</option>
+                    <option value="otras">Otras</option>
+                  </select>
+                </li>
+                <li class="headquarter">
+                  <label class="headquarter" for="headquarter">Sede :</label>
+                  <select name="headquarter" id="headquarter" v-model="headquarterAll">
+                    <option value>Selecciona...</option>
+                    <option value="coruña">Coruña</option>
+                    <option value="santiago">Santiago</option>
+                    <option value="malaga">Málaga</option>
+                    <option value="vigo">Vigo</option>
+                  </select>
+                </li>
+                <h3>Intervalo de fechas de inicio de la reserva</h3>
+                <li>
+                  <label for="from">Fecha inicial &#62;&#61;</label>
+                  <input type="datetime-local" id="fromAll" name="fromAll" v-model="dateInitAll" />
+                </li>
+                <li>
+                  <label for="to">Fecha final &#60;</label>
+                  <input type="datetime-local" id="toAll" name="toAll" v-model="dateEndAll" />
+                </li>
+              </ul>
+            </form>
+            <div class="buttons">
+              <input type="submit" class="button-back" value="Limpiar" @click="emptyFieldsAll()" />
+              <input
+                type="submit"
+                class="button-go"
+                value="Consultar"
+                @click="getIncidencesAll(typeAll, headquarterAll, dateInitAll, dateEndAll)"
+              />
+            </div>
+            <div class="buttons">
+              <input type="submit" class="button-back" value="Cerrar" @click="openAll()" />
+            </div>
+          </fieldset>
+          <h1 class="title">Incidencias</h1>
+          <listallincidences :allincidences="allincidences"></listallincidences>
+        </article>
+      </section>
+      <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
+      <section id="content" v-show="seeMyIncidences">
         <article class="search-input">
+          <h1>Incidencias</h1>
           <h2>Busqueda avanzada</h2>
           <fieldset class="form">
             <form>
@@ -158,8 +218,12 @@ import menulinks from "../components/MenuLinks.vue";
 //IMPORTO EL FOOTER
 import footercustom from "../components/FooterCustom.vue";
 
-//IMPORTO CLIENTESLISTA
+//IMPORTO LAS INCIDENCIAS DEL USUARIO
 import listmyincidences from "../components/ListMyIncidences.vue";
+
+//IMPORTO TODAS LAS INCIDENCIAS
+
+import listallincidences from "../components/ListAllIncidences.vue";
 
 //IMPORTO SWAL
 import Swal from "sweetalert2";
@@ -168,11 +232,18 @@ import { getAuthToken } from "../api/utils";
 
 export default {
   name: "MyIncidences",
-  components: { menucustom, menulinks, footercustom, listmyincidences },
+  components: {
+    menucustom,
+    menulinks,
+    footercustom,
+    listmyincidences,
+    listallincidences
+  },
   data() {
     return {
       //ARRAY DE LAS INCIDENCIAS DE LA BBDD
       myincidences: [],
+      allincidences: [],
       modal: false,
       modalSearch: false,
       loading: true,
@@ -189,7 +260,13 @@ export default {
       status: "",
       dateInit: "",
       dateEnd: "",
-      search: ""
+      search: "",
+      typeAll: "",
+      headquarterAll: "",
+      dateInitAll: "",
+      dateEndAll: "",
+      seeMyIncidences: true,
+      seeAllIncidences: false
     };
   },
   methods: {
@@ -332,6 +409,51 @@ export default {
       });
     },
 
+    getIncidencesAll(typeAll, headquarterAll, dateInitAll, dateEndAll) {
+      const token = getAuthToken();
+      /*  const data = localStorage.getItem("id"); */
+      let self = this;
+      axios
+        .get("http://localhost:3000/incidences", {
+          headers: {
+            authorization: `Bearer ${token}`
+          },
+          params: {
+            type: this.typeAll,
+            headquarter: this.headquarterAll,
+            date_init: this.dateInitAll,
+            date_end: this.dateEndAll
+          }
+        })
+        //SI SALE BIEN
+        .then(function(response) {
+          self.allincidences = response.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    },
+    emptyFieldsAll() {
+      this.typeAll = "";
+      this.headquarterAll = "";
+      this.dateInitAll = "";
+      this.dateEndAll = "";
+      this.searchAll = "";
+      this.getIncidencesAll();
+    },
+
+    //  CAMBIA LA VISTA PARA lISTAR TODAS LAS RESERVAS
+    openAll() {
+      this.seeMyIncidences = !this.seeMyIncidences;
+      this.seeAllIncidences = !this.seeAllIncidences;
+    },
+
     //FUNCIÓN PARA VOTAR LAS RESERVAS
     voteIncidence(myincidence, voteDescription, rating) {
       const token = getAuthToken();
@@ -464,7 +586,8 @@ section article.links {
   justify-content: center;
   align-items: center;
 }
-section article.links a {
+section article.links a,
+section article.links input {
   background: #142850;
   color: #dae1e7;
   font-size: 0.75rem;

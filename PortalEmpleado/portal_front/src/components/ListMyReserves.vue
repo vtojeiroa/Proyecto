@@ -68,7 +68,7 @@
                     <input
                       class="button-go"
                       @click="seeVoteEvent(index);openModalVote()"
-                      v-show="!myreserve.valoracion  "
+                      v-show="!myreserve.valoracion && (myreserve.fecha_hora_fin_reserva < moment() ) "
                       value="VOTAR"
                     />
                   </div>

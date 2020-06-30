@@ -40,12 +40,6 @@ export default {
       this.nombre = "";
       return logOut();
       this.$router.push("/");
-      /*  Swal.fire({
-        icon: "success",
-        title: `Desconexión realizada con éxito! Hasta pronto ${this.nombre}!!`,
-        showConfirmButton: false,
-        timer: 2500
-      }); */
     },
 
     // ESTA LOGADO??
