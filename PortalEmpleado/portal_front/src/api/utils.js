@@ -223,5 +223,5 @@ export function formatDateToFront(date) {
 
 // Format a date to DB
 export function formatDateToBD(date) {
-  return format(date, "dd-MM-yyyy");
+  return moment(date, "DD/MM/YYYY").format("YYYY-MM-DD");
 }

@@ -100,6 +100,7 @@ async function searchReserves(req, res, next) {
 
     res.send({
       status: 'ok',
+
       data: entries
     });
   } catch (error) {

@@ -108,7 +108,7 @@ async function listReserves(req, res, next) {
         [userId]
       );
     }
-
+    let date = new Date();
     const [entries] = result;
 
     if (!entries.length) {
@@ -120,6 +120,7 @@ async function listReserves(req, res, next) {
 
     res.send({
       status: 'ok',
+      date: date,
       data: entries
     });
   } catch (error) {

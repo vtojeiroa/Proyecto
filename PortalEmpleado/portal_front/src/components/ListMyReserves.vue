@@ -68,7 +68,7 @@
                     <input
                       class="button-go"
                       @click="seeVoteEvent(index);openModalVote()"
-                      v-show="!myreserve.valoracion && (myreserve.fecha_hora_fin_reserva < moment() ) "
+                      v-show=" (myreserve.fecha_hora_fin_reserva < date && !myreserve.valoracion ) "
                       value="VOTAR"
                     />
                   </div>
@@ -150,10 +150,10 @@ export default {
   props: {
     myreserves: Array,
     seeVote: Boolean,
-    seeReserves: Boolean
+    seeReserves: Boolean,
+    date: String
   },
   methods: {
-    //FUNCION QUE EMITE UN EVENTO PARA EDITAR UNA RESERVA
     editedEvent(index) {
       this.$emit("edited", index);
     },
@@ -161,6 +161,7 @@ export default {
     //FUNCION QUE EMITE UN EVENTO PARA BORRAR UNA RESERVA
     deleteReserveEvent(index) {
       let data = this.myreserves[index].id;
+      //FUNCION QUE EMITE UN EVENTO PARA EDITAR UNA RESERVA
       this.$emit("delete", data);
     },
     //FUNCION QUE EMITE UN EVENTO PARA VOTAR UNA RESERVA

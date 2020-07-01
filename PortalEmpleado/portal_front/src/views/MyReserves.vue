@@ -72,7 +72,7 @@
               />
             </div>
             <div class="buttons">
-              <input type="submit" class="button-back" value="Cerrar" @click="openAll()" />
+              <input type="submit" class="button-back" value="Cerrar" @click="openAll() " />
             </div>
           </fieldset>
           <h1 class="title">Reservas</h1>
@@ -142,6 +142,7 @@
             :seeReserves="seeReserves"
             :seeVote="seeVote"
             :voteDescription="voteDescription"
+            :date="date"
             v-on:edited="openModal"
             v-on:edit="updateReserve"
             v-on:delete="deleteReserves"
@@ -206,7 +207,7 @@ import listallreserves from "../components/ListAllReserves.vue";
 //IMPORTO SWAL
 import Swal from "sweetalert2";
 
-import { getAuthToken } from "../api/utils";
+import { getAuthToken, formatDateToBD } from "../api/utils";
 
 export default {
   name: "MyReserves",
@@ -224,7 +225,7 @@ export default {
       allreserves: [],
       modal: false,
       modalSearch: false,
-      /*     modalAll: false, */
+      date: "",
       loading: true,
       seeVote: false,
       seeReserves: true,
@@ -269,6 +270,7 @@ export default {
         //SI SALE BIEN
         .then(function(response) {
           self.myreserves = response.data.data;
+          self.date = response.data.date;
         })
         //SI SALE MAL
         .catch(error =>
@@ -385,7 +387,7 @@ export default {
 
     getReservesAll(typeAll, headquarterAll, dateInitAll, dateEndAll) {
       const token = getAuthToken();
-      /*  const data = localStorage.getItem("id"); */
+
       let self = this;
       axios
         .get("http://localhost:3000/reserves", {
