@@ -14,15 +14,13 @@
             <table>
               <tr>
                 <th style="width: 150px;">Valoración</th>
-                <th style="width: 500px;">Comentario</th>
+                <th style="width: 300px;">Comentario</th>
                 <th style="width: 150px;">Fecha de registro</th>
               </tr>
               <tr>
-                <td>{{ searchinc.valoracion }}</td>
-                <td>{{ searchinc.comentario_valoracion }}</td>
-                <td>
-                  <span>{{searchinc.fecha_registro | moment("DD-MM-YYYY HH:mm")}}</span>
-                </td>
+                <td style="width: 150px;">{{ searchinc.valoracion }}</td>
+                <td style="width: 300px;">{{ searchinc.comentario_valoracion }}</td>
+                <td style="width: 150px;">{{searchinc.fecha_registro | moment("DD-MM-YYYY HH:mm")}}</td>
               </tr>
             </table>
           </div>
@@ -52,11 +50,13 @@ export default {
 .main section {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   justify-content: center;
 }
 section.valorations {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
@@ -76,11 +76,21 @@ article.datavaloration {
   border-radius: 10px;
   text-align: center;
 }
+tr {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
 
 h1 {
   font-size: 15px;
   font-weight: bolder;
   text-decoration-line: underline;
+}
+
+tr,
+th {
+  width: ;
 }
 
 p {

@@ -2,7 +2,10 @@
   <div>
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful title="Nuevo Servicio" description="Página de registro de un nuevo servicio" />
+    <vue-headful
+      title="Nuevo Servicio"
+      description="Página de registro de un nuevo servicio"
+    />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -22,11 +25,15 @@
             <table class="form-table">
               <tbody>
                 <tr>
-                  <td class="section">
+                  <td class="text">
                     <label for="newSection">Tipo de servicio:</label>
                   </td>
-                  <td>
-                    <select name="newSection" id="newSection" v-model="newSection">
+                  <td class="data">
+                    <select
+                      name="newSection"
+                      id="newSection"
+                      v-model="newSection"
+                    >
                       <option value>Selecciona...</option>
                       <option value="Reserva">Reserva</option>
                       <option value="Incidencia">Incidencia</option>
@@ -34,10 +41,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="type">
+                  <td class="text">
                     <label for="newType">Nombre del servicio:</label>
                   </td>
-                  <td class="newType">
+                  <td class="data">
                     <input
                       id="newType"
                       name="newType"
@@ -49,17 +56,19 @@
                 </tr>
 
                 <tr>
-                  <td class="description">
-                    <label for="newDescription">Descripción del servicio:</label>
+                  <td class="text">
+                    <label for="newDescription"
+                      >Descripción del servicio:</label
+                    >
                   </td>
-                  <td class="description">
+                  <td class="data">
                     <textarea
                       id="description"
                       name="description"
                       type="text"
                       maxlength="500"
                       rows="5"
-                      cols="40"
+                      cols="30"
                       v-model="newDescription"
                     />
                   </td>
@@ -68,13 +77,18 @@
             </table>
           </form>
 
-          <div class="button-data">
-            <input type="button" class="button" value="Cancelar" @click="$router.go(-1)" />
+          <div class="buttons">
+            <input
+              type="button"
+              class="button-back"
+              value="Cancelar"
+              @click="$router.go(-1)"
+            />
 
             <input
               id="button"
               type="submit"
-              class="button"
+              class="button-go"
               value="Registrar"
               @click="registerService()"
             />
@@ -108,7 +122,7 @@ import {
   getUserName,
   isLoggedIn,
   checkAdmin,
-  setName
+  setName,
 } from "../api/utils";
 
 export default {
@@ -116,7 +130,7 @@ export default {
   components: {
     menucustom,
     menulinksadmin,
-    footercustom
+    footercustom,
   },
   data() {
     return {
@@ -124,7 +138,7 @@ export default {
       correctData: false,
       newType: "",
       newSection: "",
-      newDescription: ""
+      newDescription: "",
     };
   },
   methods: {
@@ -150,7 +164,7 @@ export default {
           .post("http://localhost:3000/services", {
             section: self.newSection,
             type: self.newType,
-            description: self.newDescription
+            description: self.newDescription,
           })
           .then(function(response) {
             self.$router.go(-1);
@@ -160,15 +174,15 @@ export default {
               icon: "success",
               title: "Servicio registrado correctamente.",
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             });
           })
-          .catch(error =>
+          .catch((error) =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             })
           );
       } else {
@@ -176,11 +190,11 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -196,136 +210,89 @@ body main {
   padding: 15px 30px;
   width: 95%;
   max-width: 900px;
-}
-body main section#content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section#content h2 {
-  color: #333;
-  font-weight: 800;
-  font-size: 29px;
-  align-self: flex-start;
-  margin-left: 10px;
-}
-body main section#content h3 {
-  color: #333;
-  font-weight: 500;
-  font-size: 16px;
-  text-align: left;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 10px;
-}
-body main section#content p.error {
-  font-size: 14px;
-  color: red;
-  align-self: center;
-  padding-top: 15px;
-}
-body main section#content p {
-  font-size: 11px;
-  display: block;
-  align-self: flex-end;
-  color: #8b8b8b;
-  margin-right: 20px;
+  border-radius: 10px;
+  padding-bottom: 81px;
 }
 
-body main section form fieldset {
+fieldset.form {
   border: none;
-}
-body main section form fieldset ul {
-  list-style: none;
-  text-align: start;
-  padding: 10px 0px;
+  padding: 1rem;
+  border-radius: 10px;
+
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+}
+
+h2 {
+  padding: 1rem 0;
+  margin-left: 20px;
+}
+h3 {
+  padding: 1rem 0;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 0.5rem 0;
+}
+table {
+  display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
 }
-body main section form fieldset ul li {
-  padding: 5px;
+
+tbody {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+tr {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-body main section form fieldset ul li label {
+td {
+  padding: 0.5rem 0.2rem;
+}
+td.text {
+  text-transform: uppercase;
   font-size: 14px;
+}
+td.data {
+  font-weight: bold;
+  text-align: end;
+  align-self: flex-end;
+}
+
+label {
+  font-size: 15px;
+}
+input#newType {
   padding: 5px;
-  font-weight: 700;
-  color: #333;
+  font-size: 15px;
+  width: 235px;
 }
 
-body main section form fieldset ul li input {
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid #d4d4d4;
-  color: #a7a7a7;
-  font-size: 1rem;
-  font-weight: 500px;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 300px;
-  margin-left: 5px;
+select,
+textarea {
+  padding: 5px;
+  font-size: 15px;
 }
 
-body main section form fieldset ul li.checkbox {
-  margin-top: 15px;
-  text-align: left;
-  display: block;
-  align-self: center;
+select {
+  min-width: 235px;
 }
-body main section form fieldset ul li.checkbox input {
-  width: 1rem;
-  vertical-align: middle;
-  margin: 0px 5px 0px 0px;
-  color: #8b8b8b;
-  border: 1px solid #4d4d4d;
-  cursor: pointer;
-}
-body main section form fieldset ul li.checkbox label {
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-body main section form fieldset ul li.checkbox a {
-  color: #333;
-  text-decoration: none;
-  font-weight: 700;
-}
-body main section form fieldset ul li.button {
-  padding-top: 20px;
-  text-align: center;
-  display: block;
-}
-body main section form fieldset ul li.button input {
-  background: #142850;
-  color: #dae1e7;
-  font-size: 1rem;
-  font-weight: 900;
-  padding: 1rem;
-  line-height: 15px;
-  border-radius: 50px;
-  cursor: pointer;
-  width: 100px;
-  border: none;
-}
-
-body main section form fieldset ul li.button input[type="button"] {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
-}
-
-body main section form fieldset ul li.button input[type="button"]:hover {
-  background: #142850;
-  color: #dae1e7;
-}
-body main section form fieldset ul li.button input[type="submit"]:hover {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
-}
-body main section form fieldset ul li.headquarter {
+div.buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 </style>

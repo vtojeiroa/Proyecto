@@ -55,13 +55,16 @@
                 <td class="data">{{ dataUsers.headquarters }}</td>
               </tr>
             </tbody>
-            <div class="buttons">
-              <input class="button-go" value="EDITAR" @click="editUserEvent()" />
-            </div>
+            <p>
+              <input
+                class="button-go"
+                value="EDITAR"
+                @click="editUserEvent()"
+              />
+            </p>
           </table>
           <p>
-            ¿
-            Quieres darte de baja del Portal de Empleado? pincha
+            ¿ Quieres darte de baja del Portal de Empleado? pincha
             <input
               type="submit"
               value="Baja"
@@ -92,8 +95,8 @@ export default {
     dropUserEvent(index) {
       let data = this.dataUsers[index];
       this.$emit("drop", data);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -129,6 +132,7 @@ td.text {
   text-transform: uppercase;
   font-size: 14px;
   align-self: flex-start;
+  padding-right: 20px;
 }
 td.data {
   font-weight: bold;
@@ -136,6 +140,7 @@ td.data {
 img {
   width: 175px;
   border-radius: 10px;
+  margin-right: 20px;
 }
 input {
   text-align: center;
@@ -143,5 +148,10 @@ input {
 input.button-go {
   padding: 0.75px;
   vertical-align: middle;
+  align-self: center;
+}
+p {
+  margin-top: 10px;
+  text-align: center;
 }
 </style>

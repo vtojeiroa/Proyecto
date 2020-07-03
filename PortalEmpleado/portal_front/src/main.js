@@ -15,13 +15,10 @@ Vue.component("star-rating", StarRating);
 /* IMPORTO VUE-MOMENT PARA TRABAJAR LAS FECHAS  */
 const moment = require("moment");
 require("moment/locale/es");
-Vue.use(require("vue-moment"));
 
-/* IMPORTO VUE-DATE-FNS PARA GESTIONAR LAS FECHAS*/
-
-import VueDateFns from "vue-date-fns";
-
-Vue.use(VueDateFns);
+Vue.use(require("vue-moment"), {
+  moment,
+});
 
 Vue.config.productionTip = false;
 

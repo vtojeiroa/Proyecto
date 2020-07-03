@@ -18,7 +18,9 @@
     <main>
       <!-- LISTA DE INCIDENCIAS PENDIENTES DE RESPUESTA -->
       <div class="maintenance">
-        <h2>Incidencias pendientes de respuesta</h2>
+        <h2>Gestión de incidencias</h2>
+
+        <h3>Registro de la solución dada a la incidencia</h3>
 
         <!--  ANIMACIÓN DE CSS CARGANDO -->
 
@@ -47,13 +49,20 @@
             />
             <br />
             <div class="buttons">
-              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input
+                class="button-back"
+                value="Cerrar"
+                @click="closeModalSearch()"
+              />
               <input class="button-go" value="Limpiar" @click="search = ''" />
             </div>
           </div>
         </div>
         <!-- VISTA DE LAS INCIDENCIAS PENDIENTES DE CERRAR -->
-        <closeincidences :closeincidences="filteredCloseIncidences" v-on:close="openModal"></closeincidences>
+        <closeincidences
+          :closeincidences="filteredCloseIncidences"
+          v-on:close="openModal"
+        ></closeincidences>
 
         <!-- MODAL PARA REPONDER LA INCIDENCIA-->
         <div class="modal" v-show="modal">
@@ -72,7 +81,11 @@
             <br />
             <div class="buttons">
               <input class="button-back" value="Cerrar" @click="closeModal()" />
-              <input class="button-go" value="Responder" @click="closeIncidences()" />
+              <input
+                class="button-go"
+                value="Responder"
+                @click="closeIncidences()"
+              />
             </div>
           </div>
         </div>
@@ -117,7 +130,7 @@ export default {
       id: null,
       newId: "",
       newDescription: "",
-      modalSearch: false
+      modalSearch: false,
     };
   },
   methods: {
@@ -128,20 +141,20 @@ export default {
       axios
         .get("http://localhost:3000/incidences/active", {
           headers: {
-            authorization: `Bearer ${token}`
-          }
+            authorization: `Bearer ${token}`,
+          },
         })
         //SI SALE BIEN
         .then(function(response) {
           self.closeincidences = response.data.data;
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -158,7 +171,7 @@ export default {
       let self = this;
       axios
         .put("http://localhost:3000/incidences/admin/" + this.newId, {
-          description: self.newDescription
+          description: self.newDescription,
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -167,10 +180,10 @@ export default {
             icon: "success",
             title: `Acabas de registrar la respuesta a la incidencia. `,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           }).then(
             //recarga la página
-            result => {
+            (result) => {
               self.closeModal();
               self.getCloseIncidences();
               self.emptyFields();
@@ -178,12 +191,12 @@ export default {
           );
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -209,7 +222,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     closeModalSearch() {
       this.modalSearch = false;
-    }
+    },
   },
   created() {
     this.getCloseIncidences();
@@ -218,12 +231,12 @@ export default {
   computed: {
     filteredCloseIncidences() {
       let result = this.closeincidences;
-      console.log(result);
+
       if (!this.search) {
         return result;
       } else {
         result = result.filter(
-          closeincidence =>
+          (closeincidence) =>
             closeincidence.id === parseInt(this.search) ||
             closeincidence.descripcion
               .toLowerCase()
@@ -236,13 +249,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún cliente",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
         }
         return result;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -284,6 +297,7 @@ body main {
   background: #fff;
   margin: 10px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
@@ -308,27 +322,8 @@ body section article.links {
   justify-content: center;
 }
 
-fieldset {
-  padding: 1rem;
-  border-radius: 10px;
-}
-
-ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-ul li {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2rem 0;
-}
-input {
-  text-align: center;
+tr {
+  vertical-align: middle;
 }
 
 input.button-go {
@@ -336,46 +331,81 @@ input.button-go {
   vertical-align: middle;
 }
 h2 {
+  text-transform: uppercase;
   padding: 1rem 0;
   text-align: center;
-}
-h3 {
-  padding: 1rem 0;
-  text-align: center;
-}
-fieldset.form {
-  border-radius: 0;
-  border: none;
-  border-bottom: 3px solid #142850;
+  font-size: 28px;
 }
 
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
+h3 {
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem 0;
 }
-.modalBox {
+
+input.button-go,
+input.button-back {
+  text-align: center;
+}
+.modalBox input.button-go,
+.modalBox input.button-back {
+  text-align: center;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalBox {
+  background: #dae1e7;
+  color: #142850;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+.modalBox input {
+  width: 405px;
+}
+
+.modalBox fieldset form table tbody tr {
+  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
 }
 
-.modalBox label {
+.modalBox fieldset form form table tbody td label,
+.modalBox div label {
   font-size: 18px;
   font-weight: 700;
   color: #555;
 }
-.modalBox select,
-.modalBox input,
-.modalBox textarea {
+.modalBox fieldset form form table tbody td select,
+.modalBox fieldset form form table tbody td input,
+.modalBox input {
   background: rgba(255, 255, 255, 0.5);
   font-size: 16px;
   font-weight: 500;
   border: 1px solid #d4d4d4;
   padding: 5px 10px;
   transition: all 0.2s ease 0s;
-  width: 405px;
+  width: 350px;
 }
 
 .modalBox input.button-go,

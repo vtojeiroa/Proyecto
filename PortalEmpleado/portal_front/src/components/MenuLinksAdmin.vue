@@ -13,7 +13,9 @@
             <router-link :to="{ name: 'Services' }">Servicios</router-link>
           </li>
           <li>
-            <router-link :to="{ name: 'Assignments' }">Asignaciones</router-link>
+            <router-link :to="{ name: 'Assignments' }"
+              >Asignaciones</router-link
+            >
           </li>
           <li>
             <router-link :to="{ name: 'Headquarters' }">Sedes</router-link>
@@ -30,13 +32,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    /*  @click="showUsersEvent"  */
-    //FUNCION QUE EMITE UN EVENTO PARA EDITAR UN CLIENTE
-    /*  showUsersEvent(index) {
-      this.$emit("showusers");
-    } */
-  }
+  methods: {},
 };
 </script>
 
@@ -52,7 +48,7 @@ ul {
 }
 li {
   background: #142850;
-  border-radius: 3px;
+  border-radius: 6px;
   box-shadow: 0 1px 5px -1px #333333;
   height: 45px;
   list-style: none;
@@ -70,14 +66,23 @@ li {
   border: none;
   border-bottom: 5px solid #999;
   color: #999;
-  font-size: 16px;
+  font-size: 20px;
   text-transform: uppercase;
   transition: all 0.3s ease 0s;
-  width: inherit;
-  padding: 0 30px;
+  width: 170px;
+  margin: 8px;
+  padding: 10px;
 }
+
 a {
   color: #dae1e7;
   text-decoration: none;
+}
+a.router-link-exact-active {
+  color: #00909e;
+}
+
+a:hover {
+  color: #00909e;
 }
 </style>

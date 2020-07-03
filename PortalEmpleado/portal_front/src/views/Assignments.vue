@@ -13,7 +13,9 @@
     <section class="linksAdmin">
       <article class="linksAdmin">
         <menulinksAdmin></menulinksAdmin>
-        <router-link :to="{ name: 'NewAssignments' }">Nueva asignación</router-link>
+        <router-link :to="{ name: 'NewAssignments' }"
+          >Nueva asignación</router-link
+        >
       </article>
     </section>
     <main>
@@ -47,7 +49,11 @@
               placeholder="Introduce algún dato de la asignación"
             />
             <div class="buttons">
-              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input
+                class="button-back"
+                value="Cerrar"
+                @click="closeModalSearch()"
+              />
               <input class="button-go" value="Limpiar" @click="search = ''" />
             </div>
           </div>
@@ -87,7 +93,12 @@
             </form>
 
             <div class="button-data">
-              <input type="button" class="button" value="Cerrar" @click="closeModal()" />
+              <input
+                type="button"
+                class="button"
+                value="Cerrar"
+                @click="closeModal()"
+              />
 
               <input
                 id="button-data"
@@ -142,7 +153,7 @@ export default {
       newId: "",
       newHeadquarter: "",
       newType: "",
-      newDisponibility: ""
+      newDisponibility: "",
     };
   },
   methods: {
@@ -158,12 +169,12 @@ export default {
           self.assignments = response.data.data;
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -184,7 +195,7 @@ export default {
         .put("http://localhost:3000/assignment/" + this.newId, {
           headquarter: self.newHeadquarter,
           service_type: self.newType,
-          disponibility: self.newDisponibility
+          disponibility: self.newDisponibility,
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -193,10 +204,10 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos de la asignación `,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           }).then(
             //recarga la página
-            result => {
+            (result) => {
               self.closeModal();
               self.getAssignments();
               console.log(response);
@@ -204,12 +215,12 @@ export default {
           );
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -225,8 +236,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!"
-      }).then(result => {
+        confirmButtonText: "Si, bórralo!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/assignment/" + data)
@@ -237,18 +248,18 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar la assignación `,
                 showConfirmButton: false,
-                timer: 2500
-              }).then(result => {
+                timer: 2500,
+              }).then((result) => {
                 self.getAssignments();
               });
             })
             //SI SALE MAL
-            .catch(error =>
+            .catch((error) =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500
+                timer: 2500,
               })
             );
         }
@@ -272,7 +283,7 @@ export default {
     closeModalSearch() {
       this.search = "";
       this.modalSearch = false;
-    }
+    },
   },
   created() {
     this.getAssignments();
@@ -286,7 +297,7 @@ export default {
         return result;
       } else {
         result = result.filter(
-          assignment =>
+          (assignment) =>
             assignment.id === parseInt(this.search) ||
             assignment.sede.toLowerCase().includes(this.search.toLowerCase()) ||
             assignment.tipo.toLowerCase().includes(this.search.toLowerCase())
@@ -297,13 +308,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún servicio",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
         }
         return result;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -472,5 +483,8 @@ h1 {
   text-align: center;
   font-size: 2rem;
   padding: 0.5rem 0;
+}
+section article a:hover {
+  color: #00909e;
 }
 </style>

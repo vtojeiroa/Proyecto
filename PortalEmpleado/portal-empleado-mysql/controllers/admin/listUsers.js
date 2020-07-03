@@ -24,7 +24,8 @@ async function listUsers(req, res, next) {
       result = await connection.query(`SELECT * FROM usuarios`);
     } */
 
-    result = await connection.query(`SELECT * FROM usuarios`);
+    result = await connection.query(`SELECT id, tipo_usuario,activo,nombre,apellidos,num_doc_identidad,foto,email,fecha_actualizacion_contraseña, direccion, codigo_postal, localidad, provincia,pais,
+    telefono,fecha_nacimiento,fecha_registro,ultima_actualizacion, (SELECT nombre FROM sedes WHERE id = sedes_id) AS sedes_id FROM usuarios`);
 
     let [users] = result;
 

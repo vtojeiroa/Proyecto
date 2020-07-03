@@ -2,7 +2,10 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful title="Services" description="Página que lista los servicios" />
+    <vue-headful
+      title="Services"
+      description="Página que lista los servicios"
+    />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -45,7 +48,11 @@
               placeholder="Introduce algún dato del servicio"
             />
             <div class="buttons">
-              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input
+                class="button-back"
+                value="Cerrar"
+                @click="closeModalSearch()"
+              />
               <input class="button-go" value="Limpiar" @click="search = ''" />
             </div>
           </div>
@@ -77,13 +84,25 @@
             </select>
 
             <label for="newType">Tipo:</label>
-            <input type="text" v-model="newType" placeholder="Introduce el tipo" />
+            <input
+              type="text"
+              v-model="newType"
+              placeholder="Introduce el tipo"
+            />
 
             <label for="newDescription">Descripción:</label>
-            <input type="text" v-model="newDescription" placeholder="Introduce la descripción" />
+            <input
+              type="text"
+              v-model="newDescription"
+              placeholder="Introduce la descripción"
+            />
             <div class="buttons">
               <input class="button-back" value="Cerrar" @click="closeModal()" />
-              <input class="button-go" value="Actualizar" @click="updateServices()" />
+              <input
+                class="button-go"
+                value="Actualizar"
+                @click="updateServices()"
+              />
             </div>
           </div>
         </div>
@@ -134,7 +153,7 @@ export default {
       newDescription: "",
       /*  newCreation: "", */
       newHeadquarter: "",
-      modalSearch: false
+      modalSearch: false,
     };
   },
   methods: {
@@ -146,20 +165,20 @@ export default {
       axios
         .get("http://localhost:3000/services", {
           headers: {
-            authorization: `Bearer ${token}`
-          }
+            authorization: `Bearer ${token}`,
+          },
         })
         //SI SALE BIEN
         .then(function(response) {
           self.services = response.data.data;
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -183,7 +202,7 @@ export default {
           active: self.newStatus,
           section: self.newSection,
           type: self.newType,
-          description: self.newDescription
+          description: self.newDescription,
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -192,22 +211,22 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos del servicio `,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           }).then(
             //recarga la página
-            result => {
+            (result) => {
               self.closeModal();
               self.getServices();
             }
           );
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -223,8 +242,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!"
-      }).then(result => {
+        confirmButtonText: "Si, bórralo!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/services/" + data)
@@ -235,18 +254,18 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar el servicio `,
                 showConfirmButton: false,
-                timer: 2500
-              }).then(result => {
+                timer: 2500,
+              }).then((result) => {
                 self.getServices();
               });
             })
             //SI SALE MAL
-            .catch(error =>
+            .catch((error) =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500
+                timer: 2500,
               })
             );
         }
@@ -269,7 +288,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     closeModalSearch() {
       this.modalSearch = false;
-    }
+    },
   },
   created() {
     this.getServices();
@@ -278,12 +297,11 @@ export default {
   computed: {
     filteredServices() {
       let result = this.services;
-      console.log(result);
       if (!this.search) {
         return result;
       } else {
         result = result.filter(
-          service =>
+          (service) =>
             service.descripcion
               .toLowerCase()
               .includes(this.search.toLowerCase()) ||
@@ -296,13 +314,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún servicio",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
         }
         return result;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -471,5 +489,9 @@ h1 {
   text-align: center;
   font-size: 2rem;
   padding: 0.5rem 0;
+}
+
+section article a:hover {
+  color: #00909e;
 }
 </style>

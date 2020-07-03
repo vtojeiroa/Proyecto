@@ -199,7 +199,7 @@ const createtypeSchema = Joi.object().keys({
 });
 
 const createServiceSchema = Joi.object().keys({
-  active: activeSchema.required(),
+  active: activeSchema,
   section: serviceSchema.required(),
   type: typeSchema.required(),
   description: descriptionSchema.required()

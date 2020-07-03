@@ -4,12 +4,16 @@
       <section>
         <div class="allIncidences">
           <article class="AllIncidences">
-            <div class="allIncidence" v-for="allincidence in allincidences" :key="allincidence.id">
+            <div
+              class="allIncidence"
+              v-for="allincidence in allincidences"
+              :key="allincidence.id"
+            >
               <table>
                 <tbody>
                   <tr>
                     <td class="text">Id incidencia:</td>
-                    <td class="data">{{allincidence.id }}</td>
+                    <td class="data">{{ allincidence.id }}</td>
                   </tr>
                   <!--  <tr>
                     <td class="text">Servicio:</td>
@@ -17,7 +21,7 @@
                   </tr>-->
                   <tr>
                     <td class="text">Tipo:</td>
-                    <td class="data">{{allincidence.tipo }}</td>
+                    <td class="data">{{ allincidence.tipo }}</td>
                   </tr>
                   <!--  <tr>
                     <td class="text">Servicio:</td>
@@ -29,41 +33,57 @@
                   </tr>-->
                   <tr>
                     <td class="text">Descripción:</td>
-                    <td class="data">{{allincidence.descripcion }}</td>
+                    <td class="data">{{ allincidence.descripcion }}</td>
                   </tr>
                   <!-- <tr>
                     <td class="text">Activo:</td>
                     <td class="data">{{allincidence.activo }}</td>
                   </tr>-->
-                  <tr>
+                  <tr v-show="allincidence.fecha_resolucion">
                     <td class="text">Fecha de resolución:</td>
-                    <td class="data">{{allincidence.fecha_resolucion | moment("DD-MM-YYYY HH:MM") }}</td>
+                    <td class="data">
+                      {{
+                        allincidence.fecha_resolucion
+                          | moment("DD-MM-YYYY HH:MM")
+                      }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="allincidence.comentario_resolucion">
                     <td class="text">Comentario:</td>
-                    <td class="data">{{allincidence.comentario_resolucion }}</td>
+                    <td class="data">
+                      {{ allincidence.comentario_resolucion }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="allincidence.valoracion">
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{allincidence.valoracion }}</td>
+                    <td class="data">{{ allincidence.valoracion }}</td>
                   </tr>
-                  <tr>
+                  <tr v-show="allincidence.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>
-                    <td class="data">{{ allincidence.comentario_valoracion }}</td>
+                    <td class="data">
+                      {{ allincidence.comentario_valoracion }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="allincidence.fecha_registro_valoracion">
                     <td class="text">Fecha valoración:</td>
-                    <td
-                      class="data"
-                    >{{allincidence.fecha_registro_valoracion | moment("DD-MM-YYYY hh:mm") }}</td>
+                    <td class="data">
+                      {{
+                        allincidence.fecha_registro_valoracion
+                          | moment("DD-MM-YYYY hh:mm")
+                      }}
+                    </td>
                   </tr>
-                  <tr>
+                  <!--  <tr>
                     <td class="text">Código incidencia:</td>
                     <td class="data">{{ allincidence.codigo_incidencia }}</td>
-                  </tr>
+                  </tr> -->
                   <tr>
                     <td class="text">Fecha de registro:</td>
-                    <td class="data">{{ allincidence.fecha_registro | moment("DD-MM-YYYY HH:MM")}}</td>
+                    <td class="data">
+                      {{
+                        allincidence.fecha_registro | moment("DD-MM-YYYY HH:MM")
+                      }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -85,8 +105,8 @@ export default {
   },
 
   props: {
-    allincidences: Array
-  }
+    allincidences: Array,
+  },
 };
 </script>
 <style scoped>

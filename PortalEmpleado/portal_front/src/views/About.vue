@@ -2,7 +2,10 @@
   <div id="app">
     <div class="About">
       <!-- CAMBIAR TITULO DE LA PAGINA -->
-      <vue-headful title="Sobre mí" description="Información sobre este proyecto." />
+      <vue-headful
+        title="Sobre mí"
+        description="Información sobre este proyecto."
+      />
       <!-- /CAMBIAR TITULO DE LA PAGINA -->
 
       <!-- MENU -->
@@ -23,10 +26,16 @@
               <img src="../assets/GitHub-Mark-32px.png" alt="logo github" />
             </a>
           </div>
-          <h2>empleando los conociminentos adquiridos en el Bootcamp de HackaBoss, utilizando:</h2>
+          <h2>
+            empleando los conociminentos adquiridos en el Bootcamp de HackaBoss,
+            utilizando:
+          </h2>
           <ul>
             <li>
-              <a href="https://developer.mozilla.org/es/docs/HTML/HTML5" target="_blank">
+              <a
+                href="https://developer.mozilla.org/es/docs/HTML/HTML5"
+                target="_blank"
+              >
                 <img src="../assets/HTML5.svg" alt="logo html5" />
               </a>
             </li>
@@ -43,35 +52,56 @@
             </li>
             <li>
               <a href="https://nodejs.org/es/" target="_blank">
-                <img src="../assets/nodejs.svg" alt="logo vue" />
+                <img src="../assets/nodejs.svg" alt="logo nodejs" />
               </a>
             </li>
             <li>
               <a href="https://www.mysql.com/" target="_blank">
-                <img src="../assets/mysql.svg" alt="logo vue" />
+                <img src="../assets/mysql.svg" alt="logo mysql" />
               </a>
             </li>
             <li>
-              la librería
-              <a href="https://github.com/axios/axios" target="_blank">AXIOS</a>
+              <a href="https://github.com/axios/axios" target="_blank">
+                <img src="../assets/axios-icon.svg" alt="logo vue-axios"
+              /></a>
             </li>
             <li>
-              <a href="https://sweetalert2.github.io/" target="_blank">SweetAlert</a>
+              <a href="https://sweetalert2.github.io/" target="_blank"
+                ><img src="../assets/SweetAlert2.png" alt="logo SweetAlert2"
+              /></a>
             </li>
             <li>
-              <a href="https://www.npmjs.com/package/vue-headful" target="_blank">Vue-Headful</a>
+              <a
+                href="https://www.npmjs.com/package/vue-headful"
+                target="_blank"
+                >Vue-Headful</a
+              >
             </li>
             <li>
-              <a href="https://loading.io/css/" target="_blank">CSS Loader Spiner</a>
+              <a
+                href="https://www.npmjs.com/package/vue-star-rating"
+                target="_blank"
+                ><img src="../assets/start-rating.png" alt="logo start-rating"
+              /></a>
             </li>
             <li>
-              <a href="https://www.npmjs.com/package/vue-star-rating" target="_blank">Start-Rating</a>
+              <a
+                href="https://www.npmjs.com/package/vue-moment"
+                target="_blank"
+              >
+                <img src="../assets/momentjs.svg" alt="logo momentjs"
+              /></a>
             </li>
             <li>
-              <a href="https://www.npmjs.com/package/vue-moment" target="_blank">Vue-Moment</a>
+              <a href="https://loading.io/css/" target="_blank"
+                >CSS Loader Spiner</a
+              >
             </li>
           </ul>
-          <h2>y el apoyo incondicional de Alberto, Brais, David, Felix, Isa y Raul.</h2>
+          <h2>
+            y el apoyo incondicional de Alberto, Brais, David, Felix, Isa y
+            Raul.
+          </h2>
         </section>
       </main>
       <!-- /CONTENIDO -->
@@ -91,8 +121,8 @@ export default {
   name: "About",
   components: {
     menucustom,
-    footercustom
-  }
+    footercustom,
+  },
 };
 </script>
 
@@ -139,7 +169,7 @@ h2 {
 }
 
 img {
-  width: 40px;
+  width: 50px;
   margin-right: 15px;
 }
 
@@ -156,11 +186,8 @@ li {
   padding: 5px 0;
 }
 
-a:visited {
-  color: #196faf;
-}
-
-a {
-  color: #196faf;
+li a {
+  color: #333;
+  text-decoration: none;
 }
 </style>

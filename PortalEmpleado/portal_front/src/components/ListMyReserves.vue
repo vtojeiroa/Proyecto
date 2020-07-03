@@ -4,20 +4,33 @@
       <section>
         <div class="myreserves" v-show="seeReserves">
           <article class="myreserves">
-            <div class="myreserve" v-for="(myreserve, index) in myreserves" :key="myreserve.id">
+            <div
+              class="myreserve"
+              v-for="(myreserve, index) in myreserves"
+              :key="myreserve.id"
+            >
               <table>
                 <tbody>
                   <tr>
                     <td class="text">Id reserva:</td>
-                    <td class="data">{{myreserve.id }}</td>
+                    <td class="data">{{ myreserve.id }}</td>
                   </tr>
                   <tr>
                     <td class="text">Servicio:</td>
                     <td class="data">{{ myreserve.servicio }}</td>
                   </tr>
                   <tr>
+                    <td class="text">Fecha de registro:</td>
+
+                    <td class="data">
+                      {{
+                        myreserve.fecha_registro | moment("DD/MM/YYYY HH:mm")
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
                     <td class="text">Tipo:</td>
-                    <td class="data">{{myreserve.tipo }}</td>
+                    <td class="data">{{ myreserve.tipo }}</td>
                   </tr>
                   <!--  <tr>
                     <td class="text">usuario:</td>
@@ -25,54 +38,89 @@
                   </tr>-->
                   <tr>
                     <td class="text">Fecha inicio reserva:</td>
-                    <td
-                      class="data"
-                    >{{ myreserve.fecha_hora_inicio_reserva | moment("DD-MM-YYYY HH:mm" ) }}</td>
+                    <td class="data">
+                      {{
+                        myreserve.fecha_hora_inicio_reserva
+                          | moment("DD-MM-YYYY HH:mm")
+                      }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text">Fecha fin reserva:</td>
-                    <td
-                      class="data"
-                    >{{myreserve.fecha_hora_fin_reserva | moment("DD-MM-YYYY HH:mm") }}</td>
+                    <td class="data">
+                      {{
+                        myreserve.fecha_hora_fin_reserva
+                          | moment("DD-MM-YYYY HH:mm")
+                      }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text">Motivo reserva:</td>
-                    <td class="data">{{myreserve.motivo_reserva }}</td>
+                    <td class="data">{{ myreserve.motivo_reserva }}</td>
                   </tr>
-                  <tr>
+                  <tr v-show="myreserve.valoracion">
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{myreserve.valoracion }}</td>
+                    <td class="data">{{ myreserve.valoracion }}</td>
                   </tr>
-                  <tr>
+                  <tr v-show="myreserve.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>
-                    <td class="data">{{myreserve.comentario_valoracion }}</td>
+                    <td class="data">{{ myreserve.comentario_valoracion }}</td>
                   </tr>
-                  <tr>
+                  <tr v-show="myreserve.fecha_registro_valoracion">
                     <td class="text">Fecha valoración:</td>
-                    <td
-                      class="data"
-                    >{{ myreserve.fecha_registro_valoracion | moment("DD-MM-YYYY HH:mm") }}</td>
+                    <td class="data">
+                      {{
+                        myreserve.fecha_registro_valoracion
+                          | moment("DD-MM-YYYY HH:mm")
+                      }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="myreserve.codigo_reserva">
                     <td class="text">Código reserva:</td>
-                    <td class="data">{{myreserve.codigo_reserva }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text">Fecha de registro:</td>
-                    <td class="data">{{ myreserve.fecha_registro | moment("DD-MM-YYYY HH:mm")}}</td>
+                    <td class="data">{{ myreserve.codigo_reserva }}</td>
                   </tr>
                   <div class="buttons">
-                    <input class="button-back" @click="deleteReserveEvent(index)" value="BORRAR" />
-                    <input class="button-go" @click="editedEvent(index)" value="EDITAR" />
+                    <input
+                      v-show="myreserve.fecha_hora_fin_reserva > date"
+                      class="button-back"
+                      @click="deleteReserveEvent(index)"
+                      value="BORRAR"
+                    />
+                    <input
+                      v-show="myreserve.fecha_hora_fin_reserva > date"
+                      class="button-go"
+                      @click="editedEvent(index)"
+                      value="EDITAR"
+                    />
 
                     <input
                       class="button-go"
-                      @click="seeVoteEvent(index);openModalVote()"
-                      v-show=" (myreserve.fecha_hora_fin_reserva < date && !myreserve.valoracion ) "
-                      value="VOTAR"
+                      @click="
+                        seeVoteEvent(index);
+                        openModalVote();
+                      "
+                      v-show="
+                        myreserve.fecha_hora_fin_reserva < date &&
+                          !myreserve.valoracion
+                      "
+                      value="Valorar"
                     />
                   </div>
                 </tbody>
+                <p v-show="myreserve.fecha_hora_fin_reserva > date">
+                  La reserva está activa, puedes modificarla o borrarla.
+                </p>
+                <p
+                  v-show="
+                    myreserve.fecha_hora_fin_reserva < date &&
+                      !myreserve.valoracion
+                  "
+                >
+                  La reserva ha finalizado, puedes valorarla.
+                </p>
+                <p v-show="myreserve.valoracion">
+                  Reserva cerrada, ya has valorado esta reserva.
+                </p>
               </table>
             </div>
           </article>
@@ -113,7 +161,10 @@
                     <div class="buttons">
                       <input
                         class="button-back"
-                        @click="closeVoteEvent();closeModalVote()"
+                        @click="
+                          closeVoteEvent();
+                          closeModalVote();
+                        "
                         value="CERRAR"
                       />
                       <input
@@ -143,7 +194,7 @@ export default {
       rating: 0,
       voteDescription: "",
       newReserve: {},
-      modalVote: false
+      modalVote: false,
     };
   },
 
@@ -151,7 +202,7 @@ export default {
     myreserves: Array,
     seeVote: Boolean,
     seeReserves: Boolean,
-    date: String
+    date: String,
   },
   methods: {
     editedEvent(index) {
@@ -184,8 +235,8 @@ export default {
     // CIERRA EL MODAL DESPUES DE VOTAR LA RESERVA
     closeModalVote() {
       this.modalVote = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -270,5 +321,8 @@ li {
 .modalBox fieldset form ul li textarea {
   font-size: 16px;
   padding: 10px;
+}
+p.code {
+  text-align: center;
 }
 </style>

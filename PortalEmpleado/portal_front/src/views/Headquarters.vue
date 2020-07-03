@@ -2,7 +2,10 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful title="Sedes" description="Página que lista las diferentes sedes de la empresa" />
+    <vue-headful
+      title="Sedes"
+      description="Página que lista las diferentes sedes de la empresa"
+    />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -45,7 +48,11 @@
             />
 
             <div class="buttons">
-              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input
+                class="button-back"
+                value="Cerrar"
+                @click="closeModalSearch()"
+              />
               <input class="button-go" value="Limpiar" @click="search = ''" />
             </div>
           </div>
@@ -70,7 +77,11 @@
                       <label for="newStatus">Estado:</label>
                     </td>
                     <td class="data">
-                      <select name="newStatus" id="newStatus" v-model="newStatus">
+                      <select
+                        name="newStatus"
+                        id="newStatus"
+                        v-model="newStatus"
+                      >
                         <option value>Selecciona...</option>
                         <option value="1">Activo</option>
                         <option value="0">Inactivo</option>
@@ -171,7 +182,12 @@
             </form>
 
             <div class="button-data">
-              <input type="button" class="button" value="Cerrar" @click="closeModal()" />
+              <input
+                type="button"
+                class="button"
+                value="Cerrar"
+                @click="closeModal()"
+              />
 
               <input
                 id="button-data"
@@ -230,7 +246,7 @@ export default {
       newPostalCode: "",
       newLocation: "",
       newProvince: "",
-      newCountry: ""
+      newCountry: "",
     };
   },
   methods: {
@@ -246,12 +262,12 @@ export default {
           self.headquarters = response.data.data;
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -280,7 +296,7 @@ export default {
           postal_code: self.newPostalCode,
           location: self.newLocation,
           province: self.newProvince,
-          country: self.newCountry
+          country: self.newCountry,
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -289,21 +305,21 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos de la sede `,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           }).then(
             //recarga la página
-            result => {
+            (result) => {
               self.closeModal();
             }
           );
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -319,8 +335,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!"
-      }).then(result => {
+        confirmButtonText: "Si, bórralo!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/headquarters/" + data)
@@ -331,18 +347,18 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar la sede `,
                 showConfirmButton: false,
-                timer: 2500
-              }).then(result => {
+                timer: 2500,
+              }).then((result) => {
                 self.getHeadquarters();
               });
             })
             //SI SALE MAL
-            .catch(error =>
+            .catch((error) =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500
+                timer: 2500,
               })
             );
         }
@@ -366,7 +382,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     closeModalSearch() {
       this.modalSearch = false;
-    }
+    },
   },
   created() {
     this.getHeadquarters();
@@ -380,7 +396,7 @@ export default {
         return result;
       } else {
         result = result.filter(
-          headquarter =>
+          (headquarter) =>
             headquarter.nombre
               .toLowerCase()
               .includes(this.search.toLowerCase()) ||
@@ -393,13 +409,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún servicio",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
         }
         return result;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -568,5 +584,8 @@ h1 {
   text-align: center;
   font-size: 2rem;
   padding: 0.5rem 0;
+}
+section article a:hover {
+  color: #00909e;
 }
 </style>

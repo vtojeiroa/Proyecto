@@ -64,8 +64,9 @@ h1 {
 h2 {
   font-size: 35px;
   padding: 16px 0 0;
+  color: #dae1e7;
 }
 a {
-  color: #142850;
+  color: #dae1e7;
 }
 </style>

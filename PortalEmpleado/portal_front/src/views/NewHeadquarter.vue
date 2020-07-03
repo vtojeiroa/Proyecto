@@ -2,7 +2,10 @@
   <div>
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful title="Nueva Sede" description="Página de registro de una nueva sede" />
+    <vue-headful
+      title="Nueva Sede"
+      description="Página de registro de una nueva sede"
+    />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -117,7 +120,12 @@
             </form>
 
             <div class="buttons">
-              <input type="button" class="button-back" value="Cancelar" @click="$router.go(-1)" />
+              <input
+                type="button"
+                class="button-back"
+                value="Cancelar"
+                @click="$router.go(-1)"
+              />
 
               <input
                 id="button"
@@ -158,7 +166,7 @@ import {
   getUserName,
   isLoggedIn,
   checkAdmin,
-  setName
+  setName,
 } from "../api/utils";
 
 export default {
@@ -166,7 +174,7 @@ export default {
   components: {
     menucustom,
     menulinksadmin,
-    footercustom
+    footercustom,
   },
   data() {
     return {
@@ -177,7 +185,7 @@ export default {
       newPostalCode: "",
       newLocation: "",
       newProvince: "",
-      newCountry: ""
+      newCountry: "",
     };
   },
   methods: {
@@ -213,7 +221,7 @@ export default {
             postal_code: self.newPostalCode,
             location: self.newLocation,
             province: self.newProvince,
-            country: self.newCountry
+            country: self.newCountry,
           })
 
           .then(function(response) {
@@ -224,15 +232,15 @@ export default {
               icon: "success",
               title: "Sede registrada correctamente.",
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             });
           })
-          .catch(error =>
+          .catch((error) =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             })
           );
       } else {
@@ -240,70 +248,48 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 body main {
   background: #fff;
-  margin: 10px;
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   justify-content: center;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
-  margin: 30px auto;
-  padding: 15px 30px;
-  width: 95%;
+  margin: 20px auto;
+  padding: 15px 15px;
+  width: 90%;
   max-width: 900px;
   border-radius: 10px;
   padding-bottom: 81px;
 }
 
-fieldset {
+fieldset.form {
   border: none;
   padding: 1rem;
   border-radius: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
 }
 
 h2 {
   padding: 1rem 0;
+  margin-left: 20px;
 }
 h3 {
   padding: 1rem 0;
-  text-align: center;
-}
-
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
-}
-.modalBox fieldset input {
-  width: 405px;
-}
-.modalBox article fieldset form ul li label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox article fieldset form ul li select,
-.modalBox article fieldset form ul li input {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 250px;
-}
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
   text-align: center;
 }
 
@@ -313,42 +299,59 @@ h1 {
   padding: 0.5rem 0;
 }
 table {
-  min-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
 }
 
 tbody {
+  margin: 5px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-
-  margin: 5px;
 }
 tr {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  vertical-align: center;
+  justify-content: space-between;
+  /*   max-width: 500px; */
 }
 td {
-  padding: 1rem 0.2rem;
+  padding: 0.5rem 0.2rem;
 }
 td.text {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: flex-start;
 }
 td.data {
   font-weight: bold;
+  text-align: end;
+  align-self: flex-end;
 }
 
 label {
-  font-size: 18px;
+  font-size: 15px;
 }
-input,
+input {
+  padding: 5px;
+  font-size: 15px;
+}
+
 select,
 textarea {
   padding: 10px;
   font-size: 15px;
+}
+
+select {
+  min-width: 235px;
+}
+div.buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 </style>

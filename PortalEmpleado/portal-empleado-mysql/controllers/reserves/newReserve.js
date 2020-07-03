@@ -22,9 +22,10 @@ async function newReserve(req, res, next) {
     connection = await getConnection();
 
     const date = formatDateToDB(new Date());
+    const dateReserve = formatDateToDB(new Date(dateInit));
 
     // check dateInit > Now
-    if (dateInit <= date) {
+    if (dateReserve <= date) {
       throw generateError(
         'La fecha de la reserva no puede ser anterior a este momento'
       );
@@ -80,7 +81,7 @@ async function newReserve(req, res, next) {
       reserveDisponibililty.disponibilidad_servicios
     ) {
       throw generateError(
-        'No es posible realizar la reserva, en estos momentos no hay disponbilidad'
+        'No es posible realizar la reserva, en estos momentos no hay disponibilidad'
       );
     }
 

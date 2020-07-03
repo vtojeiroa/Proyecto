@@ -4,41 +4,55 @@
       <section>
         <div class="allReserves">
           <article class="AllReserves">
-            <div class="allReserve" v-for="allreserve in allreserves" :key="allreserve.id">
+            <div
+              class="allReserve"
+              v-for="allreserve in allreserves"
+              :key="allreserve.id"
+            >
               <table>
                 <tbody>
                   <tr>
                     <td class="text">Tipo:</td>
-                    <td class="data">{{allreserve.tipo }}</td>
+                    <td class="data">{{ allreserve.tipo }}</td>
                   </tr>
                   <tr>
                     <td class="text">Fecha inicio reserva:</td>
-                    <td
-                      class="data"
-                    >{{ allreserve.fecha_hora_inicio_reserva | moment("DD-MM-YYYY HH:mm" ) }}</td>
+                    <td class="data">
+                      {{
+                        allreserve.fecha_hora_inicio_reserva
+                          | moment("DD-MM-YYYY HH:mm")
+                      }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text">Fecha fin reserva:</td>
-                    <td
-                      class="data"
-                    >{{allreserve.fecha_hora_fin_reserva | moment("DD-MM-YYYY HH:mm") }}</td>
+                    <td class="data">
+                      {{
+                        allreserve.fecha_hora_fin_reserva
+                          | moment("DD-MM-YYYY HH:mm")
+                      }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text">Motivo reserva:</td>
-                    <td class="data">{{allreserve.motivo_reserva }}</td>
+                    <td class="data">{{ allreserve.motivo_reserva }}</td>
                   </tr>
-                  <tr>
+                  <tr v-show="allreserve.valoracion">
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{allreserve.valoracion }}</td>
+                    <td class="data">{{ allreserve.valoracion }}</td>
                   </tr>
-                  <tr>
+                  <tr v-show="allreserve.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>
-                    <td class="data">{{allreserve.comentario_valoracion }}</td>
+                    <td class="data">{{ allreserve.comentario_valoracion }}</td>
                   </tr>
 
-                  <tr>
+                  <tr v-show="allreserve.fecha_registro_valoracion">
                     <td class="text">Fecha de Valoracion:</td>
-                    <td class="data">{{ allreserve.fecha_registro | moment("DD-MM-YYYY HH:mm")}}</td>
+                    <td class="data">
+                      {{
+                        allreserve.fecha_registro | moment("DD-MM-YYYY HH:mm")
+                      }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -60,8 +74,8 @@ export default {
   },
 
   props: {
-    allreserves: Array
-  }
+    allreserves: Array,
+  },
 };
 </script>
 <style scoped>

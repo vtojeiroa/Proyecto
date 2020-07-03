@@ -13,60 +13,103 @@
                 <tbody>
                   <tr>
                     <td class="text">Id incidencia:</td>
-                    <td class="data">{{myincidence.id }}</td>
+                    <td class="data">{{ myincidence.id }}</td>
                   </tr>
 
                   <tr>
                     <td class="text">Tipo:</td>
-                    <td class="data">{{myincidence.tipo }}</td>
+                    <td class="data">{{ myincidence.tipo }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text">Fecha de registro:</td>
+                    <td class="data">
+                      {{
+                        myincidence.fecha_registro | moment("DD-MM-YYYY HH:MM")
+                      }}
+                    </td>
                   </tr>
 
                   <tr>
                     <td class="text">Descripción:</td>
-                    <td class="data">{{myincidence.descripcion }}</td>
+                    <td class="data">{{ myincidence.descripcion }}</td>
                   </tr>
-
-                  <tr>
+                  <tr v-show="myincidence.fecha_resolucion">
                     <td class="text">Fecha de resolución:</td>
-                    <td class="data">{{myincidence.fecha_resolucion | moment("DD-MM-YYYY HH:MM") }}</td>
+                    <td class="data">
+                      {{
+                        myincidence.fecha_resolucion
+                          | moment("DD-MM-YYYY HH:MM")
+                      }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="myincidence.comentario_resolucion">
                     <td class="text">Comentario:</td>
-                    <td class="data">{{myincidence.comentario_resolucion }}</td>
+                    <td class="data">
+                      {{ myincidence.comentario_resolucion }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="myincidence.valoracion">
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{myincidence.valoracion }}</td>
+                    <td class="data">{{ myincidence.valoracion }}</td>
                   </tr>
-                  <tr>
+                  <tr v-show="myincidence.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>
-                    <td class="data">{{ myincidence.comentario_valoracion }}</td>
+                    <td class="data">
+                      {{ myincidence.comentario_valoracion }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="myincidence.fecha_registro_valoracion">
                     <td class="text">Fecha valoración:</td>
-                    <td
-                      class="data"
-                    >{{myincidence.fecha_registro_valoracion | moment("DD-MM-YYYY hh:mm") }}</td>
+                    <td class="data">
+                      {{
+                        myincidence.fecha_registro_valoracion
+                          | moment("DD-MM-YYYY hh:mm")
+                      }}
+                    </td>
                   </tr>
-                  <tr>
+                  <tr v-show="myincidence.codigo_incidencia">
                     <td class="text">Código incidencia:</td>
                     <td class="data">{{ myincidence.codigo_incidencia }}</td>
                   </tr>
-                  <tr>
-                    <td class="text">Fecha de registro:</td>
-                    <td class="data">{{ myincidence.fecha_registro | moment("DD-MM-YYYY HH:MM")}}</td>
-                  </tr>
                   <div class="buttons">
-                    <input class="button-back" @click="deleteIncidenceEvent(index)" value="BORRAR" />
-                    <input class="button-go" @click="editIncidenceEvent(index)" value="EDITAR" />
+                    <input
+                      class="button-back"
+                      @click="deleteIncidenceEvent(index)"
+                      v-show="!myincidence.fecha_resolucion"
+                      value="BORRAR"
+                    />
                     <input
                       class="button-go"
-                      @click="seeVoteEvent(index);openModalVote()"
-                      v-show="myincidence.fecha_resolucion && !myincidence.valoracion"
-                      value="VOTAR"
+                      @click="editIncidenceEvent(index)"
+                      v-show="!myincidence.fecha_resolucion"
+                      value="EDITAR"
+                    />
+                    <input
+                      class="button-go"
+                      @click="
+                        seeVoteEvent(index);
+                        openModalVote();
+                      "
+                      v-show="
+                        myincidence.fecha_resolucion && !myincidence.valoracion
+                      "
+                      value="VALORAR"
                     />
                   </div>
                 </tbody>
+                <p v-show="!myincidence.fecha_resolucion">
+                  La incidencia está activa, puedes modificarla o borrarla.
+                </p>
+                <p
+                  v-show="
+                    myincidence.fecha_resolucion && !myincidence.valoracion
+                  "
+                >
+                  La incidencia ha sido cerrada, puedes valorarla.
+                </p>
+                <p v-show="myincidence.valoracion">
+                  Incidencia cerrada, ya has valorado esta reserva.
+                </p>
               </table>
             </div>
           </article>
@@ -107,13 +150,18 @@
                     <div class="buttons">
                       <input
                         class="button-back"
-                        @click="closeVoteEvent();closeModalVote()"
+                        @click="
+                          closeVoteEvent();
+                          closeModalVote();
+                        "
                         value="CERRAR"
                       />
                       <input
                         class="button-go"
-                        @click="voteIncidenceEvent(newIncidence, voteDescription)"
-                        value="VOTAR"
+                        @click="
+                          voteIncidenceEvent(newIncidence, voteDescription)
+                        "
+                        value="Valorar"
                       />
                     </div>
                   </fieldset>
@@ -137,13 +185,13 @@ export default {
       rating: 0,
       voteDescription: "",
       newIncidence: {},
-      modalVote: false
+      modalVote: false,
     };
   },
   props: {
     myincidences: Array,
     seeVote: Boolean,
-    seeIncidences: Boolean
+    seeIncidences: Boolean,
   },
   methods: {
     //FUNCION QUE EMITE UN EVENTO PARA EDITAR UNA INCIDENCIA
@@ -179,8 +227,8 @@ export default {
     // CIERRA EL MODAL DESPUES DE VOTAR LA INCIDNCIEA
     closeModalVote() {
       this.modalVote = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -265,5 +313,8 @@ li {
 .modalBox fieldset form ul li textarea {
   font-size: 16px;
   padding: 10px;
+}
+p {
+  text-align: center;
 }
 </style>

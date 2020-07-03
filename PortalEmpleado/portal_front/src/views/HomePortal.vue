@@ -140,6 +140,13 @@ export default {
 }
 main {
   padding-bottom: 81px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  min-height: 80vh;
 }
 main h1 {
   font-size: 2rem;
@@ -158,7 +165,7 @@ main section#content {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 main section#profile {
@@ -166,6 +173,7 @@ main section#profile {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 2rem;
 }
 
 main section#content h2,
@@ -184,6 +192,7 @@ main section article.profile {
   float: left;
   border-radius: 10px;
   border: none;
+  margin: 0 10px;
 }
 
 main section article.login form.login,

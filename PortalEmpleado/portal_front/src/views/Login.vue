@@ -48,19 +48,6 @@
                         />
                       </td>
                     </tr>
-                    <!--
-                    <tr>
-                      <td class="field-checkbox"></td>
-                      <td class="field-checkbox">
-                        <input
-                          class="field-checkbox"
-                          id="rememberme"
-                          name="rememberMe"
-                          type="checkbox"
-                        />
-                           <label class="field-checkbox" for="remember-me">Recuérdame en este ordenador</label> 
-                      </td>
-                    </tr>-->
                   </tbody>
                 </table>
               </fieldset>
@@ -69,7 +56,7 @@
             <div class="button-login">
               <input class="button-login" type="submit" value="Acceder" @click="login()" />
             </div>
-            <router-link :to="{ name: 'PasswordRecovery' }">No recuerdo la contraseña</router-link>
+            <router-link :to="{ name: 'PasswordRecovery' }">Olvidé la contraseña</router-link>
           </article>
           <form class="box-create-account" action="create-account">
             <fieldset class="box-create-account">
@@ -86,7 +73,7 @@
           <article class="searchvalorations">
             <h3>Visualiza las valoraciones que han registrado los usuarios</h3>
             <!-- MODAL PARA  LA IMPLEMENTACIÓN DEL BUSCADOR DE INCIDENCIAS -->
-            <button class="button-search" @click="openModalValorations()">BUSCAR</button>
+            <button class="button-search" @click="openModalValorations()">Iniciar búqueda</button>
 
             <div class="modal" style="overflow-y: scroll;" v-show="modalValorations">
               <div class="modalBox">
@@ -275,6 +262,13 @@ export default {
 }
 main {
   padding-bottom: 81px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  min-height: 80vh;
 }
 
 main section#content {
@@ -296,23 +290,22 @@ main section#content h2,
 main section#search h2 {
   padding: 1rem 0;
   font-size: 1.5rem;
-  width: 375px;
 }
 
 main section article.login {
   background: rgba(255, 255, 255, 0.4);
-  padding: 20px;
-  width: 460px;
+  max-width: 375px;
   box-sizing: border-box;
   float: left;
   border-radius: 10px;
   border: none;
+  /* max-width: 375px; */
 }
 
 main section article.searchvalorations {
   background: rgba(255, 255, 255, 0.4);
-  padding: 20px;
-  width: 500px;
+  padding: 10px 0;
+  max-width: 375px;
   box-sizing: border-box;
   float: left;
   border-radius: 10px;
@@ -344,6 +337,14 @@ main section article h3 {
   text-transform: uppercase;
   text-align: center;
 }
+main section article form fieldset.box-login table tbody tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding: 5px;
+}
+
 main section article form fieldset.box-login table tbody tr.email {
   margin-bottom: 20px;
 }
@@ -354,6 +355,7 @@ main section form fieldset.searchValorations table tbody tr td select label {
   font-size: 14px;
   font-weight: 700;
   color: #555;
+  vertical-align: center;
 }
 
 main section article form fieldset.box-login table tbody td input.email,
@@ -364,13 +366,12 @@ main section form fieldset.box-login table tbody td input.password {
   border: 1px solid #d4d4d4;
   padding: 5px 10px;
   transition: all 0.2s ease 0s;
-  width: 250px;
+  width: 200px;
 }
 main section#content article p.warning {
   font-size: 11px;
   display: block;
-  align-self: center;
-  align-self: flex-end;
+  text-align: center;
   color: #8b8b8b;
 }
 
@@ -394,6 +395,11 @@ main section article button.button-search {
   border: none;
   border: 2px solid #142850;
 }
+
+main section article button.button-search {
+  width: 155px;
+}
+
 main section article input.button-login:hover,
 main section article button.button-search:hover {
   background: #dae1e7;

@@ -22,11 +22,11 @@
             <table class="form-table">
               <tbody>
                 <tr>
-                  <td class="type">
-                    <label class="typeReserve" for="typeReserve">Indica el tipo de reserva *:</label>
+                  <td class="text">
+                    <label class="typeReserve" for="typeReserve">Indica el tipo de reserva :</label>
                   </td>
-                  <td>
-                    <select name="newType" id="newType" v-model="newType">
+                  <td class="data">
+                    <select class="data" name="newType" id="newType" v-model="newType">
                       <option value>Selecciona...</option>
                       <option value="vehiculo">Vehículo</option>
                       <option value="sala de reunion">Sala de reuniones</option>
@@ -35,12 +35,12 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="dateinit">
+                  <td class="text">
                     <label for="newDateInit">Fecha y hora de inicio de la reserva:</label>
                   </td>
-                  <td class="dateinit">
+                  <td class="data">
                     <input
-                      id="dateinit"
+                      id="data"
                       name="dateinit"
                       type="datetime-local"
                       placeholder="YYYY-MM-DD HH:MM:SS"
@@ -49,10 +49,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="dateend">
+                  <td class="text">
                     <label for="newDateEnd">Fecha y hora de fin de la reserva:</label>
                   </td>
-                  <td class="dateend">
+                  <td class="data">
                     <input
                       id="dateend"
                       name="dateend"
@@ -64,17 +64,17 @@
                 </tr>
 
                 <tr>
-                  <td class="description">
+                  <td class="text">
                     <label for="newDescription">Comentario de la reserva:</label>
                   </td>
-                  <td class="description">
+                  <td class="data" id="datadescription">
                     <textarea
                       id="description"
                       name="description"
                       type="text"
                       maxlength="500"
                       rows="5"
-                      cols="40"
+                      cols="35"
                       v-model="newDescription"
                     />
                   </td>
@@ -94,6 +94,7 @@
               @click="registerReserve()"
             />
           </div>
+          <p></p>
         </article>
       </section>
     </main>
@@ -177,7 +178,7 @@ export default {
             Swal.fire({
               icon: "success",
               title:
-                "Reserva registrada correctamente. Trataremos de solucionarla lo antes posible",
+                "Reserva registrada correctamente.Acabamos de enviarte un correo con los datos de la misma",
               showConfirmButton: false,
               timer: 2500
             });
@@ -232,35 +233,6 @@ h3 {
   text-align: center;
 }
 
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
-}
-.modalBox fieldset input {
-  width: 405px;
-}
-.modalBox article fieldset form ul li label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox article fieldset form ul li select,
-.modalBox article fieldset form ul li input {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 250px;
-}
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
-  text-align: center;
-}
-
 h1 {
   text-align: center;
   font-size: 2rem;
@@ -274,14 +246,13 @@ tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-
   margin: 5px;
 }
 tr {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   vertical-align: center;
 }
 td {
@@ -290,19 +261,29 @@ td {
 td.text {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: flex-start;
+  align-self: center;
 }
 td.data {
   font-weight: bold;
+  /*   align-items: center; */
 }
 
 label {
-  font-size: 18px;
+  font-size: 15px;
+  vertical-align: center;
 }
-input,
+input {
+  padding: 5px;
+  font-size: 15px;
+}
+
 select,
 textarea {
   padding: 10px;
   font-size: 15px;
+}
+
+select {
+  min-width: 235px;
 }
 </style>

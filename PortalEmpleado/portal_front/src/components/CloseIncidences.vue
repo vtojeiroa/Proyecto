@@ -12,23 +12,27 @@
               <tbody>
                 <tr>
                   <td class="text">Id incidencia:</td>
-                  <td class="data">{{closeincidence.id}}</td>
+                  <td class="data">{{ closeincidence.id }}</td>
                 </tr>
 
                 <tr>
                   <td class="text">usuario:</td>
-                  <td class="data">{{closeincidence.usuarios_id}}</td>
+                  <td class="data">{{ closeincidence.usuarios_id }}</td>
                 </tr>
                 <tr>
                   <td class="text">Descripción:</td>
-                  <td class="data">{{closeincidence.descripcion }}</td>
+                  <td class="data">{{ closeincidence.descripcion }}</td>
                 </tr>
                 <tr>
                   <td class="text">Activo:</td>
-                  <td class="data">{{closeincidence.activo}}</td>
+                  <td class="data">{{ closeincidence.activo }}</td>
                 </tr>
                 <div class="buttons">
-                  <input class="button-go" value="Responder" @click="closeIncidenceEvent(index)" />
+                  <input
+                    class="button-go"
+                    value="Responder"
+                    @click="closeIncidenceEvent(index)"
+                  />
                 </div>
               </tbody>
             </table>
@@ -52,8 +56,8 @@ export default {
       let data = this.closeincidences[index];
       //ENVIANDO LA INFORMACIÓN DE LAS INCIDENCIAS
       this.$emit("close", data);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -84,15 +88,19 @@ tbody {
 }
 tr {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 td.text {
   text-transform: uppercase;
   font-size: 14px;
   align-self: flex-start;
+  margin-right: 10px;
 }
 td.data {
   font-weight: bold;
+  max-width: 300px;
+  align-self: flex-end;
 }
 img {
   width: 200px;

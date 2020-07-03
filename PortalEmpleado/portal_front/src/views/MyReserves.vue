@@ -2,7 +2,10 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful title="Mis Reservas" description="Página que lista mis reservas" />
+    <vue-headful
+      title="Mis Reservas"
+      description="Página que lista mis reservas"
+    />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -11,8 +14,20 @@
       <article class="links">
         <menulinks></menulinks>
         <div class="buttons">
-          <router-link class="button-go" :to="{ name: 'NewReserve' }">Nueva Reserva</router-link>
-          <input type="submit" class="button-go" value="Listar Reservas" @click="openAll()" />
+          <router-link class="button-go" :to="{ name: 'NewReserve' }"
+            >Registrar una Reserva</router-link
+          >
+          <button
+            id="buttonText"
+            type="submit"
+            class="button-go"
+            @click="
+              openAll();
+              changeButtonText();
+            "
+          >
+            {{ buttonText }}
+          </button>
         </div>
       </article>
     </section>
@@ -27,8 +42,15 @@
       <!-- MODAL PARA LISTAR TODAS LAS RESERVAS-->
       <section v-show="seeAllReserves">
         <article class="searchAll">
-          <h1>Reservas</h1>
-          <h2>Busqueda avanzada</h2>
+          <h1>TODAS LAS RESERVAS</h1>
+          <h2>
+            Aquí puedes ver todas las reservas que se han registrado en el
+            Portal
+          </h2>
+          <h3>
+            Puedes usar los filtros para buscar entre todas las reservas
+            registradas
+          </h3>
           <fieldset class="form">
             <form class="form">
               <ul class="searchall">
@@ -38,12 +60,18 @@
                     <option value>Selecciona...</option>
                     <option value="vehiculo">Vehículo</option>
                     <option value="sala de reunion">Sala de Reunión</option>
-                    <option value="Plaza en el comedor">Plaza en el comedor</option>
+                    <option value="Plaza en el comedor"
+                      >Plaza en el comedor</option
+                    >
                   </select>
                 </li>
                 <li class="headquarter">
                   <label class="headquarter" for="headquarter">Sede :</label>
-                  <select name="headquarter" id="headquarter" v-model="headquarterAll">
+                  <select
+                    name="headquarter"
+                    id="headquarter"
+                    v-model="headquarterAll"
+                  >
                     <option value>Selecciona...</option>
                     <option value="coruña">Coruña</option>
                     <option value="santiago">Santiago</option>
@@ -54,36 +82,65 @@
                 <h3>Intervalo de fechas de inicio de la reserva</h3>
                 <li>
                   <label for="from">Fecha inicial &#62;&#61;</label>
-                  <input type="datetime-local" id="fromAll" name="fromAll" v-model="dateInitAll" />
+                  <input
+                    type="datetime-local"
+                    id="fromAll"
+                    name="fromAll"
+                    v-model="dateInitAll"
+                  />
                 </li>
                 <li>
                   <label for="to">Fecha final &#60;</label>
-                  <input type="datetime-local" id="toAll" name="toAll" v-model="dateEndAll" />
+                  <input
+                    type="datetime-local"
+                    id="toAll"
+                    name="toAll"
+                    v-model="dateEndAll"
+                  />
                 </li>
               </ul>
             </form>
             <div class="buttons">
-              <input type="submit" class="button-back" value="Limpiar" @click="emptyFieldsAll()" />
+              <input
+                type="submit"
+                class="button-back"
+                value="Limpiar"
+                @click="emptyFieldsAll()"
+              />
               <input
                 type="submit"
                 class="button-go"
                 value="Consultar"
-                @click="getReservesAll(typeAll, headquarterAll, dateInitAll, dateEndAll)"
+                @click="
+                  getReservesAll(
+                    typeAll,
+                    headquarterAll,
+                    dateInitAll,
+                    dateEndAll
+                  )
+                "
               />
             </div>
-            <div class="buttons">
+            <!--             <div class="buttons">
               <input type="submit" class="button-back" value="Cerrar" @click="openAll() " />
-            </div>
+            </div>-->
           </fieldset>
-          <h1 class="title">Reservas</h1>
+          <h1 class="title">Todas las Reservas</h1>
           <listallreserves :allreserves="allreserves"></listallreserves>
         </article>
       </section>
       <section id="content" v-show="seeMyReserves">
         <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
         <article class="search-input">
-          <h1>Mis reservas</h1>
-          <h2>Busqueda avanzada</h2>
+          <h1>MIS RESERVAS</h1>
+          <h2>
+            Aquí puedes gestionar las reservas que tienes registradas en el
+            Portal
+          </h2>
+          <h3>
+            Puedes usar los filtros para buscar entre todas tus reservas
+            registradas
+          </h3>
           <fieldset class="form">
             <form class="form">
               <ul class="search">
@@ -93,26 +150,48 @@
                     <option value>Selecciona...</option>
                     <option value="vehiculo">Vehículo</option>
                     <option value="sala de reunion">Sala de Reunión</option>
-                    <option value="Plaza en el comedor">Plaza en el comedor</option>
+                    <option value="Plaza en el comedor"
+                      >Plaza en el comedor</option
+                    >
                   </select>
                 </li>
                 <li>
                   <label for="to">Fecha inicio de reserva &#62;&#61;:</label>
-                  <input type="datetime-local" id="until" name="until" v-model="dateEndReserve" />
+                  <input
+                    type="datetime-local"
+                    id="until"
+                    name="until"
+                    v-model="dateEndReserve"
+                  />
                 </li>
                 <h3>Intervalo de fechas de registro de la reserva</h3>
                 <li>
                   <label for="from">Fecha inicial &#62;&#61;</label>
-                  <input type="datetime-local" id="from" name="from" v-model="dateInit" />
+                  <input
+                    type="datetime-local"
+                    id="from"
+                    name="from"
+                    v-model="dateInit"
+                  />
                 </li>
                 <li>
                   <label for="to">Fecha final &#60;</label>
-                  <input type="datetime-local" id="to" name="to" v-model="dateEnd" />
+                  <input
+                    type="datetime-local"
+                    id="to"
+                    name="to"
+                    v-model="dateEnd"
+                  />
                 </li>
               </ul>
             </form>
             <div class="buttons">
-              <input type="submit" class="button-back" value="Limpiar" @click="emptyFields()" />
+              <input
+                type="submit"
+                class="button-back"
+                value="Limpiar"
+                @click="emptyFields()"
+              />
               <input
                 type="submit"
                 class="button-go"
@@ -120,7 +199,7 @@
                 @click="getReserves(type, dateEndReserve, dateInit, dateEnd)"
               />
             </div>
-            <p>
+            <p class="code">
               Si tienes el código de la reserva, pulsa
               <input
                 type="submit"
@@ -137,7 +216,6 @@
           <!-- VISTA DE LAS RESERVAS -->
           <listmyreserves
             :myreserves="filteredReserves"
-            :myreserve="myreserve"
             :rating="rating"
             :seeReserves="seeReserves"
             :seeVote="seeVote"
@@ -159,11 +237,19 @@
           <h2>Actualiza los datos del motivo de la reserva</h2>
           <fieldset>
             <label for="newDescription">Comentario:</label>
-            <input type="text" v-model="newDescription" placeholder="Introduce el nuevo comentario" />
+            <input
+              type="text"
+              v-model="newDescription"
+              placeholder="Introduce el nuevo comentario"
+            />
           </fieldset>
           <div class="buttons">
             <input class="button-back" value="Cerrar" @click="closeModal()" />
-            <input class="button-go" value="Actualizar" @click="updateReserve()" />
+            <input
+              class="button-go"
+              value="Actualizar"
+              @click="updateReserve()"
+            />
           </div>
         </div>
       </div>
@@ -173,10 +259,19 @@
           <h2>Introduce el código que has recibido por correo eléctronico</h2>
           <fieldset>
             <label for="search">Código:</label>
-            <input v-model="search" class="text" type="text" placeholder="Introduce el código" />
+            <input
+              v-model="search"
+              class="text"
+              type="text"
+              placeholder="Introduce el código"
+            />
           </fieldset>
           <div class="buttons">
-            <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+            <input
+              class="button-back"
+              value="Cerrar"
+              @click="closeModalSearch()"
+            />
             <input class="button-go" value="Limpiar" @click="search = ''" />
           </div>
         </div>
@@ -216,7 +311,7 @@ export default {
     menulinks,
     footercustom,
     listmyreserves,
-    listallreserves
+    listallreserves,
   },
   data() {
     return {
@@ -246,7 +341,8 @@ export default {
       dateInitAll: "",
       dateEndAll: "",
       seeMyReserves: true,
-      seeAllReserves: false
+      seeAllReserves: false,
+      buttonText: "Ver todas las reservas",
     };
   },
   methods: {
@@ -258,14 +354,14 @@ export default {
       axios
         .get("http://localhost:3000/reserves/list", {
           headers: {
-            authorization: `Bearer ${token}`
+            authorization: `Bearer ${token}`,
           },
           params: {
             type: this.type,
             dateEndReserve: this.dateEndReserve,
             date_init: this.dateInit,
-            date_end: this.dateEnd
-          }
+            date_end: this.dateEnd,
+          },
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -273,12 +369,12 @@ export default {
           self.date = response.data.date;
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -296,7 +392,7 @@ export default {
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
         .put("http://localhost:3000/reserves/" + id, {
-          description: self.newDescription
+          description: self.newDescription,
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -305,22 +401,22 @@ export default {
             icon: "success",
             title: `Acabas de actualizar el comentario de la reserva `,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           }).then(
             //recarga la página
-            result => {
+            (result) => {
               self.closeModal();
               self.getReserves();
             }
           );
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -341,6 +437,7 @@ export default {
     // CIERRA EL MODAL DESPUES DE BUSCAR LA RESERVA POR EL CÓDIGO
     closeModalSearch() {
       this.modalSearch = false;
+      this.getReserves();
     },
     //FUNCION PARA ELIMINAR UNA RESERVA DE LA BBDD
     deleteReserves(data) {
@@ -354,8 +451,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!"
-      }).then(result => {
+        confirmButtonText: "Si, bórralo!",
+      }).then((result) => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/reserves/" + data)
@@ -367,18 +464,18 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar la reserva `,
                 showConfirmButton: false,
-                timer: 2500
-              }).then(result => {
+                timer: 2500,
+              }).then((result) => {
                 self.getReserves();
               });
             })
             //SI SALE MAL
-            .catch(error =>
+            .catch((error) =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500
+                timer: 2500,
               })
             );
         }
@@ -392,26 +489,26 @@ export default {
       axios
         .get("http://localhost:3000/reserves", {
           headers: {
-            authorization: `Bearer ${token}`
+            authorization: `Bearer ${token}`,
           },
           params: {
             type: this.typeAll,
             headquarter: this.headquarterAll,
             date_init: this.dateInitAll,
-            date_end: this.dateEndAll
-          }
+            date_end: this.dateEndAll,
+          },
         })
         //SI SALE BIEN
         .then(function(response) {
           self.allreserves = response.data.data;
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -428,6 +525,14 @@ export default {
     openAll() {
       this.seeMyReserves = !this.seeMyReserves;
       this.seeAllReserves = !this.seeAllReserves;
+      this.getReservesAll();
+    },
+
+    changeButtonText() {
+      let buttonText = document.getElementById("buttonText");
+      if (buttonText.textContent == "Ver mis reservas")
+        buttonText.textContent = "Ver todas las reservas";
+      else buttonText.textContent = "Ver mis reservas";
     },
 
     //FUNCIÓN PARA VOTAR LAS RESERVAS
@@ -440,31 +545,31 @@ export default {
       axios
         .post(`http://localhost:3000/reserves/${id}/vote`, {
           vote: rating,
-          description: voteDescription
+          description: voteDescription,
         })
         //SI SALE BIEN
         .then(function(response) {
           //MOSTRAR UN MENSAJE CON EL RESULTADO
           Swal.fire({
             icon: "success",
-            title: `Acabas de votar la reserva `,
+            title: `Acabas de valorar la reserva `,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           }).then(
             //recarga la página
-            result => {
-              this.closeVoteView();
-              this.getReserves();
+            (result) => {
+              self.closeVoteView();
+              self.getReserves();
             }
           );
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -484,7 +589,7 @@ export default {
     closeVoteView() {
       this.seeVote = false;
       this.seeReserves = true;
-    }
+    },
   },
   created() {
     this.getReserves();
@@ -498,22 +603,23 @@ export default {
         return result;
       } else {
         result = result.filter(
-          myreserve =>
+          (myreserve) =>
             myreserve.codigo_reserva === parseInt(this.search) ||
-            myreserve.id === parseInt(this.search)
+            myreserve.id === parseInt(this.search) ||
+            myreserve.motivo_reserva
         );
         if (!result.length) {
           Swal.fire({
             title: "El código introducido no corresponde a ninguna reserva",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
         }
         return result;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -558,7 +664,8 @@ section article.links {
   align-items: center;
 }
 section article.links a,
-section article.links input {
+section article.links input,
+section article.links button {
   background: #142850;
   color: #dae1e7;
   font-size: 0.75rem;
@@ -648,31 +755,6 @@ ul li select {
   display: block;
   align-self: initial;
 }
-
-.modal {
-  position: absolute;
-  overflow-y: auto;
-}
-
-.modalBox fieldset input {
-  width: 405px;
-}
-.modalBox article fieldset form ul li label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox article fieldset form ul li select,
-.modalBox article fieldset form ul li input {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 250px;
-}
-
 .modalBox input.button-go,
 .modalBox input.button-back,
 input.button-go {
@@ -683,5 +765,8 @@ h1 {
   text-align: center;
   font-size: 2rem;
   padding: 0.5rem 0;
+}
+p.code {
+  text-align: center;
 }
 </style>

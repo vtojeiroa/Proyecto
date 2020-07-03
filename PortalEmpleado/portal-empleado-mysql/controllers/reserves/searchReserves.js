@@ -16,7 +16,7 @@ async function searchReserves(req, res, next) {
     if (headquarter && type && date_init && date_end) {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo, r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
             (SELECT d.id FROM sedes d WHERE  d.nombre LIKE ?)) AND (r.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?))  AND (r.fecha_hora_inicio_reserva >=  ? AND  r.fecha_hora_inicio_reserva <  ?)
              ORDER BY r.fecha_hora_inicio_reserva DESC;`,
         [
@@ -29,7 +29,7 @@ async function searchReserves(req, res, next) {
     } else if (headquarter && type) {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo,  r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN 
             (SELECT d.id FROM sedes d WHERE  d.nombre LIKE ?)) AND (r.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?)) ORDER BY r.fecha_hora_inicio_reserva DESC;`,
 
         [`%${headquarter}%`, `%${type}%`]
@@ -37,7 +37,7 @@ async function searchReserves(req, res, next) {
     } else if (type && date_init && date_end) {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo,  r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE (r.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?))
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE (r.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?))
           AND (r.fecha_hora_inicio_reserva >=  ? AND  r.fecha_hora_inicio_reserva <  ?) ORDER BY r.fecha_hora_inicio_reserva DESC;`,
 
         [
@@ -49,7 +49,7 @@ async function searchReserves(req, res, next) {
     } else if (headquarter && date_init && date_end) {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo, r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
          (SELECT d.id FROM sedes d WHERE d.nombre LIKE ?)) AND (r.fecha_hora_inicio_reserva >=  ? AND  r.fecha_hora_inicio_reserva <  ?)  ORDER BY r.fecha_hora_inicio_reserva DESC;`,
 
         [
@@ -61,7 +61,7 @@ async function searchReserves(req, res, next) {
     } else if (headquarter) {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo,   r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE r.usuarios_id IN (SELECT u.id FROM usuarios u WHERE u.sedes_id IN
          (SELECT d.id FROM sedes d WHERE d.nombre LIKE ?))  ORDER BY r.fecha_hora_inicio_reserva DESC;`,
 
         [`%${headquarter}%`]
@@ -69,14 +69,14 @@ async function searchReserves(req, res, next) {
     } else if (type) {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo,  r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id   WHERE (r.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?)) ORDER BY r.fecha_hora_inicio_reserva DESC;`,
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id   WHERE (r.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo LIKE ?)) ORDER BY r.fecha_hora_inicio_reserva DESC;`,
 
         [`%${type}%`]
       );
     } else if (date_init && date_end) {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo,   r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE (r.fecha_hora_inicio_reserva >=  ? AND  r.fecha_hora_inicio_reserva <  ?) ORDER BY r.fecha_hora_inicio_reserva DESC;`,
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  WHERE (r.fecha_hora_inicio_reserva >=  ? AND  r.fecha_hora_inicio_reserva <  ?) ORDER BY r.fecha_hora_inicio_reserva DESC;`,
         [
           formatDateToDB(new Date(date_init)),
           formatDateToDB(new Date(date_end))
@@ -85,7 +85,7 @@ async function searchReserves(req, res, next) {
     } else {
       result = await connection.query(
         `SELECT (select s.tipo from servicios s where s.id = r.servicios_id) as tipo,  r.fecha_hora_inicio_reserva, r.fecha_hora_fin_reserva,  r.motivo_reserva,  r.fecha_registro ,
-         v.valoracion, v.comentario_valoracion,v.fecha_registro FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  ORDER BY r.fecha_hora_inicio_reserva DESC;`
+         v.valoracion, v.comentario_valoracion,v.fecha_registro as fecha_valoracion FROM reservas r LEFT JOIN valoraciones v ON v.incidencias_id=r.id  ORDER BY r.fecha_hora_inicio_reserva DESC;`
       );
     }
 

@@ -25,7 +25,7 @@
         <article class="content">
           <h2>Mis datos</h2>
           <!-- BOTON QUE TE ENVIA A OTRA PÁGINA PARA MODIFICAR EL EMAIL-->
-          <h3>
+          <h3 class="email">
             Si quieres cambiar el correo electrónico con el que inicias sesión,
             pincha
             <input
@@ -114,6 +114,8 @@
           <div class="modal" v-show="modalProfile">
             <div class="modalBox" v-on:edit="showEditText">
               <h2>¡Mantén actualizados tus datos!</h2>
+              <p>Todos los campos marcados con * son obligatorios</p>
+
               <form id="form">
                 <table class="form-table">
                   <tbody>
@@ -269,9 +271,9 @@
                   </tbody>
                 </table>
               </form>
-              <div class="button-data">
+              <div class="buttons">
                 <input
-                  type="button"
+                  type="button-back"
                   class="button-back"
                   value="Cancelar"
                   @click="closeModalProfile()"
@@ -311,10 +313,12 @@
                       <input id="file" type="file" ref="file" @change="handleFileUpload()" />
                     </td>
                   </tr>
-                  <input class="button-go" type="button" value="Actualizar" @click="uploadImage()" />
-                  <input class="back" value="Cancelar" @click="closeModalPhoto()" />
                 </tbody>
               </table>
+              <div class="buttons">
+                <input class="button-back" value="Cancelar" @click="closeModalPhoto()" />
+                <input class="button-go" type="button" value="Actualizar" @click="uploadImage()" />
+              </div>
             </div>
           </div>
 
@@ -333,6 +337,8 @@
               <div class="modalBox">
                 <h2>Cambiar contraseña</h2>
                 <h3>En este apartado puedes modificar tu contraseña.</h3>
+                <p>Todos los campos marcados con * son obligatorios</p>
+
                 <form>
                   <table>
                     <tbody>
@@ -661,11 +667,13 @@ export default {
       }
     },
 
-    //FUNCION PARA ELIMINAR QUE UN USUARIO SE DE DE BAJA
+    //FUNCION PARA QUE UN USUARIO SE DE DE BAJA
     deleteUser() {
       Swal.fire({
         title: "¿Estás seguro?",
         text: "¡No podrás deshacerlo!",
+        text:
+          "Para volver a activarlo tendrás que contactar con Atención al usuario.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -970,6 +978,13 @@ body main section#content {
   flex-direction: column;
   align-items: center;
 }
+body main section#content p {
+  font-size: 11px;
+  display: block;
+  align-self: center;
+  color: #8b8b8b;
+  margin-right: 20px;
+}
 body main section article ul.link {
   align-self: center;
   width: 100%;
@@ -991,8 +1006,14 @@ h2 {
   padding: 1rem 0;
 }
 
+section.email .modal h3 {
+  text-align: left;
+}
 h3.password {
+  align-self: center;
   text-align: center;
-  padding: 1rem 0;
+}
+fieldset {
+  border: none;
 }
 </style>

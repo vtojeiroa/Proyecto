@@ -329,12 +329,14 @@ body main section form fieldset ul {
   text-align: start;
   padding: 10px 0px;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
 }
 body main section form fieldset ul li {
   padding: 5px;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-evenly;
 }

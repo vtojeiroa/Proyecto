@@ -12,202 +12,271 @@
         <menulinksAdmin v-on:showusers="showUsersMenu"></menulinksAdmin>
       </article>
     </section>
-<main>
-    <!-- LISTA DE CLIENTES -->
-    <div class="users" v-show="seeUsers">
-      <h2>Gestión de usuarios</h2>
+    <main>
+      <!-- LISTA DE CLIENTES -->
+      <div class="users" v-show="seeUsers">
+        <h2>Gestión de usuarios</h2>
 
-      <!--  ANIMACIÓN DE CSS CARGANDO -->
+        <!--  ANIMACIÓN DE CSS CARGANDO -->
 
-      <div v-show="loading" class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-      <h3>Buscador de usuarios</h3>
-      <div class="buttons" id="search">
-        <!-- BOTON PARA RECARGAR LOS CLIENTES -->
+        <div v-show="loading" class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
+        <h3>Buscador de usuarios</h3>
+        <div class="buttons" id="search">
+          <!-- BOTON PARA RECARGAR LOS CLIENTES -->
 
-        <input class="button-back" value="Reiniciar" @click="search = ''" />
-        <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
-        <input class="button-go" value="Abrir" @click="openModalSearch()" />
-
-      </div>
-      <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
-      <div class="modal" v-show="modalSearch">
-        <div class="modalBox">
-          <label for="bySearch">Buscador de usuarios:</label>
-          <input
-            v-model="search"
-            id="search"
-            name="bySearch"
-            type="search"
-            placeholder="Introduce algún dato del cliente"
-          />
-          <br />
-          <div class="buttons">
-            <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
-            <input class="button-go" value="Limpiar" @click="search = ''" />
+          <input class="button-back" value="Reiniciar" @click="search = ''" />
+          <!-- BOTON PARA ABRIR EL MODAL DEL BUSCADOR -->
+          <input class="button-go" value="Abrir" @click="openModalSearch()" />
+        </div>
+        <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
+        <div class="modal" v-show="modalSearch">
+          <div class="modalBox">
+            <label for="bySearch">Buscador de usuarios:</label>
+            <input
+              v-model="search"
+              id="search"
+              name="bySearch"
+              type="search"
+              placeholder="Introduce algún dato del cliente"
+            />
+            <br />
+            <div class="buttons">
+              <input
+                class="button-back"
+                value="Cerrar"
+                @click="closeModalSearch()"
+              />
+              <input class="button-go" value="Reiniciar" @click="search = ''" />
+            </div>
           </div>
         </div>
-      </div>
-      <!-- VISTA DE LOS CLIENTES -->
-      <listusers :users="filteredUsers" v-on:edit="openModal" v-on:delete="deleteUsers"></listusers>
+        <!-- VISTA DE LOS CLIENTES -->
+        <listusers
+          :users="filteredUsers"
+          v-on:edit="openModal"
+          v-on:delete="deleteUsers"
+        ></listusers>
 
-      <!-- MODAL PARA EDITAR CLIENTES -->
-      <div class="modal" v-show="modal">
-        <div class="modalBox" v-on:edit="showEditText">
-          <h2>Actualiza los datos</h2>
-          <fieldset>
-            <form>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                    <label for="newId">ID :</label></td>
-                   <td> <input type="text" v-model="newId" placeholder="Introduce el id" />
-                    </td>
-                    </tr>
-                      <tr>
-                        <td>
-                    <label for="newStatus">Estado:</label>
-                     </td>
-
-                   <td> <input type="text" v-model="newStatus" placeholder="Introduce el estado" />
-                  </td>
-                  </tr>
-                    <tr><td>
-                    <label for="newRole">Tipo de usuario:</label> 
-                    </td>
-                    <td>
-                    <input type="text" v-model="newRole" placeholder="Introduce el estado" />
-                  </td>
-                  </tr>
-                  <tr><td>
-                    <label for="newName">Nombre:</label>
-                    </td>
-                    <td>
-                      <input type="text" v-model="newName" placeholder="Introduce el nombre" />
-                    </td>
-                    </tr>
+        <!-- MODAL PARA EDITAR CLIENTES -->
+        <div class="modal" v-show="modal">
+          <div class="modalBox" v-on:edit="showEditText">
+            <h2>Actualiza los datos</h2>
+            <fieldset>
+              <form>
+                <table>
+                  <tbody>
                     <tr>
                       <td>
-                       
-                    <label for="newSurname">Apellido:</label>
-                    </td>
-                    <td>
-                       <input type="text" v-model="newSurname" placeholder="Introduce el apellido" />
-                  </td>
-                  </tr>
-                    <tr>
-                      <td>
-                    <label for="newDocument">Documento de identidad:</label>
-                    </td>
-                    <td>
-                      <input
-                      type="text"
-                      v-model="newDocument"
-                      placeholder="Introduce el documento de identidad"
-                    />
-                    </td>
-                    </tr>
-                    <tr>
-                      <td>
-                    <label for="newEmail">Correo electrónico:</label>
-                    </td>
-                   <td>
-                      <input
-                      type="email"
-                      v-model="newEmail"
-                      placeholder="Introduce el correo electrónico"
-                    />
-                    </td>
-                    </tr>
-                 
-                    <tr>
-                    <td>
-                       <label for="newAvatar">Foto:</label>
-                   </td>
-                   <td> <input type="text" v-model="newAvatar" placeholder="Introduce una foto" />
-                   
-                   </td><tr>
-                     <td>
-                    <label for="newAddress">Dirección:</label>
-                    </td>
-                   <td> <input type="text" v-model="newAddress" placeholder="Introduce la dirección" />
-                   </td></tr>
-                    <tr>
-                    <td>
-                    <label for="newPostalCode">Código postal:</label></td>
-                   <td> <input
-                      type="text"
-                      v-model="newPostalCode"
-                      placeholder="Introduce el código postal"
-                    />
-                    </td>
-                    </tr>
-                    <tr>
-                      <td>
-                    <label for="newLocation">Ciudad:</label>
-                    </td>
-                   <td> 
-                     <input type="text" v-model="newLocation" placeholder="Introduce la ciudad" />
-                   </td>
-                   </tr>
-                   <tr>
-                     
-                   <td> 
-                     <label for="newProvince">Provincia:</label>
-                   </td>
-                   <td> 
-                     <input type="text" v-model="newProvince" placeholder="Introduce la provinia" />
-                     </td>
-                   </tr>
-                   <tr>
-                     <td>
-                      <label for="newCountry">Pais:</label>
+                        <label for="newId">ID :</label>
                       </td>
                       <td>
-                    <input type="text" v-model="newCountry" placeholder="Introduce el pais" />
-                    </td>
+                        <input
+                          type="text"
+                          v-model="newId"
+                          placeholder="Introduce el id"
+                        />
+                      </td>
                     </tr>
-                  <tr>
-                    
-                   <td> <label for="newPhone">Teléfono:</label>
-                   </td>
-                   <td>                    <input type="text" v-model="newPhone" placeholder="Introduce el teléfono" />
-                    </td>
-                    </tr>
-                      <tr>
+                    <tr>
                       <td>
-                    <label for="newBirthdate">Fecha de nacimiento:</label>
-                    </td>
-                    <td><input
-                      type="text"
-                      v-model="newBirthdate"
-                      placeholder="Introduce la fecha de nacimiento"
-                    /></td>
+                        <label for="newStatus">Estado:</label>
+                      </td>
+
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newStatus"
+                          placeholder="Introduce el estado"
+                        />
+                      </td>
                     </tr>
-                        <tr
-                        ><td>
-                    <label for="newHeadquarter">Sede:</label>
-                    </td>
-                    <td><input
-                      type="text"
-                      v-model="newHeadquarter"
-                      placeholder="Introduce la sede de trabajo"
-                    /></td></tr>
-                  </ul>
-                </tbody>
-              </table>
-            </form>
-          </fieldset>
-          <div class="buttons">
-            <input class="button-back" value="Cerrar" @click="closeModal()" />
-            <input class="button-go" value="Actualizar" @click="updateUser()" />
+                    <tr>
+                      <td>
+                        <label for="newRole">Tipo de usuario:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newRole"
+                          placeholder="Introduce el estado"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newName">Nombre:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newName"
+                          placeholder="Introduce el nombre"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newSurname">Apellido:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newSurname"
+                          placeholder="Introduce el apellido"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newDocument">Documento de identidad:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newDocument"
+                          placeholder="Introduce el documento de identidad"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newEmail">Correo electrónico:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="email"
+                          v-model="newEmail"
+                          placeholder="Introduce el correo electrónico"
+                        />
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        <label for="newAvatar">Foto:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newAvatar"
+                          placeholder="Introduce una foto"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newAddress">Dirección:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newAddress"
+                          placeholder="Introduce la dirección"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newPostalCode">Código postal:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newPostalCode"
+                          placeholder="Introduce el código postal"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newLocation">Ciudad:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newLocation"
+                          placeholder="Introduce la ciudad"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newProvince">Provincia:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newProvince"
+                          placeholder="Introduce la provinia"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newCountry">Pais:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newCountry"
+                          placeholder="Introduce el pais"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newPhone">Teléfono:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newPhone"
+                          placeholder="Introduce el teléfono"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newBirthdate">Fecha de nacimiento:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newBirthdate"
+                          placeholder="Introduce la fecha de nacimiento"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label for="newHeadquarter">Sede:</label>
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="newHeadquarter"
+                          placeholder="Introduce la sede de trabajo"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </form>
+            </fieldset>
+            <div class="buttons">
+              <input class="button-back" value="Cerrar" @click="closeModal()" />
+              <input
+                class="button-go"
+                value="Actualizar"
+                @click="updateUser()"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </main>
     <!-- VISTA DEL FOOTER -->
     <footercustom></footercustom>
@@ -234,7 +303,7 @@ import listusers from "../components/ListUsers.vue";
 import Swal from "sweetalert2";
 
 //IMPORTO LA FUNCION DEL TOKEN
-import { getAuthToken,formatDateToFront } from "../api/utils";
+import { getAuthToken, formatDateToFront } from "../api/utils";
 export default {
   name: "Users",
   components: { menucustom, menulinksAdmin, footercustom, listusers },
@@ -263,7 +332,8 @@ export default {
       newBirthdate: "",
       newHeadquarter: "",
       modalSearch: false,
-      seeUsers: true
+      seeUsers: true,
+      image: "http://localhost:3000/uploads/" + "fotoavatar.jpg",
     };
   },
   methods: {
@@ -272,21 +342,28 @@ export default {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
       let self = this;
-       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
-        .get("http://localhost:3000/admin/users", {
-        })
+        .get("http://localhost:3000/admin/users", {})
         //SI SALE BIEN
         .then(function(response) {
           self.users = response.data.data;
+
+          const image = response.data.foto;
+          if (!!!self.users.avatar) {
+            self.users.avatar =
+              "http://localhost:3000/uploads/" + "fotoavatar.jpg";
+          } else {
+            self.users.avatar = "http://localhost:3000/uploads/" + image;
+          }
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -307,6 +384,7 @@ export default {
       this.newPhone = data.telefono;
       this.newBirthdate = data.fecha_nacimiento;
       this.newHeadquarter = data.sedes_id;
+      this.newAvatar = data.foto;
     },
 
     //FUNCION PARA ACTUALIZAR UN CLIENTE
@@ -314,10 +392,10 @@ export default {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
       let self = this;
-       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
         .put("http://localhost:3000/users/" + this.newId, {
-           activo: self.newStatus,
+          activo: self.newStatus,
           name: self.newName,
           surname: self.newSurname,
           document: self.newDocument,
@@ -328,7 +406,7 @@ export default {
           country: self.newCountry,
           phone: self.newPhone,
           birthdate: self.newBirthdate,
-          headquarters: self.newHeadquarter
+          headquarters: self.newHeadquarter,
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -337,23 +415,22 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos del usuario `,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           }).then(
             //recarga la página
-            result => {
+            (result) => {
               self.closeModal();
-             self.getUsers()
-   
+              self.getUsers();
             }
           );
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -366,45 +443,43 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!"
-      })
-        .then(result => {
-          if (result.value) {
-            const token = getAuthToken();
-            axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
-            let self = this
-            axios
-              .delete("http://localhost:3000/admin/users/" + data, {
-                headers: {
-                  authorization: `Bearer ${token}`
-                },
-                id: data
+        confirmButtonText: "Si, bórralo!",
+      }).then((result) => {
+        if (result.value) {
+          const token = getAuthToken();
+          axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+          let self = this;
+          axios
+            .delete("http://localhost:3000/admin/users/" + data, {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+              id: data,
+            })
+            //  SI SALE BIEN
+            .then(function(response) {
+              //MOSTRAR UN MENSAJE CON EL RESULTADO
+              Swal.fire({
+                icon: "success",
+                title: `Acabas de borrar los datos del usuario `,
+                showConfirmButton: false,
+                timer: 2500,
+              }).then((result) => {
+                search = "";
+                self.getUsers();
+              });
+            })
+            //SI SALE MAL
+            .catch((error) =>
+              Swal.fire({
+                icon: "error",
+                title: error.response.data.message,
+                showConfirmButton: false,
+                timer: 2500,
               })
-              //  SI SALE BIEN
-              .then(function(response) {
-                //MOSTRAR UN MENSAJE CON EL RESULTADO
-                Swal.fire({
-                  icon: "success",
-                  title: `Acabas de borrar los datos del usuario `,
-                  showConfirmButton: false,
-                  timer: 2500
-                }).then(result => {
-                  search = "";
-                  self.getUsers()
-                  
-                });
-              })
-              //SI SALE MAL
-              .catch(error =>
-                Swal.fire({
-                  icon: "error",
-                  title: error.response.data.message,
-                  showConfirmButton: false,
-                  timer: 2500
-                })
-              );
-            }
-        });
+            );
+        }
+      });
     },
     //  ABRE EL MODAL PARA EDITAR LOS DATOS DEL CLIENTE Y MUESTRA LOS DATOS ORIGINALES
     openModal(data) {
@@ -427,7 +502,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     showUsersMenu() {
       this.seeUsers = true;
-    }
+    },
   },
   created() {
     this.getUsers();
@@ -436,18 +511,21 @@ export default {
   computed: {
     filteredUsers() {
       let result = this.users;
-     
+
       if (!this.search) {
         return result;
       } else {
         result = result.filter(
-          user =>
+          (user) =>
             user.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
             user.id === parseInt(this.search) ||
             user.apellidos.toLowerCase().includes(this.search.toLowerCase()) ||
-            /*             user.localidad.toLowerCase().includes(this.search.toLowerCase()) ||
-             */user.activo === parseInt(this.search) ||
-            user.sedes_id === parseInt(this.search)
+            user.tipo_usuario
+              .toLowerCase()
+              .includes(this.search.toLowerCase()) ||
+            user.email.toLowerCase().includes(this.search.toLowerCase()) ||
+            user.activo === parseInt(this.search) ||
+            user.sedes_id.toLowerCase().includes(this.search.toLowerCase())
         );
         if (!result.length) {
           Swal.fire({
@@ -455,13 +533,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún cliente",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
         }
         return result;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -513,7 +591,6 @@ body main {
   max-width: 900px;
   border-radius: 10px;
   padding-bottom: 81px;
-
 }
 body main section#content {
   display: flex;
@@ -540,8 +617,8 @@ input.button-go {
 h2 {
   text-transform: uppercase;
   padding: 1rem 0;
-  text-align:center;
-  font-size:28px;
+  text-align: center;
+  font-size: 28px;
 }
 
 h3 {
@@ -551,14 +628,12 @@ h3 {
 }
 
 input.button-go,
- input.button-back {
-
-  text-align: center; 
+input.button-back {
+  text-align: center;
 }
 .modalBox input.button-go,
 .modalBox input.button-back {
-
-  text-align: center; 
+  text-align: center;
 }
 .modal {
   position: fixed;
@@ -588,26 +663,25 @@ input.button-go,
   align-items: center;
   border-radius: 10px;
 }
-.modalBox  input {
+.modalBox input {
   width: 405px;
 }
 
-
-.modalBox fieldset form table tbody tr{
+.modalBox fieldset form table tbody tr {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-} 
+}
 
-.modalBox  fieldset form form table tbody td label ,
-.modalBox div  label{
+.modalBox fieldset form form table tbody td label,
+.modalBox div label {
   font-size: 18px;
   font-weight: 700;
   color: #555;
 }
 .modalBox fieldset form form table tbody td select,
-.modalBox  fieldset form form table tbody td input,
+.modalBox fieldset form form table tbody td input,
 .modalBox input {
   background: rgba(255, 255, 255, 0.5);
   font-size: 16px;
@@ -616,11 +690,10 @@ input.button-go,
   padding: 5px 10px;
   transition: all 0.2s ease 0s;
   width: 350px;
-} 
+}
 
 .modalBox input.button-go,
-.modalBox input.button-back
- {
+.modalBox input.button-back {
   min-width: 120px;
   text-align: center;
 }

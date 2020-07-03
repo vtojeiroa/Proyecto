@@ -168,9 +168,9 @@ div.buttonPassword {
   display: flex;
   justify-content: space-evenly;
   padding: 1rem;
-  /*  flex-grow: 1; */
 }
 div.buttons a.button-go,
+div.buttons button,
 div.buttons input,
 div.buttons input.button-go,
 input.button-go {
@@ -186,14 +186,16 @@ input.button-go {
   border: none;
   border: 2px solid #142850;
   text-transform: uppercase;
+  margin-left: 10px;
 }
 div.buttons input.search:hover,
 div.buttons input.button-go:hover,
 div.buttons a.button-go:hover,
+div.buttons button.button-go:hover,
 input.button-go:hover {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
+  background: #00909e;
+  color: #dae1e7;
+  border: 2px solid #27496d;
 }
 div.buttons input.button-back,
 input.button-back {
@@ -234,5 +236,21 @@ p {
   color: #333;
   font-weight: bolder;
   padding: 0.3rem;
+}
+button,
+input {
+  outline: none;
+}
+
+table {
+  min-width: 300px;
+}
+
+div.buttons,
+.modal div.buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 </style>

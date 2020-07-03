@@ -18,7 +18,7 @@
           <!-- CONTENIDO DE LA INCIDENCIA -->
 
           <h3>¡Debes cumplimentar todos los campos!</h3>
-          <fieldset class="form">
+         
             <form class="form">
               <table class="form-table">
                 <tbody>
@@ -52,7 +52,7 @@
                         type="text"
                         maxlength="500"
                         rows="5"
-                        cols="40"
+                        cols="35"
                         v-model="newDescription"
                       />
                     </td>
@@ -72,8 +72,7 @@
                 @click="
                 registerIncidence()"
               />
-            </div>
-          </fieldset>
+            </div> </fieldset>
         </article>
       </section>
     </main>
@@ -210,35 +209,6 @@ h3 {
   text-align: center;
 }
 
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
-}
-.modalBox fieldset input {
-  width: 405px;
-}
-.modalBox article fieldset form ul li label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox article fieldset form ul li select,
-.modalBox article fieldset form ul li input {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 250px;
-}
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
-  text-align: center;
-}
-
 h1 {
   text-align: center;
   font-size: 2rem;
@@ -252,14 +222,13 @@ tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-
   margin: 5px;
 }
 tr {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   vertical-align: center;
 }
 td {
@@ -275,11 +244,19 @@ td.data {
 }
 
 label {
-  font-size: 18px;
+  font-size: 15px;
+  vertical-align: center;
+}
+input {
+  padding: 5px;
+  font-size: 15px;
 }
 select,
 textarea {
   padding: 10px;
   font-size: 15px;
+}
+select {
+  min-width: 235px;
 }
 </style>

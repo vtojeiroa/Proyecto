@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
@@ -28,16 +26,29 @@
               <table class="form-table">
                 <tbody>
                   <tr>
-                    <td class="type">
-                      <label class="typeService" for="typeService">Indica el tipo de servicio *:</label>
+                    <td class="text">
+                      <label class="typeService" for="typeService"
+                        >Indica el tipo de servicio :</label
+                      >
                     </td>
                     <td>
-                      <select name="newType" id="newType" v-model="newType">
+                      <select
+                        class="data"
+                        name="newType"
+                        id="newType"
+                        v-model="newType"
+                      >
                         <option value>Selecciona...</option>
                         <option value="vehiculo">Vehículo</option>
-                        <option value="sala de reunion">Sala de reuniones</option>
-                        <option value="plaza en el comedor">Plaza en el comedor</option>
-                        <option value="bicicletas electricas">Bicicletas</option>
+                        <option value="sala de reunion"
+                          >Sala de reuniones</option
+                        >
+                        <option value="plaza en el comedor"
+                          >Plaza en el comedor</option
+                        >
+                        <option value="bicicletas electricas"
+                          >Bicicletas</option
+                        >
                         <option value="informatica">Informática</option>
                         <option value="mantenimiento">Mantenimiento</option>
                         <option value="seguridad">Seguridad</option>
@@ -47,11 +58,14 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="headquarters">
-                      <label class="headquarter" for="headquarter">Indica la sede de trabajo *:</label>
+                    <td class="text">
+                      <label class="headquarter" for="headquarter"
+                        >Indica la sede de trabajo :</label
+                      >
                     </td>
-                    <td class="newHeadquarter">
+                    <td class="data">
                       <input
+                        class="data"
                         id="newHeadquarter"
                         name="newHeadquarter"
                         type="text"
@@ -73,11 +87,12 @@
                     </td>-->
                   </tr>
                   <tr>
-                    <td class="disponibility">
+                    <td class="text">
                       <label for="disponibility">Disponibilidad :</label>
                     </td>
-                    <td class="newDisponibility">
+                    <td class="data">
                       <input
+                        class="data"
                         id="newDisponibility"
                         name="newDisponibility"
                         type="text"
@@ -93,7 +108,12 @@
             </form>
 
             <div class="buttons">
-              <input type="button" class="button-back" value="Cancelar" @click="$router.go(-1)" />
+              <input
+                type="button"
+                class="button-back"
+                value="Cancelar"
+                @click="$router.go(-1)"
+              />
 
               <input
                 id="button"
@@ -134,7 +154,7 @@ import {
   getUserName,
   isLoggedIn,
   checkAdmin,
-  setName
+  setName,
 } from "../api/utils";
 
 export default {
@@ -142,7 +162,7 @@ export default {
   components: {
     menucustom,
     menulinksadmin,
-    footercustom
+    footercustom,
   },
   data() {
     return {
@@ -150,7 +170,7 @@ export default {
       correctData: false,
       newHeadquarter: "",
       newType: "",
-      newDisponibility: ""
+      newDisponibility: "",
     };
   },
   methods: {
@@ -176,7 +196,7 @@ export default {
           .post("http://localhost:3000/assignment", {
             headquarter: self.newHeadquarter,
             service_type: self.newType,
-            disponibility: self.newDisponibility
+            disponibility: self.newDisponibility,
           })
 
           .then(function(response) {
@@ -187,15 +207,15 @@ export default {
               icon: "success",
               title: "Asignación de servicios registrada correctamente.",
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             });
           })
-          .catch(error =>
+          .catch((error) =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             })
           );
       } else {
@@ -203,11 +223,11 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -227,10 +247,14 @@ body main {
   padding-bottom: 81px;
 }
 
-fieldset {
+fieldset.form {
   border: none;
   padding: 1rem;
   border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
 }
 
 h2 {
@@ -241,78 +265,66 @@ h3 {
   text-align: center;
 }
 
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
-}
-.modalBox fieldset input {
-  width: 405px;
-}
-.modalBox article fieldset form ul li label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox article fieldset form ul li select,
-.modalBox article fieldset form ul li input {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 250px;
-}
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
-  text-align: center;
-}
-
 h1 {
   text-align: center;
   font-size: 2rem;
   padding: 0.5rem 0;
 }
 table {
-  min-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
 }
 
 tbody {
+  margin: 5px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-
-  margin: 5px;
 }
 tr {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  vertical-align: center;
+  justify-content: space-between;
+  /*   max-width: 500px; */
 }
 td {
-  padding: 1rem 0.2rem;
+  padding: 0.5rem 0.2rem;
 }
 td.text {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: flex-start;
 }
 td.data {
   font-weight: bold;
+  text-align: end;
+  align-self: flex-end;
 }
 
 label {
-  font-size: 18px;
-}
-input,
-select,
-textarea {
-  padding: 10px;
   font-size: 15px;
 }
-</style>
+input.data {
+  padding: 5px;
+  font-size: 15px;
+  min-width: 225px;
+}
 
+select,
+textarea {
+  padding: 5px;
+  font-size: 15px;
+}
+
+select {
+  min-width: 225px;
+}
+div.buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+</style>

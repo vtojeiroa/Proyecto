@@ -5,6 +5,12 @@
         <article class="users">
           <div class="user" v-for="(user, index) in users" :key="user.id">
             <table>
+              <div class="image" v-show="user.foto">
+                <img
+                  :src="'http://localhost:3000/uploads/' + user.foto"
+                  alt="Foto de perfil"
+                />
+              </div>
               <tbody>
                 <tr>
                   <td class="text">Id usuario:</td>
@@ -56,11 +62,13 @@
                 </tr>
                 <tr>
                   <td class="text">Teléfono:</td>
-                  <td class="data">{{ user.telefono}}</td>
+                  <td class="data">{{ user.telefono }}</td>
                 </tr>
                 <tr>
                   <td class="text">Fecha de nacimiento:</td>
-                  <td class="data">{{ user.fecha_nacimiento | moment("DD-MM-YYYY") }}</td>
+                  <td class="data">
+                    {{ user.fecha_nacimiento | moment("DD-MM-YYYY") }}
+                  </td>
                 </tr>
                 <tr>
                   <td class="text">Sede:</td>
@@ -68,8 +76,16 @@
                 </tr>
               </tbody>
               <div class="buttons">
-                <input class="button-back" value="Borrar" @click="deleteUserEvent(index)" />
-                <input class="button-go" value="Editar" @click="editUserEvent(index)" />
+                <input
+                  class="button-back"
+                  value="Borrar"
+                  @click="deleteUserEvent(index)"
+                />
+                <input
+                  class="button-go"
+                  value="Editar"
+                  @click="editUserEvent(index)"
+                />
               </div>
             </table>
           </div>
@@ -84,7 +100,7 @@
 
 export default {
   name: "ListUsers",
-  props: { users: Array },
+  props: { users: Array, image: String },
   methods: {
     //FUNCION QUE EMITE UN EVENTO PARA EDITAR UN CLIENTE
     editUserEvent(index) {
@@ -98,8 +114,8 @@ export default {
     deleteUserEvent(index) {
       let data = this.users[index].id;
       this.$emit("delete", data);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -126,6 +142,7 @@ tbody {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+
   margin: 5px;
 }
 tr {
@@ -136,14 +153,18 @@ tr {
 td.text {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: s;
 }
 td.data {
   font-weight: bold;
 }
+.image {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 img {
-  width: 200px;
-  border-radius: 10px;
+  width: 100px;
+  border-radius: 20px;
 }
 input {
   text-align: center;
