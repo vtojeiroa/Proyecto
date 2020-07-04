@@ -4,11 +4,7 @@
       <section>
         <div class="myreserves" v-show="seeReserves">
           <article class="myreserves">
-            <div
-              class="myreserve"
-              v-for="(myreserve, index) in myreserves"
-              :key="myreserve.id"
-            >
+            <div class="myreserve" v-for="(myreserve, index) in myreserves" :key="myreserve.id">
               <table>
                 <tbody>
                   <tr>
@@ -24,7 +20,7 @@
 
                     <td class="data">
                       {{
-                        myreserve.fecha_registro | moment("DD/MM/YYYY HH:mm")
+                      new Date(myreserve.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'})
                       }}
                     </td>
                   </tr>
@@ -40,8 +36,7 @@
                     <td class="text">Fecha inicio reserva:</td>
                     <td class="data">
                       {{
-                        myreserve.fecha_hora_inicio_reserva
-                          | moment("DD-MM-YYYY HH:mm")
+                      new Date(myreserve.fecha_hora_inicio_reserva).toLocaleString('es-ES',{timeZone:'UTC'})
                       }}
                     </td>
                   </tr>
@@ -49,8 +44,7 @@
                     <td class="text">Fecha fin reserva:</td>
                     <td class="data">
                       {{
-                        myreserve.fecha_hora_fin_reserva
-                          | moment("DD-MM-YYYY HH:mm")
+                      new Date(myreserve.fecha_hora_fin_reserva).toLocaleString('es-ES',{timeZone:'UTC'})
                       }}
                     </td>
                   </tr>
@@ -70,12 +64,17 @@
                     <td class="text">Fecha valoración:</td>
                     <td class="data">
                       {{
-                        myreserve.fecha_registro_valoracion
-                          | moment("DD-MM-YYYY HH:mm")
+                      new Date(myreserve.fecha_registro_valoracion).toLocaleString('es-ES',{timeZone:'UTC'})
                       }}
                     </td>
                   </tr>
-                  <tr v-show="myreserve.codigo_reserva">
+                  <tr
+                    v-show="
+                      myreserve.codigo_reserva &&
+                        myreserve.codigo_reserva !== 'close' &&
+                        !myreserve.valoracion
+                    "
+                  >
                     <td class="text">Código reserva:</td>
                     <td class="data">{{ myreserve.codigo_reserva }}</td>
                   </tr>
@@ -107,20 +106,16 @@
                     />
                   </div>
                 </tbody>
-                <p v-show="myreserve.fecha_hora_fin_reserva > date">
-                  La reserva está activa, puedes modificarla o borrarla.
-                </p>
+                <p
+                  v-show="myreserve.fecha_hora_fin_reserva > date"
+                >La reserva está activa, puedes modificarla o borrarla.</p>
                 <p
                   v-show="
                     myreserve.fecha_hora_fin_reserva < date &&
                       !myreserve.valoracion
                   "
-                >
-                  La reserva ha finalizado, puedes valorarla.
-                </p>
-                <p v-show="myreserve.valoracion">
-                  Reserva cerrada, ya has valorado esta reserva.
-                </p>
+                >La reserva ha finalizado, puedes valorarla.</p>
+                <p v-show="myreserve.valoracion">Reserva cerrada, ya has valorado esta reserva.</p>
               </table>
             </div>
           </article>
@@ -194,7 +189,7 @@ export default {
       rating: 0,
       voteDescription: "",
       newReserve: {},
-      modalVote: false,
+      modalVote: false
     };
   },
 
@@ -202,7 +197,7 @@ export default {
     myreserves: Array,
     seeVote: Boolean,
     seeReserves: Boolean,
-    date: String,
+    date: String
   },
   methods: {
     editedEvent(index) {
@@ -212,7 +207,6 @@ export default {
     //FUNCION QUE EMITE UN EVENTO PARA BORRAR UNA RESERVA
     deleteReserveEvent(index) {
       let data = this.myreserves[index].id;
-      //FUNCION QUE EMITE UN EVENTO PARA EDITAR UNA RESERVA
       this.$emit("delete", data);
     },
     //FUNCION QUE EMITE UN EVENTO PARA VOTAR UNA RESERVA
@@ -235,8 +229,8 @@ export default {
     // CIERRA EL MODAL DESPUES DE VOTAR LA RESERVA
     closeModalVote() {
       this.modalVote = false;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

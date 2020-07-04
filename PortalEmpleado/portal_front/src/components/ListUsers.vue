@@ -67,7 +67,11 @@
                 <tr>
                   <td class="text">Fecha de nacimiento:</td>
                   <td class="data">
-                    {{ user.fecha_nacimiento | moment("DD-MM-YYYY") }}
+                    {{
+                      new Date(
+                        user.fecha_nacimiento
+                      ).toLocaleDateString("es-ES", { timeZone: "UTC" })
+                    }}
                   </td>
                 </tr>
                 <tr>

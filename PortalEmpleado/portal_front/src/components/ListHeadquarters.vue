@@ -44,11 +44,15 @@
                 </tr>
                 <tr>
                   <td class="text">Fecha creación:</td>
-                  <td class="data">{{headquarter.fecha_registro | moment("DD-MM-YYYY")}}</td>
+                  <td
+                    class="data"
+                  >{{ new Date(headquarter.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'})}}</td>
                 </tr>
                 <tr>
                   <td class="text">Última actualizacion:</td>
-                  <td class="data">{{headquarter.ultima_actualizacion | moment("DD-MM-YYYY")}}</td>
+                  <td
+                    class="data"
+                  >{{new Date(headquarter.ultima_actualizacion).toLocaleString('es-ES',{timeZone:'UTC'})}}</td>
                 </tr>
                 <div class="buttons">
                   <input class="button-back" value="Borrar" @click="deleteHeadquarterEvent(index)" />

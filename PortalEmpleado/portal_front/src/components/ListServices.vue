@@ -28,11 +28,15 @@
                 </tr>
                 <tr>
                   <td class="text">Fecha creación:</td>
-                  <td class="data">{{service.fecha_registro | moment("DD-MM-YYYY")}}</td>
+                  <td
+                    class="data"
+                  >{{new Date(service.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'})}}</td>
                 </tr>
                 <tr>
                   <td class="text">ultima actualizacion:</td>
-                  <td class="data">{{service.ultima_actualizacion | moment("DD-MM-YYYY")}}</td>
+                  <td
+                    class="data"
+                  >{{new Date(service.ultima_actualizacion).toLocaleString('es-ES',{timeZone:'UTC'})}}</td>
                 </tr>
 
                 <div class="buttons">

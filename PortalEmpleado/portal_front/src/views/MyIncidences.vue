@@ -237,7 +237,7 @@
           <fieldset>
             <label for="newDescription">Comentario:</label>
             <input
-              class="text"
+              class="descriptionText"
               type="text"
               v-model="newDescription"
               placeholder="Introduce el comentario"
@@ -257,7 +257,7 @@
       <!-- MODAL PARA BUSCAR UNA INCIDENCIA POR EL CÓDIGO -->
       <div class="modal" v-show="modalSearch">
         <div class="modalBox">
-          <h2>Introduce el código que has recibido por correo eléctronico</h2>
+          <h2>Introduce el código que has recibido por correo electrónico</h2>
           <fieldset>
             <label for="search">Código:</label>
             <input
@@ -382,7 +382,8 @@ export default {
 
     showEditText(data) {
       this.newId = data.id;
-      this.newDescription = description;
+
+      this.newDescription = data.descripcion;
     },
 
     //FUNCION PARA ACTUALIZAR UN CLIENTE
@@ -556,14 +557,15 @@ export default {
           //MOSTRAR UN MENSAJE CON EL RESULTADO
           Swal.fire({
             icon: "success",
-            title: `Acabas de valorar la incidencia `,
+            title: `${response.data.message} `,
             showConfirmButton: false,
             timer: 2500,
           }).then(
             //recarga la página
             (result) => {
-              this.closeVoteView();
-              this.emptyFieldsVotes();
+              self.search = "";
+              self.closeVoteView();
+              self.emptyFieldsVotes();
             }
           );
         })
@@ -615,11 +617,10 @@ export default {
       } else {
         result = result.filter(
           (myincidence) =>
-            myincidence.descripcion
+            myincidence.codigo_incidencia
               .toLowerCase()
               .includes(this.search.toLowerCase()) ||
-            myincidence.codigo_incidencia === parseInt(this.search) ||
-            myincidence.id === parseInt(this.search)
+            myincidence.codigo_incidencia === parseInt(this.search)
         );
         if (!result.length) {
           Swal.fire({
@@ -713,19 +714,23 @@ body main section#content {
   flex-direction: column;
   align-items: center;
 }
-body main section article ul.link {
-  align-self: center;
-  width: 100%;
+body main section article.searchAll,
+body main section article.search-input {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
 }
 body section article.links {
   display: flex;
   justify-content: center;
 }
 
-fieldset {
+fieldset.form {
   border: none;
   padding: 1rem;
   border-radius: 10px;
+  width: 65%;
 }
 
 ul {
@@ -777,5 +782,13 @@ h1 {
 }
 p.code {
   text-align: center;
+}
+.modal input.descriptionText {
+  width: 400px;
+  text-align: left;
+}
+
+.modal .buttons input {
+  width: 110px;
 }
 </style>

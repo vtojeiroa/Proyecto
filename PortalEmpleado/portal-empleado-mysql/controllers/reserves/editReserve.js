@@ -61,7 +61,7 @@ async function editReserve(req, res, next) {
             'Registro de modificación de reserva en el Portal del Empleado',
           html: `<div>
               <h1>Hemos modificado tu reserva de ${dataReserve.tipo}</h1>
-        <p>Para revisar tu reserva puedes acceder al Portal, e ir al apartado de reservas, e
+        <p>Para revisarla puedes acceder al Portal, ir al apartado de reservas, e
        introducir en el buscador el siguiente código de reserva <strong>${data.codigo_reserva}</strong>.</p>
       </div>`
         });

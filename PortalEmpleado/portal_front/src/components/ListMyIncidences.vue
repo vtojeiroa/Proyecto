@@ -22,11 +22,9 @@
                   </tr>
                   <tr>
                     <td class="text">Fecha de registro:</td>
-                    <td class="data">
-                      {{
-                        myincidence.fecha_registro | moment("DD-MM-YYYY HH:MM")
-                      }}
-                    </td>
+                    <td
+                      class="data"
+                    >{{ new Date(myincidence.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'}) }}</td>
                   </tr>
 
                   <tr>
@@ -37,16 +35,13 @@
                     <td class="text">Fecha de resolución:</td>
                     <td class="data">
                       {{
-                        myincidence.fecha_resolucion
-                          | moment("DD-MM-YYYY HH:MM")
+                      new Date(myincidence.fecha_resolucion).toLocaleString('es-ES',{timeZone:'UTC'})
                       }}
                     </td>
                   </tr>
                   <tr v-show="myincidence.comentario_resolucion">
                     <td class="text">Comentario:</td>
-                    <td class="data">
-                      {{ myincidence.comentario_resolucion }}
-                    </td>
+                    <td class="data">{{ myincidence.comentario_resolucion }}</td>
                   </tr>
                   <tr v-show="myincidence.valoracion">
                     <td class="text">Valoracíon:</td>
@@ -54,20 +49,23 @@
                   </tr>
                   <tr v-show="myincidence.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>
-                    <td class="data">
-                      {{ myincidence.comentario_valoracion }}
-                    </td>
+                    <td class="data">{{ myincidence.comentario_valoracion }}</td>
                   </tr>
                   <tr v-show="myincidence.fecha_registro_valoracion">
                     <td class="text">Fecha valoración:</td>
                     <td class="data">
                       {{
-                        myincidence.fecha_registro_valoracion
-                          | moment("DD-MM-YYYY hh:mm")
+                      new Date(myincidence.fecha_registro_valoracion).toLocaleString('es-ES',{timeZone:'UTC'})
                       }}
                     </td>
                   </tr>
-                  <tr v-show="myincidence.codigo_incidencia">
+                  <tr
+                    v-show="
+                      myincidence.codigo_incidencia &&
+                        myincidence.codigo_incidencia !== 'close' &&
+                        !myincidence.valoracion
+                    "
+                  >
                     <td class="text">Código incidencia:</td>
                     <td class="data">{{ myincidence.codigo_incidencia }}</td>
                   </tr>
@@ -97,19 +95,15 @@
                     />
                   </div>
                 </tbody>
-                <p v-show="!myincidence.fecha_resolucion">
-                  La incidencia está activa, puedes modificarla o borrarla.
-                </p>
+                <p
+                  v-show="!myincidence.fecha_resolucion"
+                >La incidencia está activa, puedes modificarla o borrarla.</p>
                 <p
                   v-show="
                     myincidence.fecha_resolucion && !myincidence.valoracion
                   "
-                >
-                  La incidencia ha sido cerrada, puedes valorarla.
-                </p>
-                <p v-show="myincidence.valoracion">
-                  Incidencia cerrada, ya has valorado esta reserva.
-                </p>
+                >La incidencia ha sido cerrada, puedes valorarla.</p>
+                <p v-show="myincidence.valoracion">Incidencia cerrada, ya has valorado esta reserva.</p>
               </table>
             </div>
           </article>
@@ -185,13 +179,13 @@ export default {
       rating: 0,
       voteDescription: "",
       newIncidence: {},
-      modalVote: false,
+      modalVote: false
     };
   },
   props: {
     myincidences: Array,
     seeVote: Boolean,
-    seeIncidences: Boolean,
+    seeIncidences: Boolean
   },
   methods: {
     //FUNCION QUE EMITE UN EVENTO PARA EDITAR UNA INCIDENCIA
@@ -227,8 +221,8 @@ export default {
     // CIERRA EL MODAL DESPUES DE VOTAR LA INCIDNCIEA
     closeModalVote() {
       this.modalVote = false;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

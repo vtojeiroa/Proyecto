@@ -12,14 +12,6 @@ import StarRating from "vue-star-rating";
 
 Vue.component("star-rating", StarRating);
 
-/* IMPORTO VUE-MOMENT PARA TRABAJAR LAS FECHAS  */
-const moment = require("moment");
-require("moment/locale/es");
-
-Vue.use(require("vue-moment"), {
-  moment,
-});
-
 Vue.config.productionTip = false;
 
 new Vue({

@@ -21,9 +21,9 @@ const EMAIL = "email";
 
 const HEADQUARTER = "headquarter";
 
-const ISADMIN = "isadmin";
+/* const ISADMIN = "isadmin";
 
-const AVATAR = "avatar";
+const AVATAR = "avatar"; */
 
 //FUNCION DE LOGIN
 

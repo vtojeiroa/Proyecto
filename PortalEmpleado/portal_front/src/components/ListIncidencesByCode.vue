@@ -39,7 +39,7 @@
                     <td class="text">Fecha de resolución:</td>
                     <td
                       class="data"
-                    >{{incidencebycode.fecha_resolucion | moment("DD-MM-YYYY HH:MM") }}</td>
+                    >{{ new Date(incidencebycode.fecha_resolucion).toLocaleString('es-ES',{timeZone:'UTC'}) }}</td>
                   </tr>
                   <tr>
                     <td class="text">Comentario:</td>
@@ -57,7 +57,7 @@
                     <td class="text">Fecha valoración:</td>
                     <td
                       class="data"
-                    >{{incidencebycode.fecha_registro_valoracion | moment("DD-MM-YYYY hh:mm") }}</td>
+                    >{{new Date(incidencebycode.fecha_registro_valoracion).toLocaleString('es-ES',{timeZone:'UTC'}) }}</td>
                   </tr>
                   <tr>
                     <td class="text">Código incidencia:</td>
@@ -67,7 +67,7 @@
                     <td class="text">Fecha de registro:</td>
                     <td
                       class="data"
-                    >{{ incidencebycode.fecha_registro | moment("DD-MM-YYYY HH:MM")}}</td>
+                    >{{new Date(incidencebycode.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'})}}</td>
                   </tr>
                   <div class="buttons">
                     <input

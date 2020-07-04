@@ -2,7 +2,10 @@
   <div>
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful title="Atención al usuario" description="Página de atención al usuario" />
+    <vue-headful
+      title="Atención al usuario"
+      description="Página de atención al usuario"
+    />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -38,7 +41,9 @@
                   </tr>
                   <tr class="email">
                     <td class="text">
-                      <label class="email" for="email">Correo electrónico:</label>
+                      <label class="email" for="email"
+                        >Correo electrónico:</label
+                      >
                     </td>
                     <td class="data">
                       <input
@@ -53,7 +58,9 @@
                   </tr>
                   <tr class="email2">
                     <td class="text">
-                      <label class="email2" for="email2">Repetir correo electrónico:</label>
+                      <label class="email2" for="email2"
+                        >Repetir correo electrónico:</label
+                      >
                     </td>
                     <td class="data">
                       <input
@@ -68,7 +75,9 @@
                   </tr>
                   <tr class="telephone">
                     <td class="text">
-                      <label class="telephone" for="contact-telephone">Teléfono de contacto:</label>
+                      <label class="telephone" for="contact-telephone"
+                        >Teléfono de contacto:</label
+                      >
                     </td>
                     <td class="data">
                       <input
@@ -83,16 +92,28 @@
                   </tr>
                   <tr class="query">
                     <td class="text">
-                      <label class="query" for="field-query-type">Tipo de consulta:</label>
+                      <label class="query" for="field-query-type"
+                        >Tipo de consulta:</label
+                      >
                     </td>
                     <td class="data">
-                      <select id="query-type" name="queryType" class="query" v-model="typeConsult">
+                      <select
+                        id="query-type"
+                        name="queryType"
+                        class="query"
+                        v-model="typeConsult"
+                      >
                         <option value>Seleccionar...</option>
-                        <option value="Consulta sobre el servicio de Reservas">Reservas</option>
-                        <option value="Consulta sobre el servicio de incidencias">Incidencias</option>
+                        <option value="Consulta sobre el servicio de Reservas"
+                          >Reservas</option
+                        >
                         <option
-                          value="Consulta sobre el Portal del Empleado"
-                        >Consulta sobre el acceso/registro al portal</option>
+                          value="Consulta sobre el servicio de incidencias"
+                          >Incidencias</option
+                        >
+                        <option value="Consulta sobre el Portal del Empleado"
+                          >Consulta sobre el acceso/registro al portal</option
+                        >
                         <option value="Otras consultas">Otras consultas</option>
                       </select>
                     </td>
@@ -106,8 +127,8 @@
                         class="message"
                         id="field-message"
                         name="message"
-                        rows="8"
-                        cols="35"
+                        rows="6"
+                        cols="25"
                         v-model="message"
                       ></textarea>
                     </td>
@@ -117,8 +138,18 @@
             </fieldset>
           </form>
           <div class="buttons">
-            <input type="button" class="button-back" value="Atrás" @click="$router.go(-1)" />
-            <input type="submit" value="Enviar" class="button-go" @click="sendQuestion()" />
+            <input
+              type="button"
+              class="button-back"
+              value="Atrás"
+              @click="$router.go(-1)"
+            />
+            <input
+              type="submit"
+              value="Enviar"
+              class="button-go"
+              @click="sendQuestion()"
+            />
           </div>
         </article>
       </section>
@@ -146,7 +177,7 @@ export default {
   name: "UserAttention",
   components: {
     menucustom,
-    footercustom
+    footercustom,
   },
   data() {
     return {
@@ -157,7 +188,7 @@ export default {
       typeConsult: "",
       message: "",
       errorMessage: "",
-      correctData: false
+      correctData: false,
     };
   },
   methods: {
@@ -192,7 +223,7 @@ export default {
             name: self.name,
             phone: self.phone,
             service: self.typeConsult,
-            message: self.message
+            message: self.message,
           })
           .then(function(response) {
             console.log(response);
@@ -202,18 +233,18 @@ export default {
               title:
                 "Hemos enviado un mail con tú consulta. En breve recibiras nuestra ayuda",
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             }),
               //Ir a la página de login
               self.$router.go(-1),
               self.emptyFields();
           })
-          .catch(error =>
+          .catch((error) =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             })
           );
       } else {
@@ -221,7 +252,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
     },
@@ -233,8 +264,8 @@ export default {
       this.phone === "";
       this.typeConsult === "";
       this.message === "";
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -260,7 +291,7 @@ form {
   flex-wrap: wrap;
   justify-content: center;
 }
-fieldset.form {
+fieldset {
   border: none;
   padding: 1rem;
   border-radius: 10px;
@@ -322,15 +353,17 @@ input {
   font-size: 15px;
 }
 
-select,
+select {
+  padding: 5px;
+  font-size: 15px;
+  max-width: 215px;
+}
+
 textarea {
   padding: 10px;
   font-size: 15px;
 }
 
-select {
-  min-width: 235px;
-}
 div.buttons {
   display: flex;
   flex-direction: row;

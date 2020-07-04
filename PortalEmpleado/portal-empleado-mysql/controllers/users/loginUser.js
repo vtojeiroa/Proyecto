@@ -50,8 +50,7 @@ async function loginUser(req, res, next) {
       name: user.nombre,
       role: user.tipo_usuario,
       email: user.email,
-      headquarter: user.sedes_id,
-      avatar: user.foto
+      headquarter: user.sedes_id
     };
     const token = jwt.sign(tokenPayload, process.env.SECRET, {
       expiresIn: '30d'

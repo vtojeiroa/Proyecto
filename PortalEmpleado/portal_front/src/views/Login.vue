@@ -2,7 +2,10 @@
   <div id="app">
     <div class="home">
       <!-- CAMBIAR TITULO DE LA PAGINA -->
-      <vue-headful title="Portal del Empleado" description="Página de inicio del Portal." />
+      <vue-headful
+        title="Portal del Empleado"
+        description="Página de inicio del Portal."
+      />
       <!-- /CAMBIAR TITULO DE LA PAGINA -->
 
       <!-- MENU -->
@@ -52,11 +55,20 @@
                 </table>
               </fieldset>
             </form>
-            <p class="warning">Todos los campos marcados con * son obligatorios</p>
+            <p class="warning">
+              Todos los campos marcados con * son obligatorios
+            </p>
             <div class="button-login">
-              <input class="button-login" type="submit" value="Acceder" @click="login()" />
+              <input
+                class="button-login"
+                type="submit"
+                value="Acceder"
+                @click="login()"
+              />
             </div>
-            <router-link :to="{ name: 'PasswordRecovery' }">Olvidé la contraseña</router-link>
+            <router-link :to="{ name: 'PasswordRecovery' }"
+              >Olvidé la contraseña</router-link
+            >
           </article>
           <form class="box-create-account" action="create-account">
             <fieldset class="box-create-account">
@@ -64,7 +76,9 @@
                 ¿Eres nuevo en
                 <strong>el Portal</strong>?
               </h2>
-              <router-link :to="{ name: 'Registry' }" class="button">Crea tu cuenta</router-link>
+              <router-link :to="{ name: 'Registry' }" class="button"
+                >Crea tu cuenta</router-link
+              >
             </fieldset>
           </form>
         </section>
@@ -73,12 +87,20 @@
           <article class="searchvalorations">
             <h3>Visualiza las valoraciones que han registrado los usuarios</h3>
             <!-- MODAL PARA  LA IMPLEMENTACIÓN DEL BUSCADOR DE INCIDENCIAS -->
-            <button class="button-search" @click="openModalValorations()">Iniciar búqueda</button>
+            <button class="button-search" @click="openModalValorations()">
+              Iniciar búqueda
+            </button>
 
-            <div class="modal" style="overflow-y: scroll;" v-show="modalValorations">
+            <div
+              class="modal"
+              style="overflow-y: scroll;"
+              v-show="modalValorations"
+            >
               <div class="modalBox">
                 <fieldset class="searchValorations">
-                  <h2>Selecciona el servicio para visualizar sus valoraciones</h2>
+                  <h2>
+                    Selecciona el servicio para visualizar sus valoraciones
+                  </h2>
 
                   <form class="searchValorations">
                     <table class="searchValorations">
@@ -86,14 +108,30 @@
                         <tr>
                           <td>
                             <label for="service">Tipo de servicio:</label>
-                            <select id="typeservice" name="typeservice" v-model="typeService">
+                            <select
+                              id="typeservice"
+                              name="typeservice"
+                              v-model="typeService"
+                            >
                               <option value>Selecciona...</option>
-                              <option value="vehiculo">Reserva de vehículo</option>
-                              <option value="sala de reunion">Reserva de sala de Reunión</option>
-                              <option value="Plaza en el comedor">Reserva de plaza en el comedor</option>
-                              <option value="informatica">Incidencia informática</option>
-                              <option value="limpieza">Incidencia Limpieza</option>
-                              <option value="mantenimiento">Incidencia Mantenimiento</option>
+                              <option value="vehiculo"
+                                >Reserva de vehículo</option
+                              >
+                              <option value="sala de reunion"
+                                >Reserva de sala de Reunión</option
+                              >
+                              <option value="Plaza en el comedor"
+                                >Reserva de plaza en el comedor</option
+                              >
+                              <option value="informatica"
+                                >Incidencia informática</option
+                              >
+                              <option value="limpieza"
+                                >Incidencia Limpieza</option
+                              >
+                              <option value="mantenimiento"
+                                >Incidencia Mantenimiento</option
+                              >
                               <option value="seguridad">Seguridad</option>
                               <option value="otras">Otras</option>
                             </select>
@@ -107,13 +145,20 @@
                       type="submit"
                       class="back"
                       value="CERRAR"
-                      @click="closeModalValorations(); closeValorationsView(); emptyFieldsValorations()"
+                      @click="
+                        closeModalValorations();
+                        closeValorationsView();
+                        emptyFieldsValorations();
+                      "
                     />
                     <input
                       type="submit"
                       class="search"
                       value="VER"
-                      @click="getValorations();showValorationsView()"
+                      @click="
+                        getValorations();
+                        showValorationsView();
+                      "
                     />
                   </div>
                 </fieldset>
@@ -138,7 +183,7 @@
 
 <script>
 //IMPORTO LA FUNCION LOGINUSER DE UTILS
-import { loginUser } from "../api/utils";
+import { loginUser, getAuthToken } from "../api/utils";
 
 //IMPORTO AXIOS
 import axios from "axios";
@@ -156,7 +201,7 @@ export default {
   components: {
     menucustominitial,
     footercustom,
-    searchvalorations
+    searchvalorations,
   },
   data() {
     return {
@@ -167,7 +212,7 @@ export default {
       values: {},
       modalValorations: false,
       typeService: "",
-      seeValorations: false
+      seeValorations: false,
     };
   },
 
@@ -182,8 +227,9 @@ export default {
           icon: "success",
           title: `Login realizado con éxito!`,
           showConfirmButton: false,
-          timer: 2000
+          timer: 2000,
         });
+
         //SI HAY LOGIN, QUE ME LLEVE AL HOME
         this.$router.push("HomePortal");
       } catch (error) {
@@ -191,19 +237,19 @@ export default {
           icon: "error",
           title: `${error}`,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
     },
 
-    //FUNCIÓN PARA CARGAR TODAS LAS INCIDENCIAS
+    //FUNCIÓN PARA CARGAR TODAS LAS VALORACIONES
     getValorations(typeService) {
       let self = this;
       axios
         .get("http://localhost:3000/votes", {
           params: {
-            type: this.typeService
-          }
+            type: this.typeService,
+          },
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -214,12 +260,12 @@ export default {
           self.values = response.data.values;
         })
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -243,8 +289,8 @@ export default {
     },
     closeValorationsView() {
       this.seeValorations = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

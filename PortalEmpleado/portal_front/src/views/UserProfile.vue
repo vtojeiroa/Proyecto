@@ -42,7 +42,12 @@
             <div class="modal" v-show="modalEmail">
               <div class="modalBox">
                 <h2>Cambio de correo electrónico</h2>
-                <h3>Por favor, introduce la nueva dirección de correo electrónico con la que te gustaría acceder al Portal del Empleado a partir de ahora. Te enviaremos un correo electrónico de verificación a la nueva dirección para que la puedas cambiar.</h3>
+                <h3>
+                  Por favor, introduce la nueva dirección de correo electrónico
+                  con la que te gustaría acceder al Portal del Empleado a partir
+                  de ahora. Te enviaremos un correo electrónico de verificación
+                  a la nueva dirección para que la puedas cambiar.
+                </h3>
                 <p>Todos los campos marcados con * son obligatorios</p>
 
                 <form>
@@ -51,23 +56,39 @@
                       <tbody>
                         <tr>
                           <td>
-                            <label for="email">Correo electrónico actual* :</label>
+                            <label for="email"
+                              >Correo electrónico actual* :</label
+                            >
                           </td>
                           <td>
-                            <input id="email" name="email" type="email" v-model="oldEmail" />
+                            <input
+                              id="email"
+                              name="email"
+                              type="email"
+                              v-model="oldEmail"
+                            />
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <label for="newEmail">Correo electrónico nuevo* :</label>
+                            <label for="newEmail"
+                              >Correo electrónico nuevo* :</label
+                            >
                           </td>
                           <td>
-                            <input id="newEmail" name="newEmail" type="email" v-model="newEmail" />
+                            <input
+                              id="newEmail"
+                              name="newEmail"
+                              type="email"
+                              v-model="newEmail"
+                            />
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <label for="newEmail1">Repetir correo electrónico nuevo* :</label>
+                            <label for="newEmail1"
+                              >Repetir correo electrónico nuevo* :</label
+                            >
                           </td>
                           <td>
                             <input
@@ -88,13 +109,13 @@
                     type="button"
                     class="button-back"
                     value="Cancelar"
-                    @click="closeModalEmail();"
+                    @click="closeModalEmail()"
                   />
                   <input
                     type="submit"
                     class="button-go"
                     value="Modificar"
-                    @click="updateEmail(oldEmail,newEmail,newEmailRepeat)  "
+                    @click="updateEmail(oldEmail, newEmail, newEmailRepeat)"
                   />
                 </div>
               </div>
@@ -114,8 +135,13 @@
           <div class="modal" v-show="modalProfile">
             <div class="modalBox" v-on:edit="showEditText">
               <h2>¡Mantén actualizados tus datos!</h2>
-              <p>Todos los campos marcados con * son obligatorios</p>
-
+              <p>
+                Todos los campos marcados con * son obligatorios.
+              </p>
+              <p>
+                El código postal y la fecha de nacimiento serán necesarios para
+                poder recuperar la contraseña
+              </p>
               <form id="form">
                 <table class="form-table">
                   <tbody>
@@ -305,19 +331,32 @@
                   <tr class="editAvatar">
                     <td class="image">
                       <label>
-                        Actualiza
-                        tu imagen de perfil:
+                        Actualiza tu imagen de perfil:
                       </label>
                     </td>
                     <td class="tdFormField">
-                      <input id="file" type="file" ref="file" @change="handleFileUpload()" />
+                      <input
+                        id="file"
+                        type="file"
+                        ref="file"
+                        @change="handleFileUpload()"
+                      />
                     </td>
                   </tr>
                 </tbody>
               </table>
               <div class="buttons">
-                <input class="button-back" value="Cancelar" @click="closeModalPhoto()" />
-                <input class="button-go" type="button" value="Actualizar" @click="uploadImage()" />
+                <input
+                  class="button-back"
+                  value="Cancelar"
+                  @click="closeModalPhoto()"
+                />
+                <input
+                  class="button-go"
+                  type="button"
+                  value="Actualizar"
+                  @click="uploadImage()"
+                />
               </div>
             </div>
           </div>
@@ -388,7 +427,12 @@
                   </table>
                 </form>
                 <div class="buttonPassword">
-                  <input type="button" class="button-back" value="Cancelar" @click="closeModal()" />
+                  <input
+                    type="button"
+                    class="button-back"
+                    value="Cancelar"
+                    @click="closeModal()"
+                  />
                   <input
                     type="submit"
                     class="button-go"
@@ -439,7 +483,7 @@ import {
   setName,
   setEmail,
   setAvatar,
-  formatDateToFront
+  formatDateToFront,
 } from "../api/utils";
 
 export default {
@@ -448,7 +492,7 @@ export default {
     menucustom,
     menulinks,
     profiledata,
-    footercustom
+    footercustom,
   },
   data() {
     return {
@@ -491,7 +535,7 @@ export default {
       correctDataEmail: false,
       oldEmail: "",
       newEmail: "",
-      newEmailRepeat: ""
+      newEmailRepeat: "",
     };
   },
   methods: {
@@ -502,8 +546,8 @@ export default {
       axios
         .get(`http://localhost:3000/users/` + data, {
           headers: {
-            authorization: `Bearer ${token}`
-          }
+            authorization: `Bearer ${token}`,
+          },
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -519,12 +563,12 @@ export default {
         })
 
         //SI SALE MAL
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -584,8 +628,8 @@ export default {
       axios
         .put("http://localhost:3000/" + "users/" + data, formData, {
           headers: {
-            "Content-Type": "multipart/form-data"
-          }
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then(function(response) {
           self.getUser();
@@ -593,17 +637,17 @@ export default {
           self.closeModalProfile();
           Swal.fire({
             icon: "success",
-            title: "Datos de perfil actualizados correctamente.",
+            title: "Foto de perfil actualizada correctamente.",
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           });
         })
-        .catch(error =>
+        .catch((error) =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500
+            timer: 2500,
           })
         );
     },
@@ -636,8 +680,8 @@ export default {
         axios
           .put("http://localhost:3000/" + "users/" + data, formData, {
             headers: {
-              "Content-Type": "multipart/form-data"
-            }
+              "Content-Type": "multipart/form-data",
+            },
           })
           .then(function(response) {
             self.getUser();
@@ -646,15 +690,15 @@ export default {
               icon: "success",
               title: "Datos de perfil actualizados correctamente.",
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             });
           })
-          .catch(error =>
+          .catch((error) =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             })
           );
       } else {
@@ -662,7 +706,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
     },
@@ -673,13 +717,13 @@ export default {
         title: "¿Estás seguro?",
         text: "¡No podrás deshacerlo!",
         text:
-          "Para volver a activarlo tendrás que contactar con Atención al usuario.",
+          "Para volver a activarla tendrás que contactar con Atención al usuario.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!"
-      }).then(result => {
+        confirmButtonText: "Si, bórralo!",
+      }).then((result) => {
         if (result.value) {
           const token = getAuthToken();
           axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
@@ -692,20 +736,21 @@ export default {
               //MOSTRAR UN MENSAJE CON EL RESULTADO
               Swal.fire({
                 icon: "success",
-                title: `Acabas de borrar los datos del usuario `,
+                title: `Acabas de dar de baja tu cuenta. Deberás contactar con Atención al usuario para volver a activarla `,
                 showConfirmButton: false,
-                timer: 2500
-              }).then(result => {
+                timer: 2500,
+              }).then((result) => {
+                logOut();
                 self.$router.push("/");
               });
             })
             //SI SALE MAL
-            .catch(error =>
+            .catch((error) =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500
+                timer: 2500,
               })
             );
         }
@@ -783,7 +828,7 @@ export default {
           .post(`http://localhost:3000/users/${data}/password`, {
             oldPassword: self.oldPassword,
             newPassword: self.newPassword,
-            newPasswordRepeat: self.newPasswordRepeat
+            newPasswordRepeat: self.newPasswordRepeat,
           })
           .then(function(response) {
             logOut();
@@ -794,17 +839,17 @@ export default {
               title:
                 "Cambio de contraseña realizado correctamente. Todos tus tokens quedan invalidados. Haz login de nuevo para conseguir un token válido. ",
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             }),
               //Ir a la página de login
               self.$router.push("/");
           })
-          .catch(error =>
+          .catch((error) =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             })
           );
       } else {
@@ -812,7 +857,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
     },
@@ -865,7 +910,7 @@ export default {
           .post(`http://localhost:3000/users/${data}/email`, {
             oldEmail: self.oldEmail,
             newEmail: self.newEmail,
-            newEmailRepeat: self.newEmailRepeat
+            newEmailRepeat: self.newEmailRepeat,
           })
           //SI SALE BIEN
           .then(function(response) {
@@ -875,19 +920,19 @@ export default {
               icon: "success",
               title: `Modificación del correo electrónico realizada correctamente. `,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             });
             setEmail(newEmail);
             self.getUser();
             self.closeModalEmail();
             self.emptyFieldsEmail();
           })
-          .catch(error =>
+          .catch((error) =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500
+              timer: 2500,
             })
           );
       } else {
@@ -895,7 +940,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500
+          timer: 2500,
         });
       }
     },
@@ -914,13 +959,13 @@ export default {
       this.oldEmail = "";
       this.newEmail = "";
       this.newEmailRepeat = "";
-    }
+    },
   },
 
   created() {
     this.getUser();
     this.loading = false;
-  }
+  },
 };
 </script>
 

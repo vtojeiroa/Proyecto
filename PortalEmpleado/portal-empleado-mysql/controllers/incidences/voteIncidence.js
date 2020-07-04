@@ -63,13 +63,13 @@ async function voteIncidence(req, res, next) {
     // Delete voteCode from table usuarios
 
     await connection.query(
-      'UPDATE incidencias SET codigo_incidencia=NULL WHERE id=?',
+      `UPDATE incidencias SET codigo_incidencia='close' WHERE id=?`,
       [id]
     );
 
     res.send({
       status: 'ok',
-      message: `El voto de ${vote} puntos para la incidencia con id ${id} se ha realizado con éxito`
+      message: `El voto de ${vote} puntos para la incidencia ${id} se ha realizado con éxito`
     });
   } catch (error) {
     next(error);

@@ -84,13 +84,17 @@
                       <td>
                         <label for="newStatus">Estado:</label>
                       </td>
-
-                      <td>
-                        <input
-                          type="text"
+                      <td class="data">
+                        <select
+                          class="newStatus"
+                          name="newStatus"
+                          id="newStatus"
                           v-model="newStatus"
-                          placeholder="Introduce el estado"
-                        />
+                        >
+                          <option value>Selecciona...</option>
+                          <option value="1">Activo</option>
+                          <option value="0">Inactivo</option>
+                        </select>
                       </td>
                     </tr>
                     <tr>
@@ -382,7 +386,9 @@ export default {
       this.newProvince = data.provincia;
       this.newCountry = data.pais;
       this.newPhone = data.telefono;
-      this.newBirthdate = data.fecha_nacimiento;
+      this.newBirthdate = new Date(
+        data.fecha_nacimiento
+      ).toLocaleDateString("es-ES", { timeZone: "UTC" });
       this.newHeadquarter = data.sedes_id;
       this.newAvatar = data.foto;
     },
@@ -689,6 +695,10 @@ input.button-back {
   border: 1px solid #d4d4d4;
   padding: 5px 10px;
   transition: all 0.2s ease 0s;
+  width: 350px;
+}
+
+.modalBox select.newStatus {
   width: 350px;
 }
 

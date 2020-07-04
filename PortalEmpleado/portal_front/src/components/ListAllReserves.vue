@@ -19,8 +19,9 @@
                     <td class="text">Fecha inicio reserva:</td>
                     <td class="data">
                       {{
-                        allreserve.fecha_hora_inicio_reserva
-                          | moment("DD-MM-YYYY HH:mm")
+                        new Date(
+                          allreserve.fecha_hora_inicio_reserva
+                        ).toLocaleString("es-ES", { timeZone: "UTC" })
                       }}
                     </td>
                   </tr>
@@ -28,8 +29,9 @@
                     <td class="text">Fecha fin reserva:</td>
                     <td class="data">
                       {{
-                        allreserve.fecha_hora_fin_reserva
-                          | moment("DD-MM-YYYY HH:mm")
+                        new Date(
+                          allreserve.fecha_hora_fin_reserva
+                        ).toLocaleString("es-ES", { timeZone: "UTC" })
                       }}
                     </td>
                   </tr>
@@ -50,7 +52,9 @@
                     <td class="text">Fecha de Valoracion:</td>
                     <td class="data">
                       {{
-                        allreserve.fecha_registro | moment("DD-MM-YYYY HH:mm")
+                        new Date(
+                          allreserve.fecha_registro
+                        ).toLocaleString("es-ES", { timeZone: "UTC" })
                       }}
                     </td>
                   </tr>

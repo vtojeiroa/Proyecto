@@ -20,7 +20,9 @@
               <tr>
                 <td style="width: 150px;">{{ searchinc.valoracion }}</td>
                 <td style="width: 300px;">{{ searchinc.comentario_valoracion }}</td>
-                <td style="width: 150px;">{{searchinc.fecha_registro | moment("DD-MM-YYYY HH:mm")}}</td>
+                <td
+                  style="width: 150px;"
+                >{{new Date(searchinc.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'})}}</td>
               </tr>
             </table>
           </div>
@@ -88,10 +90,10 @@ h1 {
   text-decoration-line: underline;
 }
 
-tr,
+/* tr,
 th {
   width: ;
-}
+} */
 
 p {
   color: #333;

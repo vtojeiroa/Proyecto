@@ -2,10 +2,7 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful
-      title="Mis Reservas"
-      description="Página que lista mis reservas"
-    />
+    <vue-headful title="Mis Reservas" description="Página que lista mis reservas" />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -14,9 +11,7 @@
       <article class="links">
         <menulinks></menulinks>
         <div class="buttons">
-          <router-link class="button-go" :to="{ name: 'NewReserve' }"
-            >Registrar una Reserva</router-link
-          >
+          <router-link class="button-go" :to="{ name: 'NewReserve' }">Registrar una Reserva</router-link>
           <button
             id="buttonText"
             type="submit"
@@ -25,9 +20,7 @@
               openAll();
               changeButtonText();
             "
-          >
-            {{ buttonText }}
-          </button>
+          >{{ buttonText }}</button>
         </div>
       </article>
     </section>
@@ -60,18 +53,12 @@
                     <option value>Selecciona...</option>
                     <option value="vehiculo">Vehículo</option>
                     <option value="sala de reunion">Sala de Reunión</option>
-                    <option value="Plaza en el comedor"
-                      >Plaza en el comedor</option
-                    >
+                    <option value="Plaza en el comedor">Plaza en el comedor</option>
                   </select>
                 </li>
                 <li class="headquarter">
                   <label class="headquarter" for="headquarter">Sede :</label>
-                  <select
-                    name="headquarter"
-                    id="headquarter"
-                    v-model="headquarterAll"
-                  >
+                  <select name="headquarter" id="headquarter" v-model="headquarterAll">
                     <option value>Selecciona...</option>
                     <option value="coruña">Coruña</option>
                     <option value="santiago">Santiago</option>
@@ -82,31 +69,16 @@
                 <h3>Intervalo de fechas de inicio de la reserva</h3>
                 <li>
                   <label for="from">Fecha inicial &#62;&#61;</label>
-                  <input
-                    type="datetime-local"
-                    id="fromAll"
-                    name="fromAll"
-                    v-model="dateInitAll"
-                  />
+                  <input type="datetime-local" id="fromAll" name="fromAll" v-model="dateInitAll" />
                 </li>
                 <li>
                   <label for="to">Fecha final &#60;</label>
-                  <input
-                    type="datetime-local"
-                    id="toAll"
-                    name="toAll"
-                    v-model="dateEndAll"
-                  />
+                  <input type="datetime-local" id="toAll" name="toAll" v-model="dateEndAll" />
                 </li>
               </ul>
             </form>
             <div class="buttons">
-              <input
-                type="submit"
-                class="button-back"
-                value="Limpiar"
-                @click="emptyFieldsAll()"
-              />
+              <input type="submit" class="button-back" value="Reiniciar" @click="emptyFieldsAll()" />
               <input
                 type="submit"
                 class="button-go"
@@ -150,48 +122,26 @@
                     <option value>Selecciona...</option>
                     <option value="vehiculo">Vehículo</option>
                     <option value="sala de reunion">Sala de Reunión</option>
-                    <option value="Plaza en el comedor"
-                      >Plaza en el comedor</option
-                    >
+                    <option value="Plaza en el comedor">Plaza en el comedor</option>
                   </select>
                 </li>
                 <li>
                   <label for="to">Fecha inicio de reserva &#62;&#61;:</label>
-                  <input
-                    type="datetime-local"
-                    id="until"
-                    name="until"
-                    v-model="dateEndReserve"
-                  />
+                  <input type="datetime-local" id="until" name="until" v-model="dateEndReserve" />
                 </li>
                 <h3>Intervalo de fechas de registro de la reserva</h3>
                 <li>
                   <label for="from">Fecha inicial &#62;&#61;</label>
-                  <input
-                    type="datetime-local"
-                    id="from"
-                    name="from"
-                    v-model="dateInit"
-                  />
+                  <input type="datetime-local" id="from" name="from" v-model="dateInit" />
                 </li>
                 <li>
                   <label for="to">Fecha final &#60;</label>
-                  <input
-                    type="datetime-local"
-                    id="to"
-                    name="to"
-                    v-model="dateEnd"
-                  />
+                  <input type="datetime-local" id="to" name="to" v-model="dateEnd" />
                 </li>
               </ul>
             </form>
             <div class="buttons">
-              <input
-                type="submit"
-                class="button-back"
-                value="Limpiar"
-                @click="emptyFields()"
-              />
+              <input type="submit" class="button-back" value="Reiniciar" @click="emptyFields()" />
               <input
                 type="submit"
                 class="button-go"
@@ -234,10 +184,11 @@
       <!-- MODAL PARA EDITAR LA RESERVA -->
       <div class="modal" v-show="modal">
         <div class="modalBox">
-          <h2>Actualiza los datos del motivo de la reserva</h2>
+          <h2>Puedes actualizar el motivo de la reserva</h2>
           <fieldset>
             <label for="newDescription">Comentario:</label>
             <input
+              class="descriptionText"
               type="text"
               v-model="newDescription"
               placeholder="Introduce el nuevo comentario"
@@ -245,34 +196,21 @@
           </fieldset>
           <div class="buttons">
             <input class="button-back" value="Cerrar" @click="closeModal()" />
-            <input
-              class="button-go"
-              value="Actualizar"
-              @click="updateReserve()"
-            />
+            <input class="button-go" value="Actualizar" @click="updateReserve()" />
           </div>
         </div>
       </div>
       <!-- MODAL PARA BUSCAR UNA INCIDENCIA POR EL CÓDIGO -->
       <div class="modal" v-show="modalSearch">
         <div class="modalBox">
-          <h2>Introduce el código que has recibido por correo eléctronico</h2>
+          <h2>Introduce el código que has recibido por correo electrónico</h2>
           <fieldset>
             <label for="search">Código:</label>
-            <input
-              v-model="search"
-              class="text"
-              type="text"
-              placeholder="Introduce el código"
-            />
+            <input v-model="search" class="text" type="text" placeholder="Introduce el código" />
           </fieldset>
           <div class="buttons">
-            <input
-              class="button-back"
-              value="Cerrar"
-              @click="closeModalSearch()"
-            />
-            <input class="button-go" value="Limpiar" @click="search = ''" />
+            <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+            <input class="button-go" value="Reiniciar" @click="search = ''" />
           </div>
         </div>
       </div>
@@ -311,7 +249,7 @@ export default {
     menulinks,
     footercustom,
     listmyreserves,
-    listallreserves,
+    listallreserves
   },
   data() {
     return {
@@ -342,7 +280,7 @@ export default {
       dateEndAll: "",
       seeMyReserves: true,
       seeAllReserves: false,
-      buttonText: "Ver todas las reservas",
+      buttonText: "Ver todas las reservas"
     };
   },
   methods: {
@@ -354,14 +292,14 @@ export default {
       axios
         .get("http://localhost:3000/reserves/list", {
           headers: {
-            authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`
           },
           params: {
             type: this.type,
             dateEndReserve: this.dateEndReserve,
             date_init: this.dateInit,
-            date_end: this.dateEnd,
-          },
+            date_end: this.dateEnd
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -369,19 +307,20 @@ export default {
           self.date = response.data.date;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
 
-    showEditText(data) {
-      this.id = data.id;
-      this.newDescription = data.comentario_valoracion;
+    showEditText(index) {
+      this.id = this.myreserves[index].id;
+
+      this.newDescription = this.myreserves[index].motivo_reserva;
     },
 
     //FUNCION PARA ACTUALIZAR UNA RESERVA
@@ -392,31 +331,31 @@ export default {
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
         .put("http://localhost:3000/reserves/" + id, {
-          description: self.newDescription,
+          description: self.newDescription
         })
         //SI SALE BIEN
         .then(function(response) {
           //MOSTRAR UN MENSAJE CON EL RESULTADO
           Swal.fire({
             icon: "success",
-            title: `Acabas de actualizar el comentario de la reserva `,
+            title: `Acabas de actualizar el motivo de la reserva `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
             //recarga la página
-            (result) => {
+            result => {
               self.closeModal();
               self.getReserves();
             }
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -424,6 +363,7 @@ export default {
     openModal(index) {
       this.myreserve = this.myreserves[index];
       this.modal = true;
+      this.showEditText(index);
     },
     // CIERRA EL MODAL DESPUES DE EDITAR LOS DATOS DE LA RESERVA
     closeModal() {
@@ -451,8 +391,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!",
-      }).then((result) => {
+        confirmButtonText: "Si, bórralo!"
+      }).then(result => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/reserves/" + data)
@@ -464,18 +404,18 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar la reserva `,
                 showConfirmButton: false,
-                timer: 2500,
-              }).then((result) => {
+                timer: 2500
+              }).then(result => {
                 self.getReserves();
               });
             })
             //SI SALE MAL
-            .catch((error) =>
+            .catch(error =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 2500
               })
             );
         }
@@ -489,26 +429,26 @@ export default {
       axios
         .get("http://localhost:3000/reserves", {
           headers: {
-            authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`
           },
           params: {
             type: this.typeAll,
             headquarter: this.headquarterAll,
             date_init: this.dateInitAll,
-            date_end: this.dateEndAll,
-          },
+            date_end: this.dateEndAll
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
           self.allreserves = response.data.data;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -545,31 +485,32 @@ export default {
       axios
         .post(`http://localhost:3000/reserves/${id}/vote`, {
           vote: rating,
-          description: voteDescription,
+          description: voteDescription
         })
         //SI SALE BIEN
         .then(function(response) {
           //MOSTRAR UN MENSAJE CON EL RESULTADO
           Swal.fire({
             icon: "success",
-            title: `Acabas de valorar la reserva `,
+            title: `${response.data.message} `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
             //recarga la página
-            (result) => {
+            result => {
+              self.search = "";
               self.closeVoteView();
               self.getReserves();
             }
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -589,7 +530,7 @@ export default {
     closeVoteView() {
       this.seeVote = false;
       this.seeReserves = true;
-    },
+    }
   },
   created() {
     this.getReserves();
@@ -603,23 +544,24 @@ export default {
         return result;
       } else {
         result = result.filter(
-          (myreserve) =>
+          myreserve =>
             myreserve.codigo_reserva === parseInt(this.search) ||
-            myreserve.id === parseInt(this.search) ||
-            myreserve.motivo_reserva
+            myreserve.codigo_reserva
+              .toLowerCase()
+              .includes(this.search.toLowerCase())
         );
         if (!result.length) {
           Swal.fire({
             title: "El código introducido no corresponde a ninguna reserva",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         }
         return result;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -702,19 +644,23 @@ body main section#content {
   flex-direction: column;
   align-items: center;
 }
-body main section article ul.link {
-  align-self: center;
-  width: 100%;
+body main section article.searchAll,
+body main section article.search-input {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
 }
 body section article.links {
   display: flex;
   justify-content: center;
 }
 
-fieldset {
+fieldset.form {
   border: none;
   padding: 1rem;
   border-radius: 10px;
+  width: 70%;
 }
 
 ul {
@@ -758,8 +704,12 @@ ul li select {
 .modalBox input.button-go,
 .modalBox input.button-back,
 input.button-go {
-  min-width: 100px;
+  min-width: 110px;
   text-align: center;
+}
+.modal input.descriptionText {
+  width: 400px;
+  text-align: left;
 }
 h1 {
   text-align: center;

@@ -125,12 +125,12 @@
             </ul>
           </fieldset>
         </form>
-        <div class="button">
-          <input type="button" class="button" value="Cancelar" onclick="location.href = '.';" />
+        <div class="buttons">
+          <input type="button" class="button-back" value="Cancelar" onclick="location.href = '.';" />
           <input
             type="submit"
             value="Enviar"
-            class="button"
+            class="button-go"
             @click="addClient(name, surname, email, password, headquarter)"
           />
         </div>
@@ -216,7 +216,7 @@ export default {
       this.validatingData(); //VALIDANDO DATOS DEL FORMULARIO
       if (this.correctData) {
         const token = getAuthToken();
-        const data = localStorage.getItem("id");
+
         let self = this;
         axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
         axios

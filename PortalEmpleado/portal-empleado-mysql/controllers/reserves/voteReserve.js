@@ -69,13 +69,13 @@ async function voteReserve(req, res, next) {
     // Delete voteCode from table usuarios
 
     await connection.query(
-      'UPDATE reservas SET codigo_reserva=NULL WHERE id=?',
+      `UPDATE reservas SET codigo_reserva='close' WHERE id=?`,
       [id]
     );
 
     res.send({
       status: 'ok',
-      message: `El voto de ${vote} puntos para la reserva con id ${id} se ha realizado con éxito`
+      message: `El voto de ${vote} puntos para la reserva ${id} se ha realizado con éxito`
     });
   } catch (error) {
     next(error);
