@@ -2,10 +2,7 @@
   <div>
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful
-      title="Nuevo Servicio"
-      description="Página de registro de un nuevo servicio"
-    />
+    <vue-headful title="Nuevo Servicio" description="Página de registro de un nuevo servicio" />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -29,11 +26,7 @@
                     <label for="newSection">Tipo de servicio:</label>
                   </td>
                   <td class="data">
-                    <select
-                      name="newSection"
-                      id="newSection"
-                      v-model="newSection"
-                    >
+                    <select name="newSection" id="newSection" v-model="newSection">
                       <option value>Selecciona...</option>
                       <option value="Reserva">Reserva</option>
                       <option value="Incidencia">Incidencia</option>
@@ -50,6 +43,7 @@
                       name="newType"
                       type="text"
                       placeholder="Nombre del servicio"
+                      autocomplete="off"
                       v-model="newType"
                     />
                   </td>
@@ -57,9 +51,7 @@
 
                 <tr>
                   <td class="text">
-                    <label for="newDescription"
-                      >Descripción del servicio:</label
-                    >
+                    <label for="newDescription">Descripción del servicio:</label>
                   </td>
                   <td class="data">
                     <textarea
@@ -78,12 +70,7 @@
           </form>
 
           <div class="buttons">
-            <input
-              type="button"
-              class="button-back"
-              value="Cancelar"
-              @click="$router.go(-1)"
-            />
+            <input type="button" class="button-back" value="Cancelar" @click="$router.go(-1)" />
 
             <input
               id="button"
@@ -122,7 +109,7 @@ import {
   getUserName,
   isLoggedIn,
   checkAdmin,
-  setName,
+  setName
 } from "../api/utils";
 
 export default {
@@ -130,7 +117,7 @@ export default {
   components: {
     menucustom,
     menulinksadmin,
-    footercustom,
+    footercustom
   },
   data() {
     return {
@@ -138,7 +125,7 @@ export default {
       correctData: false,
       newType: "",
       newSection: "",
-      newDescription: "",
+      newDescription: ""
     };
   },
   methods: {
@@ -164,7 +151,7 @@ export default {
           .post("http://localhost:3000/services", {
             section: self.newSection,
             type: self.newType,
-            description: self.newDescription,
+            description: self.newDescription
           })
           .then(function(response) {
             self.$router.go(-1);
@@ -174,15 +161,15 @@ export default {
               icon: "success",
               title: "Servicio registrado correctamente.",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             });
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -190,18 +177,17 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
 body main {
   background: #fff;
-  margin: 10px;
   display: flex;
   justify-content: center;
   box-shadow: 0 0 4px 0 #d4d4d4;

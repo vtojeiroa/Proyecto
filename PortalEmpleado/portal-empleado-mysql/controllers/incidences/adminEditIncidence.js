@@ -30,7 +30,7 @@ async function adminEditIncidence(req, res, next) {
 
       const { email } = req.auth;
 
-      const voteCode = randomString(40);
+      const voteCode = randomString(20);
 
       const voteURL = `${process.env.PUBLIC_HOST}/incidences/${id}/vote?code=${voteCode}`;
       try {

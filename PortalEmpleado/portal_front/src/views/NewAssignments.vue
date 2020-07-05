@@ -27,64 +27,33 @@
                 <tbody>
                   <tr>
                     <td class="text">
-                      <label class="typeService" for="typeService"
-                        >Indica el tipo de servicio :</label
-                      >
+                      <label class="typeService" for="typeService">Indica el tipo de servicio :</label>
                     </td>
-                    <td>
-                      <select
-                        class="data"
-                        name="newType"
-                        id="newType"
-                        v-model="newType"
-                      >
-                        <option value>Selecciona...</option>
-                        <option value="vehiculo">Vehículo</option>
-                        <option value="sala de reunion"
-                          >Sala de reuniones</option
-                        >
-                        <option value="plaza en el comedor"
-                          >Plaza en el comedor</option
-                        >
-                        <option value="bicicletas electricas"
-                          >Bicicletas</option
-                        >
-                        <option value="informatica">Informática</option>
-                        <option value="mantenimiento">Mantenimiento</option>
-                        <option value="seguridad">Seguridad</option>
-                        <option value="limpieza">Limpieza</option>
-                        <option value="otras">Otras</option>
+                    <td class="data">
+                      <select name="newType" id="newType" v-model="newType">
+                        <option
+                          placeholder="Nombre del servicio"
+                          v-for="service in services"
+                          :key="service.id"
+                          :value="service.tipo"
+                        >{{service.tipo}}</option>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td class="text">
-                      <label class="headquarter" for="headquarter"
-                        >Indica la sede de trabajo :</label
-                      >
+                      <label class="headquarter" for="headquarter">Indica la sede de trabajo :</label>
                     </td>
                     <td class="data">
-                      <input
-                        class="data"
-                        id="newHeadquarter"
-                        name="newHeadquarter"
-                        type="text"
-                        maxlength="255"
-                        autocomplete="off"
-                        placeholder="Introduce el nombre de la sede"
-                        v-model="newHeadquarter"
-                      />
+                      <select name="newHeadquarter" id="newHeadquarter" v-model="newHeadquarter">
+                        <option
+                          placeholder="Nombre del servicio"
+                          v-for="headquarter in headquarters"
+                          :key="headquarter.id"
+                          :value="headquarter.nombre"
+                        >{{headquarter.nombre}}</option>
+                      </select>
                     </td>
-
-                    <!-- <td>
-                    <select name="newHeadquarter" id="newHeadquarter" v-model="newHeadquarter">
-                      <option value>Selecciona...</option>
-                      <option value="coruña">Coruña</option>
-                      <option value="santiago">Santiago</option>
-                      <option value="malaga">Málaga</option>
-                      <option value="vigo">Vigo</option>
-                    </select>
-                    </td>-->
                   </tr>
                   <tr>
                     <td class="text">
@@ -108,12 +77,7 @@
             </form>
 
             <div class="buttons">
-              <input
-                type="button"
-                class="button-back"
-                value="Cancelar"
-                @click="$router.go(-1)"
-              />
+              <input type="button" class="button-back" value="Cancelar" @click="$router.go(-1)" />
 
               <input
                 id="button"
@@ -154,7 +118,7 @@ import {
   getUserName,
   isLoggedIn,
   checkAdmin,
-  setName,
+  setName
 } from "../api/utils";
 
 export default {
@@ -162,7 +126,7 @@ export default {
   components: {
     menucustom,
     menulinksadmin,
-    footercustom,
+    footercustom
   },
   data() {
     return {
@@ -171,6 +135,8 @@ export default {
       newHeadquarter: "",
       newType: "",
       newDisponibility: "",
+      services: [],
+      headquarters: []
     };
   },
   methods: {
@@ -196,7 +162,7 @@ export default {
           .post("http://localhost:3000/assignment", {
             headquarter: self.newHeadquarter,
             service_type: self.newType,
-            disponibility: self.newDisponibility,
+            disponibility: self.newDisponibility
           })
 
           .then(function(response) {
@@ -207,15 +173,15 @@ export default {
               icon: "success",
               title: "Asignación de servicios registrada correctamente.",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             });
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -223,11 +189,63 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
     },
+
+    //FUNCIÓN PARA CARGAR LOS CLIENTES
+    getHeadquarters() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/headquarters")
+        //SI SALE BIEN
+        .then(function(response) {
+          self.headquarters = response.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    },
+
+    //FUNCIÓN PARA CARGAR LOS  SERVICIOS
+    getServices() {
+      const token = getAuthToken();
+      /*   const data = localStorage.getItem("id"); */
+      let self = this;
+      axios
+        .get("http://localhost:3000/services", {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        })
+        //SI SALE BIEN
+        .then(function(response) {
+          self.services = response.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    }
   },
+  created() {
+    this.getServices();
+    this.getHeadquarters();
+  }
 };
 </script>
 

@@ -99,6 +99,7 @@ main {
   font-weight: 700;
   color: #555;
 }
+
 .modalBox select,
 .modalBox input,
 .modalBox article fieldset form ul li select,

@@ -32,38 +32,56 @@
     </div>
 
     <main id="container">
-      <!-- MODAL PARA LISTAR TODAS LAS RESERVAS-->
-      <section v-show="seeAllReserves">
-        <article class="searchAll">
-          <h1>TODAS LAS RESERVAS</h1>
-          <h2>
-            Aquí puedes ver todas las reservas que se han registrado en el
-            Portal
-          </h2>
+      <!--LISTAR TODAS LAS RESERVAS-->
+      <section id="content" v-show="seeAllReserves">
+        <h1>TODAS LAS RESERVAS</h1>
+        <h2>
+          Aquí puedes ver todas las reservas que se han registrado en el
+          Portal
+        </h2>
+
+        <article id="searchallreserves">
+          <h3>Buscador</h3>
+          <div class="buttons">
+            <input type="submit" class="button-back" value="Cerrar" @click="allreservesearch=false" />
+            <input
+              type="submit"
+              class="button-go"
+              value="Abrir"
+              @click="allreservesearch=true ; getHeadquarters();getTypeReserves()"
+            />
+          </div>
+        </article>
+        <article class="search-input" v-show="allreservesearch">
           <h3>
             Puedes usar los filtros para buscar entre todas las reservas
             registradas
           </h3>
           <fieldset class="form">
-            <form class="form">
+            <form class="formsearchall">
               <ul class="searchall">
                 <li class="searchall">
                   <label for="typeAll">Tipo de reserva:</label>
                   <select id="typeAll" name="typeAll" v-model="typeAll">
                     <option value>Selecciona...</option>
-                    <option value="vehiculo">Vehículo</option>
-                    <option value="sala de reunion">Sala de Reunión</option>
-                    <option value="Plaza en el comedor">Plaza en el comedor</option>
+                    <option
+                      placeholder="Nombre del servicio"
+                      v-for="typereserve in typereserves"
+                      :key="typereserve.id"
+                      :value="typereserve.tipo"
+                    >{{typereserve.tipo}}</option>
                   </select>
                 </li>
                 <li class="headquarter">
                   <label class="headquarter" for="headquarter">Sede :</label>
                   <select name="headquarter" id="headquarter" v-model="headquarterAll">
                     <option value>Selecciona...</option>
-                    <option value="coruña">Coruña</option>
-                    <option value="santiago">Santiago</option>
-                    <option value="malaga">Málaga</option>
-                    <option value="vigo">Vigo</option>
+                    <option
+                      placeholder="Nombre del servicio"
+                      v-for="headquarter in headquarters"
+                      :key="headquarter.id"
+                      :value="headquarter.nombre"
+                    >{{headquarter.nombre}}</option>
                   </select>
                 </li>
                 <h3>Intervalo de fechas de inicio de la reserva</h3>
@@ -97,32 +115,48 @@
               <input type="submit" class="button-back" value="Cerrar" @click="openAll() " />
             </div>-->
           </fieldset>
-          <h1 class="title">Todas las Reservas</h1>
-          <listallreserves :allreserves="allreserves"></listallreserves>
         </article>
+        <h1 class="title">Todas las Reservas</h1>
+        <listallreserves :allreserves="allreserves"></listallreserves>
       </section>
       <section id="content" v-show="seeMyReserves">
-        <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
-        <article class="search-input">
-          <h1>MIS RESERVAS</h1>
-          <h2>
-            Aquí puedes gestionar las reservas que tienes registradas en el
-            Portal
-          </h2>
+        <!-- IMPLEMENTACIÓN DEL BUSCADOR DE MIS RESERVAS -->
+
+        <h1>MIS RESERVAS</h1>
+        <h2>
+          Aquí puedes gestionar las reservas que tienes registradas en el
+          Portal
+        </h2>
+        <article id="searchmyreserves">
+          <h3>Buscador</h3>
+          <div class="buttons">
+            <input type="submit" class="button-back" value="Cerrar" @click="myreservesearch=false" />
+            <input
+              type="submit"
+              class="button-go"
+              value="Abrir"
+              @click="myreservesearch=true ;getTypeReserves()"
+            />
+          </div>
+        </article>
+        <article class="search-input" v-show="myreservesearch">
           <h3>
             Puedes usar los filtros para buscar entre todas tus reservas
             registradas
           </h3>
           <fieldset class="form">
-            <form class="form">
+            <form class="formsearchmy">
               <ul class="search">
                 <li class="search">
                   <label for="type">Tipo de reserva:</label>
                   <select id="type" name="type" v-model="type">
                     <option value>Selecciona...</option>
-                    <option value="vehiculo">Vehículo</option>
-                    <option value="sala de reunion">Sala de Reunión</option>
-                    <option value="Plaza en el comedor">Plaza en el comedor</option>
+                    <option
+                      placeholder="Nombre del servicio"
+                      v-for="typereserve in typereserves"
+                      :key="typereserve.id"
+                      :value="typereserve.tipo"
+                    >{{typereserve.tipo}}</option>
                   </select>
                 </li>
                 <li>
@@ -280,7 +314,11 @@ export default {
       dateEndAll: "",
       seeMyReserves: true,
       seeAllReserves: false,
-      buttonText: "Ver todas las reservas"
+      buttonText: "Ver todas las reservas",
+      myreservesearch: false,
+      allreservesearch: false,
+      headquarters: [],
+      typereserves: []
     };
   },
   methods: {
@@ -339,6 +377,7 @@ export default {
           Swal.fire({
             icon: "success",
             title: `Acabas de actualizar el motivo de la reserva `,
+
             showConfirmButton: false,
             timer: 2500
           }).then(
@@ -492,7 +531,7 @@ export default {
           //MOSTRAR UN MENSAJE CON EL RESULTADO
           Swal.fire({
             icon: "success",
-            title: `${response.data.message} `,
+            title: `Votación realizada con éxito.Muchas gracias por tú valoración. Entre todos mejoramos cada día el Portal `,
             showConfirmButton: false,
             timer: 2500
           }).then(
@@ -503,6 +542,49 @@ export default {
               self.getReserves();
             }
           );
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+      this.getReserves();
+    },
+    //FUNCIÓN PARA CARGAR LAS SEDES
+    getHeadquarters() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/headquarters")
+        //SI SALE BIEN
+        .then(function(response) {
+          self.headquarters = response.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    },
+    //FUNCIÓN PARA CARGAR LOS TIPOS DE RESERVAS
+    getTypeReserves() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/reserves/type")
+        //SI SALE BIEN
+        .then(function(response) {
+          self.typereserves = response.data.data.data;
         })
         //SI SALE MAL
         .catch(error =>
@@ -625,11 +707,13 @@ section article.links button {
   margin-top: 1rem;
 }
 
-body main {
+main#container {
   background: #fff;
   margin: 10px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: wrap;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
   margin: 30px auto;
@@ -639,46 +723,49 @@ body main {
   border-radius: 10px;
   padding-bottom: 81px;
 }
-body main section#content {
+main section#content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-body main section article.searchAll,
-body main section article.search-input {
+main section article#searchallreserves,
+main section article#searchmyreserves,
+main section article.search-input {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
 }
-body section article.links {
+form.form {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
-
-fieldset.form {
-  border: none;
-  padding: 1rem;
-  border-radius: 10px;
-  width: 70%;
-}
-
 ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
-
 ul li {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   justify-content: space-between;
+
   align-items: center;
   padding: 0.2rem 0;
 }
 
+fieldset.form {
+  border: none;
+  border-bottom: 3px solid #142850;
+  width: 90%;
+  padding: 1rem;
+  border-radius: 0px;
+}
 input.button-go {
+  margin-top: 3px;
   padding: 0.75px;
   vertical-align: middle;
 }
@@ -690,17 +777,13 @@ h3 {
   padding: 1rem 0;
   text-align: center;
 }
-fieldset.form {
-  border-radius: 0;
+.modalBox fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
   border: none;
-  border-bottom: 3px solid #142850;
 }
 
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
-}
 .modalBox input.button-go,
 .modalBox input.button-back,
 input.button-go {
@@ -718,5 +801,19 @@ h1 {
 }
 p.code {
   text-align: center;
+}
+article#searchmyreserves,
+article#searchallreserves {
+  border: 2px solid #142850;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+article#searchmyreserves div.buttons input,
+article#searchallreserves div.buttons input {
+  padding: 4px;
+  vertical-align: middle;
 }
 </style>

@@ -92,21 +92,19 @@ tbody {
 tr {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
-td.text {
+td.text,
+td.disponibility {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: flex-start;
+  text-align: end;
+  margin-right: 10px;
 }
 td.data {
-  max-width: 300px;
+  max-width: 200px;
   font-weight: bold;
 }
-img {
-  width: 200px;
-  border-radius: 10px;
-}
-
 input {
   text-align: center;
 }

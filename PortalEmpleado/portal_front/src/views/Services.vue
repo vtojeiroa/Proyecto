@@ -2,10 +2,7 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful
-      title="Services"
-      description="Página que lista los servicios"
-    />
+    <vue-headful title="Services" description="Página que lista los servicios" />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -16,10 +13,12 @@
         <router-link :to="{ name: 'NewService' }">Nuevo Servicio</router-link>
       </article>
     </section>
-    <main>
+    <main id="container">
       <!-- LISTA DE SERVICIOS -->
       <div class="services">
         <h2>Gestión de servicios</h2>
+        <h3>Gestiona el alta, modificación y baja de los servicios</h3>
+
         <!--  ANIMACIÓN DE CSS CARGANDO -->
 
         <div v-show="loading" class="lds-ripple">
@@ -48,23 +47,19 @@
               placeholder="Introduce algún dato del servicio"
             />
             <div class="buttons">
-              <input
-                class="button-back"
-                value="Cerrar"
-                @click="closeModalSearch()"
-              />
-              <input class="button-go" value="Limpiar" @click="search = ''" />
+              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input class="button-go" value="Reiniciar" @click="search = ''" />
             </div>
           </div>
         </div>
-        <!-- VISTA DE LOS CLIENTES -->
+        <!-- VISTA DE LOS SERVICIOS -->
         <listservices
           :services="filteredServices"
           v-on:edit="openModal"
           v-on:delete="deleteServices"
         ></listservices>
 
-        <!-- MODAL PARA EDITAR CLIENTES -->
+        <!-- MODAL PARA EDITAR LOS SERVICIOS -->
         <div class="modal" v-show="modal">
           <div class="modalBox" v-on:edit="showEditText">
             <h2>Actualiza los datos</h2>
@@ -84,25 +79,19 @@
             </select>
 
             <label for="newType">Tipo:</label>
-            <input
-              type="text"
-              v-model="newType"
-              placeholder="Introduce el tipo"
-            />
+            <input type="text" v-model="newType" placeholder="Introduce el tipo" />
 
             <label for="newDescription">Descripción:</label>
-            <input
+            <textarea
               type="text"
               v-model="newDescription"
+              rows="10"
+              cols="50"
               placeholder="Introduce la descripción"
             />
             <div class="buttons">
               <input class="button-back" value="Cerrar" @click="closeModal()" />
-              <input
-                class="button-go"
-                value="Actualizar"
-                @click="updateServices()"
-              />
+              <input class="button-go" value="Actualizar" @click="updateServices()" />
             </div>
           </div>
         </div>
@@ -127,7 +116,7 @@ import menulinksAdmin from "../components/MenuLinksAdmin.vue";
 //IMPORTO EL FOOTER
 import footercustom from "../components/FooterCustom.vue";
 
-//IMPORTO CLIENTESLISTA
+//IMPORTO EL COMPONENTE
 import listservices from "../components/ListServices.vue";
 
 //IMPORTO SWAL
@@ -140,7 +129,7 @@ export default {
   components: { menucustom, menulinksAdmin, footercustom, listservices },
   data() {
     return {
-      //ARRAY DE LOS CLIENTES DE LA BBDD
+      //ARRAY DE LOS SERVICIOS DE LA BBDD
       services: [],
       modal: false,
       search: "",
@@ -151,13 +140,12 @@ export default {
       newSection: "",
       newType: "",
       newDescription: "",
-      /*  newCreation: "", */
       newHeadquarter: "",
-      modalSearch: false,
+      modalSearch: false
     };
   },
   methods: {
-    //FUNCIÓN PARA CARGAR LOS CLIENTES
+    //FUNCIÓN PARA CARGAR LOS SERVICIOS
     getServices() {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
@@ -165,20 +153,20 @@ export default {
       axios
         .get("http://localhost:3000/services", {
           headers: {
-            authorization: `Bearer ${token}`,
-          },
+            authorization: `Bearer ${token}`
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
           self.services = response.data.data;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -202,7 +190,7 @@ export default {
           active: self.newStatus,
           section: self.newSection,
           type: self.newType,
-          description: self.newDescription,
+          description: self.newDescription
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -211,26 +199,26 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos del servicio `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
-            //recarga la página
-            (result) => {
+            //RECARGA LA PÁGINA Y CIERRA EL MODAL
+            result => {
               self.closeModal();
               self.getServices();
             }
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
-    //FUNCION PARA ELIMINAR UN CLIENTE DE LA BBDD
+    //FUNCION PARA ELIMINAR UN SERVICIO DE LA BBDD
     deleteServices(data) {
       const token = getAuthToken();
       let self = this;
@@ -242,8 +230,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!",
-      }).then((result) => {
+        confirmButtonText: "Si, bórralo!"
+      }).then(result => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/services/" + data)
@@ -254,27 +242,29 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar el servicio `,
                 showConfirmButton: false,
-                timer: 2500,
-              }).then((result) => {
+                timer: 2500
+              }).then(result => {
                 self.getServices();
               });
             })
             //SI SALE MAL
-            .catch((error) =>
+            .catch(error =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 2500
               })
             );
         }
       });
     },
+
     //  ABRE EL MODAL PARA EDITAR LOS DATOS DEL SERVICIO Y MUESTRA LOS DATOS ORIGINALES
     openModal(data) {
       this.modal = true;
       this.showEditText(data);
+      this.search = "";
     },
     // CIERRA EL MODAL DESPUES DE EDITAR LOS DATOS DEL SERVICIO
     closeModal() {
@@ -288,7 +278,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     closeModalSearch() {
       this.modalSearch = false;
-    },
+    }
   },
   created() {
     this.getServices();
@@ -301,11 +291,16 @@ export default {
         return result;
       } else {
         result = result.filter(
-          (service) =>
+          service =>
             service.descripcion
               .toLowerCase()
               .includes(this.search.toLowerCase()) ||
             service.id === parseInt(this.search) ||
+            service.seccion.toLowerCase().includes(this.search.toLowerCase()) ||
+            service.tipo.toLowerCase().includes(this.search.toLowerCase()) ||
+            service.fecha_registro
+              .toLowerCase()
+              .includes(this.search.toLowerCase()) ||
             service.activo === parseInt(this.search)
         );
         if (!result.length) {
@@ -314,13 +309,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún servicio",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         }
         return result;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -358,6 +353,12 @@ export default {
   }
 }
 
+.home {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
 .linksAdmin {
   display: flex;
   flex-direction: column;
@@ -382,11 +383,12 @@ article.linksAdmin a {
   margin-top: 1rem;
 }
 
-main {
+main#container {
   background: #fff;
-  margin: 10px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
   margin: 30px auto;
@@ -396,41 +398,21 @@ main {
   border-radius: 10px;
   padding-bottom: 81px;
 }
-body main section#content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section article ul.link {
-  align-self: center;
-  width: 100%;
-}
+
 body section article.links {
   display: flex;
   justify-content: center;
 }
 
-fieldset {
-  padding: 1rem;
-  border-radius: 10px;
+section article a:hover {
+  color: #00909e;
 }
 
-ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-ul li {
+tr {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2rem 0;
-}
-input {
-  text-align: center;
+  vertical-align: middle;
+  align-content: space-between;
 }
 
 input.button-go {
@@ -438,60 +420,68 @@ input.button-go {
   vertical-align: middle;
 }
 h2 {
+  text-transform: uppercase;
   padding: 1rem 0;
   text-align: center;
-}
-h3 {
-  padding: 1rem 0;
-  text-align: center;
-}
-fieldset.form {
-  border-radius: 0;
-  border: none;
-  border-bottom: 3px solid #142850;
+  font-size: 28px;
 }
 
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
+h3 {
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem 0;
 }
+
+input.button-go,
+input.button-back {
+  text-align: center;
+}
+.modalBox input.button-go,
+.modalBox input.button-back {
+  text-align: center;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .modalBox {
+  background: #dae1e7;
+  color: #142850;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.modalBox form table tbody {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.modalBox form table tbody tr {
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
-
-.modalBox label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox select,
-.modalBox input,
-.modalBox textarea {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 405px;
-}
-
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
-  text-align: center;
-}
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  padding: 0.5rem 0;
-}
-
-section article a:hover {
-  color: #00909e;
+textarea {
+  width: 302px;
+  padding: 10px;
 }
 </style>

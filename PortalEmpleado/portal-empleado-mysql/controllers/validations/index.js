@@ -261,12 +261,12 @@ const editUserSchema = Joi.object().keys({
     ),
   avatar: Joi.string(),
   address: addressSchema,
-  postal_code: postalCodeSchema.required(),
+  postal_code: postalCodeSchema,
   location: locationSchema,
   province: provinceSchema,
   country: countrySchema,
   phone: phoneSchema,
-  birthdate: birthdateSchema.required(),
+  birthdate: birthdateSchema,
   headquarters: headquarterSchema
 });
 

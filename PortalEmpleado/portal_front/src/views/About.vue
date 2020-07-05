@@ -2,10 +2,7 @@
   <div id="app">
     <div class="About">
       <!-- CAMBIAR TITULO DE LA PAGINA -->
-      <vue-headful
-        title="Sobre mí"
-        description="Información sobre este proyecto."
-      />
+      <vue-headful title="Sobre mí" description="Información sobre este proyecto." />
       <!-- /CAMBIAR TITULO DE LA PAGINA -->
 
       <!-- MENU -->
@@ -32,10 +29,7 @@
           </h2>
           <ul>
             <li>
-              <a
-                href="https://developer.mozilla.org/es/docs/HTML/HTML5"
-                target="_blank"
-              >
+              <a href="https://developer.mozilla.org/es/docs/HTML/HTML5" target="_blank">
                 <img src="../assets/HTML5.svg" alt="logo html5" />
               </a>
             </li>
@@ -62,40 +56,29 @@
             </li>
             <li>
               <a href="https://github.com/axios/axios" target="_blank">
-                <img src="../assets/axios-icon.svg" alt="logo vue-axios"
-              /></a>
+                <img src="../assets/axios-icon.svg" alt="logo vue-axios" />
+              </a>
             </li>
             <li>
-              <a href="https://sweetalert2.github.io/" target="_blank"
-                ><img src="../assets/SweetAlert2.png" alt="logo SweetAlert2"
-              /></a>
+              <a href="https://sweetalert2.github.io/" target="_blank">
+                <img src="../assets/SweetAlert2.png" alt="logo SweetAlert2" />
+              </a>
             </li>
             <li>
-              <a
-                href="https://www.npmjs.com/package/vue-headful"
-                target="_blank"
-                >Vue-Headful</a
-              >
+              <a href="https://www.npmjs.com/package/vue-headful" target="_blank">Vue-Headful</a>
             </li>
             <li>
-              <a
-                href="https://www.npmjs.com/package/vue-star-rating"
-                target="_blank"
-                ><img src="../assets/start-rating.png" alt="logo start-rating"
-              /></a>
+              <a href="https://www.npmjs.com/package/vue-star-rating" target="_blank">
+                <img src="../assets/start-rating.png" alt="logo start-rating" />
+              </a>
             </li>
             <li>
-              <a
-                href="https://www.npmjs.com/package/vue-moment"
-                target="_blank"
-              >
-                <img src="../assets/momentjs.svg" alt="logo momentjs"
-              /></a>
+              <a href="https://www.npmjs.com/package/vue-moment" target="_blank">
+                <img src="../assets/momentjs.svg" alt="logo momentjs" />
+              </a>
             </li>
             <li>
-              <a href="https://loading.io/css/" target="_blank"
-                >CSS Loader Spiner</a
-              >
+              <a href="https://loading.io/css/" target="_blank">CSS Loader Spiner</a>
             </li>
           </ul>
           <h2>
@@ -121,8 +104,8 @@ export default {
   name: "About",
   components: {
     menucustom,
-    footercustom,
-  },
+    footercustom
+  }
 };
 </script>
 
@@ -133,19 +116,26 @@ export default {
   background-size: cover;
   background-position: center center;
 }
+.home {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
 main {
   padding-bottom: 81px;
-
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center;
+  align-content: flex-end;
   align-items: center;
   height: 80vh;
 }
-section {
+main section {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   justify-content: center;
   align-content: center;
   align-items: center;
@@ -156,20 +146,21 @@ section {
   float: left;
   border-radius: 10px;
   border: none;
+  text-align: center;
 }
-
 h1 {
-  font-size: 2rem;
-  padding: 2rem;
+  font-size: 1.75rem;
+  padding: 1rem;
   color: #333;
 }
 h2 {
+  font-size: 1.25rem;
   color: #333;
   padding: 5px 0;
 }
 
 img {
-  width: 50px;
+  width: 25px;
   margin-right: 15px;
 }
 
@@ -189,5 +180,18 @@ li {
 li a {
   color: #333;
   text-decoration: none;
+}
+@media (min-width: 500px) {
+  h1 {
+    font-size: 2.5rem;
+    padding: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  img {
+    width: 50px;
+  }
 }
 </style>

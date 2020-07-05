@@ -4,11 +4,7 @@
       <section>
         <div class="allReserves">
           <article class="AllReserves">
-            <div
-              class="allReserve"
-              v-for="allreserve in allreserves"
-              :key="allreserve.id"
-            >
+            <div class="allReserve" v-for="allreserve in allreserves" :key="allreserve.id">
               <table>
                 <tbody>
                   <tr>
@@ -19,9 +15,9 @@
                     <td class="text">Fecha inicio reserva:</td>
                     <td class="data">
                       {{
-                        new Date(
-                          allreserve.fecha_hora_inicio_reserva
-                        ).toLocaleString("es-ES", { timeZone: "UTC" })
+                      new Date(
+                      allreserve.fecha_hora_inicio_reserva
+                      ).toLocaleString("es-ES", { timeZone: "UTC" })
                       }}
                     </td>
                   </tr>
@@ -29,9 +25,9 @@
                     <td class="text">Fecha fin reserva:</td>
                     <td class="data">
                       {{
-                        new Date(
-                          allreserve.fecha_hora_fin_reserva
-                        ).toLocaleString("es-ES", { timeZone: "UTC" })
+                      new Date(
+                      allreserve.fecha_hora_fin_reserva
+                      ).toLocaleString("es-ES", { timeZone: "UTC" })
                       }}
                     </td>
                   </tr>
@@ -52,9 +48,9 @@
                     <td class="text">Fecha de Valoracion:</td>
                     <td class="data">
                       {{
-                        new Date(
-                          allreserve.fecha_registro
-                        ).toLocaleString("es-ES", { timeZone: "UTC" })
+                      new Date(
+                      allreserve.fecha_registro
+                      ).toLocaleString("es-ES", { timeZone: "UTC" })
                       }}
                     </td>
                   </tr>
@@ -78,8 +74,8 @@ export default {
   },
 
   props: {
-    allreserves: Array,
-  },
+    allreserves: Array
+  }
 };
 </script>
 <style scoped>
@@ -97,13 +93,14 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   align-items: center;
   border-radius: 2%;
-  min-width: 300px;
+  min-width: 200px;
 }
-table {
+/* table {
   min-width: 300px;
-}
+} */
 
 tbody {
   display: flex;

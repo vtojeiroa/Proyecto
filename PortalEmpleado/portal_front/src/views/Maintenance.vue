@@ -15,12 +15,12 @@
         <menulinksAdmin></menulinksAdmin>
       </article>
     </section>
-    <main>
+    <main id="container">
       <!-- LISTA DE INCIDENCIAS PENDIENTES DE RESPUESTA -->
       <div class="maintenance">
         <h2>Gestión de incidencias</h2>
 
-        <h3>Registro de la solución dada a la incidencia</h3>
+        <h3>Registra la respuesta y cierra la incidencia</h3>
 
         <!--  ANIMACIÓN DE CSS CARGANDO -->
 
@@ -49,22 +49,15 @@
             />
             <br />
             <div class="buttons">
-              <input
-                class="button-back"
-                value="Cerrar"
-                @click="closeModalSearch()"
-              />
-              <input class="button-go" value="Limpiar" @click="search = ''" />
+              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
+              <input class="button-go" value="Reiniciar" @click="search = ''" />
             </div>
           </div>
         </div>
         <!-- VISTA DE LAS INCIDENCIAS PENDIENTES DE CERRAR -->
-        <closeincidences
-          :closeincidences="filteredCloseIncidences"
-          v-on:close="openModal"
-        ></closeincidences>
+        <closeincidences :closeincidences="filteredCloseIncidences" v-on:close="openModal"></closeincidences>
 
-        <!-- MODAL PARA REPONDER LA INCIDENCIA-->
+        <!-- MODAL PARA RESPONDER LA INCIDENCIA-->
         <div class="modal" v-show="modal">
           <div class="modalBox" v-on:close="showEditText">
             <h2>Responde la incidencia</h2>
@@ -81,11 +74,7 @@
             <br />
             <div class="buttons">
               <input class="button-back" value="Cerrar" @click="closeModal()" />
-              <input
-                class="button-go"
-                value="Responder"
-                @click="closeIncidences()"
-              />
+              <input class="button-go" value="Responder" @click="closeIncidences()" />
             </div>
           </div>
         </div>
@@ -109,7 +98,7 @@ import menulinksAdmin from "../components/MenuLinksAdmin.vue";
 //IMPORTO EL FOOTER
 import footercustom from "../components/FooterCustom.vue";
 
-//IMPORTO CLIENTESLISTA
+//IMPORTO COMPONENTE
 import closeincidences from "../components/CloseIncidences.vue";
 
 //IMPORTO SWAL
@@ -122,7 +111,7 @@ export default {
   components: { menucustom, menulinksAdmin, footercustom, closeincidences },
   data() {
     return {
-      //ARRAY DE LOS CLIENTES DE LA BBDD
+      //ARRAY DE LAS INCIDENCIAS PENDIENTE DE RESPUESTA DE LA BBDD
       closeincidences: [],
       modal: false,
       search: "",
@@ -130,31 +119,31 @@ export default {
       id: null,
       newId: "",
       newDescription: "",
-      modalSearch: false,
+      modalSearch: false
     };
   },
   methods: {
-    //FUNCIÓN PARA CARGAR LOS CLIENTES
+    //FUNCIÓN PARA CARGAR LOS INCIDENCIAS
     getCloseIncidences() {
       const token = getAuthToken();
       let self = this;
       axios
         .get("http://localhost:3000/incidences/active", {
           headers: {
-            authorization: `Bearer ${token}`,
-          },
+            authorization: `Bearer ${token}`
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
           self.closeincidences = response.data.data;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -171,7 +160,7 @@ export default {
       let self = this;
       axios
         .put("http://localhost:3000/incidences/admin/" + this.newId, {
-          description: self.newDescription,
+          description: self.newDescription
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -180,10 +169,10 @@ export default {
             icon: "success",
             title: `Acabas de registrar la respuesta a la incidencia. `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
-            //recarga la página
-            (result) => {
+            //RECARGA LA PÁGINA
+            result => {
               self.closeModal();
               self.getCloseIncidences();
               self.emptyFields();
@@ -191,12 +180,12 @@ export default {
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -222,7 +211,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     closeModalSearch() {
       this.modalSearch = false;
-    },
+    }
   },
   created() {
     this.getCloseIncidences();
@@ -236,8 +225,9 @@ export default {
         return result;
       } else {
         result = result.filter(
-          (closeincidence) =>
+          closeincidence =>
             closeincidence.id === parseInt(this.search) ||
+            closeincidence.usuarios_id === parseInt(this.search) ||
             closeincidence.descripcion
               .toLowerCase()
               .includes(this.search.toLowerCase()) ||
@@ -249,13 +239,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún cliente",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         }
         return result;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -293,12 +283,47 @@ export default {
   }
 }
 
-body main {
-  background: #fff;
-  margin: 10px;
+.modalBox input.button-go,
+.modalBox input.button-back {
+  min-width: 120px;
+  text-align: center;
+}
+.home {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
+}
+
+.linksAdmin {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+article.linksAdmin a {
+  background: #142850;
+  color: #dae1e7;
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 0.75rem;
+  line-height: 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  border: 2px solid #142850;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+main#container {
+  background: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
   margin: 30px auto;
@@ -308,22 +333,21 @@ body main {
   border-radius: 10px;
   padding-bottom: 81px;
 }
-body main section#content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section article ul.link {
-  align-self: center;
-  width: 100%;
-}
+
 body section article.links {
   display: flex;
   justify-content: center;
 }
 
+section article a:hover {
+  color: #00909e;
+}
+
 tr {
+  display: flex;
+  flex-wrap: wrap;
   vertical-align: middle;
+  align-content: space-between;
 }
 
 input.button-go {
@@ -351,6 +375,7 @@ input.button-back {
 .modalBox input.button-back {
   text-align: center;
 }
+
 .modal {
   position: fixed;
   top: 0;
@@ -371,51 +396,28 @@ input.button-back {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   border-radius: 10px;
 }
-.modalBox input {
-  width: 405px;
-}
 
-.modalBox fieldset form table tbody tr {
+.modalBox form table tbody {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.modalBox form table tbody tr {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
-
-.modalBox fieldset form form table tbody td label,
-.modalBox div label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox fieldset form form table tbody td select,
-.modalBox fieldset form form table tbody td input,
-.modalBox input {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 350px;
-}
-
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
-  text-align: center;
-}
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  padding: 0.5rem 0;
+input,
+textarea {
+  width: 300px;
+  padding: 10px;
 }
 </style>

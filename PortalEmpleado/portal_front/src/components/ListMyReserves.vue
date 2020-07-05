@@ -80,13 +80,13 @@
                   </tr>
                   <div class="buttons">
                     <input
-                      v-show="myreserve.fecha_hora_fin_reserva > date"
+                      v-show=" new Date(myreserve.fecha_hora_inicio_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) > date"
                       class="button-back"
                       @click="deleteReserveEvent(index)"
                       value="BORRAR"
                     />
                     <input
-                      v-show="myreserve.fecha_hora_fin_reserva > date"
+                      v-show=" new Date(myreserve.fecha_hora_inicio_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) > date"
                       class="button-go"
                       @click="editedEvent(index)"
                       value="EDITAR"
@@ -99,7 +99,7 @@
                         openModalVote();
                       "
                       v-show="
-                        myreserve.fecha_hora_fin_reserva < date &&
+                        new Date(myreserve.fecha_hora_fin_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) < date &&
                           !myreserve.valoracion
                       "
                       value="Valorar"
@@ -107,15 +107,24 @@
                   </div>
                 </tbody>
                 <p
-                  v-show="myreserve.fecha_hora_fin_reserva > date"
+                  class="code"
+                  v-show="new Date(myreserve.fecha_hora_inicio_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) > date"
                 >La reserva está activa, puedes modificarla o borrarla.</p>
                 <p
+                  class="code"
+                  v-show="new Date(myreserve.fecha_hora_inicio_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) < date && new Date(myreserve.fecha_hora_fin_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) > date"
+                >Estás disfrutando la reserva. Recuerda valorarla al finalizar.</p>
+                <p
+                  class="code"
                   v-show="
-                    myreserve.fecha_hora_fin_reserva < date &&
+                    new Date(myreserve.fecha_hora_fin_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) < date &&
                       !myreserve.valoracion
                   "
                 >La reserva ha finalizado, puedes valorarla.</p>
-                <p v-show="myreserve.valoracion">Reserva cerrada, ya has valorado esta reserva.</p>
+                <p
+                  class="code"
+                  v-show="myreserve.valoracion"
+                >Reserva cerrada, ya has valorado esta reserva.</p>
               </table>
             </div>
           </article>
@@ -126,8 +135,9 @@
         <div class="vote" v-show="seeVote">
           <div class="modal" style="overflow-y: scroll;" v-show="modalVote">
             <div class="modalBox">
-              <article class="search-input">
+              <article class="vote">
                 <h2>Valora esta reserva</h2>
+                <h3>Selecciona la puntuación y escribe un comentario</h3>
                 <div class="form">
                   <fieldset class="valoration">
                     <form>
@@ -164,7 +174,8 @@
                       />
                       <input
                         class="button-go"
-                        @click="voteReserveEvent(newReserve, voteDescription)"
+                        @click="voteReserveEvent(newReserve, voteDescription) ;
+                          closeModalVote()"
                         value="VOTAR"
                       />
                     </div>
@@ -228,6 +239,8 @@ export default {
     },
     // CIERRA EL MODAL DESPUES DE VOTAR LA RESERVA
     closeModalVote() {
+      this.voteDescription = "";
+      this.rating = 0;
       this.modalVote = false;
     }
   }
@@ -243,22 +256,24 @@ export default {
 .myreserve {
   border: 4px solid #142850;
   margin: 2rem auto;
-  padding: 1rem;
+  padding: 1rem 0;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   align-items: center;
   border-radius: 2%;
+  min-width: 200px;
+}
+/* table {
   min-width: 300px;
 }
-table {
-  min-width: 300px;
-}
-
+ */
 tbody {
   display: flex;
   flex-direction: column;
+
   flex-wrap: wrap;
   margin: 5px;
 }
@@ -278,6 +293,7 @@ td.text {
 td.data {
   font-weight: bold;
   max-width: 200px;
+  text-align: end;
 }
 
 input {
@@ -305,7 +321,6 @@ li {
   align-content: center;
 }
 .modalBox fieldset {
-  /*  border: none; */
   padding: 2rem 2rem;
   background: #dae1e7;
 }
@@ -315,6 +330,8 @@ li {
 .modalBox fieldset form ul li textarea {
   font-size: 16px;
   padding: 10px;
+  max-height: 200px;
+  max-width: 300px;
 }
 p.code {
   text-align: center;

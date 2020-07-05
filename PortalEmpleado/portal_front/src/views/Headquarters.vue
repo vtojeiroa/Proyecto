@@ -2,10 +2,7 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful
-      title="Sedes"
-      description="Página que lista las diferentes sedes de la empresa"
-    />
+    <vue-headful title="Sedes" description="Página que lista las diferentes sedes de la empresa" />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -16,11 +13,11 @@
         <router-link :to="{ name: 'NewHeadquarter' }">Nueva Sede</router-link>
       </article>
     </section>
-    <main>
-      <!-- LISTA DE CLIENTES -->
+    <main id="container">
+      <!-- LISTA DE SEDES -->
       <div class="headquarters">
         <h2>Gestión de sedes</h2>
-
+        <h3>Gestiona el alta, modificación y baja de las diferentes sedes</h3>
         <!--  ANIMACIÓN DE CSS CARGANDO -->
 
         <div v-show="loading" class="lds-ripple">
@@ -48,23 +45,19 @@
             />
 
             <div class="buttons">
-              <input
-                class="button-back"
-                value="Cerrar"
-                @click="closeModalSearch()"
-              />
+              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
               <input class="button-go" value="Limpiar" @click="search = ''" />
             </div>
           </div>
         </div>
-        <!-- VISTA DE LOS CLIENTES -->
+        <!-- VISTA DE LAS SEDES -->
         <listheadquarters
           :headquarters="filteredHeadquarters"
           v-on:edit="openModal"
           v-on:delete="deleteHeadquarters"
         ></listheadquarters>
 
-        <!-- MODAL PARA EDITAR CLIENTES -->
+        <!-- MODAL PARA EDITAR LAS SEDES -->
         <div class="modal" v-show="modal">
           <div class="modalBox" v-on:edit="showEditText">
             <h3>Actualiza los datos</h3>
@@ -77,11 +70,7 @@
                       <label for="newStatus">Estado:</label>
                     </td>
                     <td class="data">
-                      <select
-                        name="newStatus"
-                        id="newStatus"
-                        v-model="newStatus"
-                      >
+                      <select name="newStatus" id="newStatus" v-model="newStatus">
                         <option value>Selecciona...</option>
                         <option value="1">Activo</option>
                         <option value="0">Inactivo</option>
@@ -94,7 +83,6 @@
                     </td>
                     <td class="data">
                       <input
-                        id="name"
                         name="name"
                         type="text"
                         maxlength="255"
@@ -109,7 +97,6 @@
                     </td>
                     <td class="data">
                       <input
-                        id="address"
                         name="address"
                         type="text"
                         maxlength="255"
@@ -124,7 +111,6 @@
                     </td>
                     <td class="data">
                       <input
-                        id=" postal_code"
                         name=" postal_code"
                         type="text"
                         maxlength="15"
@@ -139,7 +125,6 @@
                     </td>
                     <td class="data">
                       <input
-                        id=" location"
                         name=" location"
                         type="text"
                         maxlength="50"
@@ -154,7 +139,6 @@
                     </td>
                     <td class="data">
                       <input
-                        id=" province"
                         name=" province"
                         type="text"
                         maxlength="50"
@@ -168,13 +152,7 @@
                       <label for="country">Pais :</label>
                     </td>
                     <td class="data">
-                      <input
-                        id=" country"
-                        name=" country"
-                        type="text"
-                        autocomplete="off"
-                        v-model="newCountry"
-                      />
+                      <input name=" country" type="text" autocomplete="off" v-model="newCountry" />
                     </td>
                   </tr>
                 </tbody>
@@ -182,12 +160,7 @@
             </form>
 
             <div class="button-data">
-              <input
-                type="button"
-                class="button"
-                value="Cerrar"
-                @click="closeModal()"
-              />
+              <input type="button" class="button" value="Cerrar" @click="closeModal()" />
 
               <input
                 id="button-data"
@@ -219,7 +192,7 @@ import menulinksAdmin from "../components/MenuLinksAdmin.vue";
 //IMPORTO EL FOOTER
 import footercustom from "../components/FooterCustom.vue";
 
-//IMPORTO CLIENTESLISTA
+//IMPORTO EL COMPONENTE
 import listheadquarters from "../components/ListHeadquarters.vue";
 
 //IMPORTO SWAL
@@ -232,7 +205,7 @@ export default {
   components: { menucustom, menulinksAdmin, footercustom, listheadquarters },
   data() {
     return {
-      //ARRAY DE LOS CLIENTES DE LA BBDD
+      //ARRAY DE LOS SEDES DE LA BBDD
       headquarters: [],
       modal: false,
       search: "",
@@ -246,11 +219,11 @@ export default {
       newPostalCode: "",
       newLocation: "",
       newProvince: "",
-      newCountry: "",
+      newCountry: ""
     };
   },
   methods: {
-    //FUNCIÓN PARA CARGAR LOS CLIENTES
+    //FUNCIÓN PARA CARGAR LAS SEDES
     getHeadquarters() {
       const token = getAuthToken();
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
@@ -262,12 +235,12 @@ export default {
           self.headquarters = response.data.data;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -282,7 +255,7 @@ export default {
       this.newCountry = data.pais;
     },
 
-    //FUNCION PARA ACTUALIZAR UN CLIENTE
+    //FUNCION PARA ACTUALIZAR UNA SEDE
     updateHeadquarters(data) {
       const token = getAuthToken();
 
@@ -296,7 +269,7 @@ export default {
           postal_code: self.newPostalCode,
           location: self.newLocation,
           province: self.newProvince,
-          country: self.newCountry,
+          country: self.newCountry
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -305,25 +278,25 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos de la sede `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
-            //recarga la página
-            (result) => {
+            //RECARGA LA PAGINA
+            result => {
               self.closeModal();
             }
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
-    //FUNCION PARA ELIMINAR UN CLIENTE DE LA BBDD
+    //FUNCION PARA ELIMINAR UNA SEDE DE LA BBDD
     deleteHeadquarters(data) {
       let self = this;
       const token = getAuthToken();
@@ -335,8 +308,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!",
-      }).then((result) => {
+        confirmButtonText: "Si, bórralo!"
+      }).then(result => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/headquarters/" + data)
@@ -347,29 +320,29 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar la sede `,
                 showConfirmButton: false,
-                timer: 2500,
-              }).then((result) => {
+                timer: 2500
+              }).then(result => {
                 self.getHeadquarters();
               });
             })
             //SI SALE MAL
-            .catch((error) =>
+            .catch(error =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 2500
               })
             );
         }
       });
     },
-    //  ABRE EL MODAL PARA EDITAR LOS DATOS DEL SERVICIO Y MUESTRA LOS DATOS ORIGINALES
+    //  ABRE EL MODAL PARA EDITAR LOS DATOS DE LA SEDE Y MUESTRA LOS DATOS ORIGINALES
     openModal(data) {
       this.modal = true;
       this.showEditText(data);
     },
-    // CIERRA EL MODAL DESPUES DE EDITAR LOS DATOS DEL SERVICIO
+    // CIERRA EL MODAL DESPUES DE EDITAR LOS DATOS DE LA SEDE
     closeModal() {
       this.modal = false;
       this.getHeadquarters();
@@ -382,7 +355,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     closeModalSearch() {
       this.modalSearch = false;
-    },
+    }
   },
   created() {
     this.getHeadquarters();
@@ -396,7 +369,7 @@ export default {
         return result;
       } else {
         result = result.filter(
-          (headquarter) =>
+          headquarter =>
             headquarter.nombre
               .toLowerCase()
               .includes(this.search.toLowerCase()) ||
@@ -409,13 +382,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún servicio",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         }
         return result;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -452,6 +425,11 @@ export default {
     opacity: 0;
   }
 }
+.home {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
 
 .linksAdmin {
   display: flex;
@@ -477,11 +455,12 @@ article.linksAdmin a {
   margin-top: 1rem;
 }
 
-main {
+main#container {
   background: #fff;
-  margin: 10px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
   margin: 30px auto;
@@ -491,41 +470,21 @@ main {
   border-radius: 10px;
   padding-bottom: 81px;
 }
-body main section#content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section article ul.link {
-  align-self: center;
-  width: 100%;
-}
+
 body section article.links {
   display: flex;
   justify-content: center;
 }
 
-fieldset {
-  padding: 1rem;
-  border-radius: 10px;
+section article a:hover {
+  color: #00909e;
 }
 
-ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-ul li {
+tr {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2rem 0;
-}
-input {
-  text-align: center;
+  vertical-align: middle;
+  align-content: space-between;
 }
 
 input.button-go {
@@ -533,59 +492,64 @@ input.button-go {
   vertical-align: middle;
 }
 h2 {
+  text-transform: uppercase;
   padding: 1rem 0;
   text-align: center;
-}
-h3 {
-  padding: 1rem 0;
-  text-align: center;
-}
-fieldset.form {
-  border-radius: 0;
-  border: none;
-  border-bottom: 3px solid #142850;
+  font-size: 28px;
 }
 
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
+h3 {
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem 0;
 }
+
+input.button-go,
+input.button-back {
+  text-align: center;
+}
+.modalBox input.button-go,
+.modalBox input.button-back {
+  text-align: center;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .modalBox {
+  background: #dae1e7;
+  color: #142850;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 90%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.modalBox form table tbody {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.modalBox form table tbody tr {
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
-}
-
-.modalBox label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox select,
-.modalBox input,
-.modalBox textarea {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 405px;
-}
-
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
-  text-align: center;
-}
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  padding: 0.5rem 0;
-}
-section article a:hover {
-  color: #00909e;
+  flex-wrap: wrap;
 }
 </style>

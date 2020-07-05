@@ -48,19 +48,18 @@
               </tr>
               <tr>
                 <td class="text">Fecha de nacimiento:</td>
-                <td class="data">{{ dataUsers.birthdate }}</td>
+                <td
+                  class="data"
+                  v-show="dataUsers.birthdate !== '01/01/1970'  "
+                >{{ new Date(dataUsers.birthdate).toLocaleDateString("es-ES") }}</td>
               </tr>
               <tr>
                 <td class="text">Sede:</td>
-                <td class="data">{{ dataUsers.headquarters }}</td>
+                <td class="data">{{dataUsers.headquarters }}</td>
               </tr>
             </tbody>
             <p>
-              <input
-                class="button-go"
-                value="EDITAR"
-                @click="editUserEvent()"
-              />
+              <input class="button-go" value="EDITAR" @click="editUserEvent()" />
             </p>
           </table>
           <p>
@@ -95,8 +94,8 @@ export default {
     dropUserEvent(index) {
       let data = this.dataUsers[index];
       this.$emit("drop", data);
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

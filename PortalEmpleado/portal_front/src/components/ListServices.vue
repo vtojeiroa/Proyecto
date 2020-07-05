@@ -86,6 +86,7 @@ export default {
   border: 4px solid #142850;
   margin: 2rem auto;
   padding: 1rem;
+  width: 95%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -103,16 +104,20 @@ tbody {
 }
 tr {
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 td.text {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: flex-start;
+  text-align: start;
+  margin-right: 10px;
 }
 td.data {
-  max-width: 300px;
+  max-width: 320px;
   font-weight: bold;
+  text-align: end;
 }
 img {
   width: 200px;

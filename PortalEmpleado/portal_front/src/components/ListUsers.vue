@@ -6,10 +6,7 @@
           <div class="user" v-for="(user, index) in users" :key="user.id">
             <table>
               <div class="image" v-show="user.foto">
-                <img
-                  :src="'http://localhost:3000/uploads/' + user.foto"
-                  alt="Foto de perfil"
-                />
+                <img :src="'http://localhost:3000/uploads/' + user.foto" alt="Foto de perfil" />
               </div>
               <tbody>
                 <tr>
@@ -68,9 +65,9 @@
                   <td class="text">Fecha de nacimiento:</td>
                   <td class="data">
                     {{
-                      new Date(
-                        user.fecha_nacimiento
-                      ).toLocaleDateString("es-ES", { timeZone: "UTC" })
+                    new Date(
+                    user.fecha_nacimiento
+                    ).toLocaleDateString("es-ES")
                     }}
                   </td>
                 </tr>
@@ -80,16 +77,8 @@
                 </tr>
               </tbody>
               <div class="buttons">
-                <input
-                  class="button-back"
-                  value="Borrar"
-                  @click="deleteUserEvent(index)"
-                />
-                <input
-                  class="button-go"
-                  value="Editar"
-                  @click="editUserEvent(index)"
-                />
+                <input class="button-back" value="Borrar" @click="deleteUserEvent(index)" />
+                <input class="button-go" value="Editar" @click="editUserEvent(index)" />
               </div>
             </table>
           </div>
@@ -118,8 +107,8 @@ export default {
     deleteUserEvent(index) {
       let data = this.users[index].id;
       this.$emit("delete", data);
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -139,7 +128,7 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 2%;
-  min-width: 400px;
+  min-width: 350px;
 }
 
 tbody {

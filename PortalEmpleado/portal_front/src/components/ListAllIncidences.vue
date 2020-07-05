@@ -16,6 +16,14 @@
                     <td class="data">{{allincidence.servicio }}</td>
                   </tr>-->
                   <tr>
+                    <td class="text">Fecha de registro:</td>
+                    <td class="data">
+                      {{
+                      new Date(allincidence.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'})
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
                     <td class="text">Tipo:</td>
                     <td class="data">{{ allincidence.tipo }}</td>
                   </tr>
@@ -55,7 +63,7 @@
                     <td class="text">Comentario valoración:</td>
                     <td class="data">{{ allincidence.comentario_valoracion }}</td>
                   </tr>
-                  <tr v-show="allincidence.fecha_registro_valoracion">
+                  <!--  <tr v-show="allincidence.fecha_registro_valoracion">
                     <td class="text">Fecha valoración:</td>
                     <td class="data">
                       {{
@@ -63,18 +71,10 @@
                       }}
                     </td>
                   </tr>
-                  <!--  <tr>
+                    <tr>
                     <td class="text">Código incidencia:</td>
                     <td class="data">{{ allincidence.codigo_incidencia }}</td>
                   </tr>-->
-                  <tr>
-                    <td class="text">Fecha de registro:</td>
-                    <td class="data">
-                      {{
-                      new Date(allincidence.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'})
-                      }}
-                    </td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -144,6 +144,7 @@ td.text {
 td.data {
   font-weight: bold;
   max-width: 200px;
+  text-align: end;
 }
 
 input {

@@ -102,11 +102,11 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.delete('/admin/users/:id', userIsAuthenticated, userIsAdmin, deleteUser); //Borrar un usuario de la BBDD - solo Admin
 app.get('/admin/users', userIsAuthenticated, userIsAdmin, listUsers); //Listar usuarios - solo Admin
 app.post('/services', userIsAuthenticated, userIsAdmin, createServices); //Crear nuevos Servicios - solo Admin
-app.get('/services', userIsAuthenticated, userIsAdmin, getServices); //Listar los Servicios- solo Admin
+app.get('/services', getServices); //Listar los Servicios
 app.put('/services/:id', userIsAuthenticated, userIsAdmin, editServices); //Editar un Servicio- solo Admin
 app.delete('/services/:id', userIsAuthenticated, userIsAdmin, deleteServices); //Borrar un Servicios- solo Admin
 app.post('/headquarters', userIsAuthenticated, userIsAdmin, createHeadquarter); //Crear nuevas Sedes - solo Admin
-app.get('/headquarters', userIsAuthenticated, userIsAdmin, getHeadquarter); //Listar las Sedes- solo Admin
+app.get('/headquarters', userIsAuthenticated, getHeadquarter); //Listar las Sedes
 app.put('/headquarters/:id', userIsAuthenticated, userIsAdmin, editHeadquarter); //Editar una Sede - solo Admin
 app.delete(
   '/headquarters/:id',

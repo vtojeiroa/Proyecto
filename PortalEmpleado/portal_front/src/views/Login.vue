@@ -2,10 +2,7 @@
   <div id="app">
     <div class="home">
       <!-- CAMBIAR TITULO DE LA PAGINA -->
-      <vue-headful
-        title="Portal del Empleado"
-        description="Página de inicio del Portal."
-      />
+      <vue-headful title="Login" description="Página de Login del Portal." />
       <!-- /CAMBIAR TITULO DE LA PAGINA -->
 
       <!-- MENU -->
@@ -55,20 +52,11 @@
                 </table>
               </fieldset>
             </form>
-            <p class="warning">
-              Todos los campos marcados con * son obligatorios
-            </p>
+            <p class="warning">Todos los campos marcados con * son obligatorios</p>
             <div class="button-login">
-              <input
-                class="button-login"
-                type="submit"
-                value="Acceder"
-                @click="login()"
-              />
+              <input class="button-login" type="submit" value="Acceder" @click="login()" />
             </div>
-            <router-link :to="{ name: 'PasswordRecovery' }"
-              >Olvidé la contraseña</router-link
-            >
+            <router-link :to="{ name: 'PasswordRecovery' }">Olvidé la contraseña</router-link>
           </article>
           <form class="box-create-account" action="create-account">
             <fieldset class="box-create-account">
@@ -76,9 +64,7 @@
                 ¿Eres nuevo en
                 <strong>el Portal</strong>?
               </h2>
-              <router-link :to="{ name: 'Registry' }" class="button"
-                >Crea tu cuenta</router-link
-              >
+              <router-link :to="{ name: 'Registry' }" class="button">Crea tu cuenta</router-link>
             </fieldset>
           </form>
         </section>
@@ -86,21 +72,17 @@
         <section id="search">
           <article class="searchvalorations">
             <h3>Visualiza las valoraciones que han registrado los usuarios</h3>
-            <!-- MODAL PARA  LA IMPLEMENTACIÓN DEL BUSCADOR DE INCIDENCIAS -->
-            <button class="button-search" @click="openModalValorations()">
-              Iniciar búqueda
-            </button>
+            <!-- MODAL PARA  LA IMPLEMENTACIÓN DEL BUSCADOR DE VALORACIONES -->
+            <button
+              class="button-search"
+              @click="openModalValorations();
+                        getServices()"
+            >Iniciar búqueda</button>
 
-            <div
-              class="modal"
-              style="overflow-y: scroll;"
-              v-show="modalValorations"
-            >
+            <div class="modal" style="overflow-y: scroll;" v-show="modalValorations">
               <div class="modalBox">
                 <fieldset class="searchValorations">
-                  <h2>
-                    Selecciona el servicio para visualizar sus valoraciones
-                  </h2>
+                  <h2>Selecciona el servicio para visualizar sus valoraciones</h2>
 
                   <form class="searchValorations">
                     <table class="searchValorations">
@@ -108,32 +90,14 @@
                         <tr>
                           <td>
                             <label for="service">Tipo de servicio:</label>
-                            <select
-                              id="typeservice"
-                              name="typeservice"
-                              v-model="typeService"
-                            >
+                            <select id="typeservice" name="typeservice" v-model="typeService">
                               <option value>Selecciona...</option>
-                              <option value="vehiculo"
-                                >Reserva de vehículo</option
-                              >
-                              <option value="sala de reunion"
-                                >Reserva de sala de Reunión</option
-                              >
-                              <option value="Plaza en el comedor"
-                                >Reserva de plaza en el comedor</option
-                              >
-                              <option value="informatica"
-                                >Incidencia informática</option
-                              >
-                              <option value="limpieza"
-                                >Incidencia Limpieza</option
-                              >
-                              <option value="mantenimiento"
-                                >Incidencia Mantenimiento</option
-                              >
-                              <option value="seguridad">Seguridad</option>
-                              <option value="otras">Otras</option>
+                              <option
+                                placeholder="Nombre del servicio"
+                                v-for="service in services"
+                                :key="service.id"
+                                :value="service.tipo"
+                              >{{service.tipo}}</option>
                             </select>
                           </td>
                         </tr>
@@ -157,7 +121,7 @@
                       value="VER"
                       @click="
                         getValorations();
-                        showValorationsView();
+                        showValorationsView()
                       "
                     />
                   </div>
@@ -182,7 +146,7 @@
 </template>
 
 <script>
-//IMPORTO LA FUNCION LOGINUSER DE UTILS
+//IMPORTO LAS FUNCIONES DE UTILS
 import { loginUser, getAuthToken } from "../api/utils";
 
 //IMPORTO AXIOS
@@ -201,7 +165,7 @@ export default {
   components: {
     menucustominitial,
     footercustom,
-    searchvalorations,
+    searchvalorations
   },
   data() {
     return {
@@ -213,6 +177,7 @@ export default {
       modalValorations: false,
       typeService: "",
       seeValorations: false,
+      services: []
     };
   },
 
@@ -227,7 +192,7 @@ export default {
           icon: "success",
           title: `Login realizado con éxito!`,
           showConfirmButton: false,
-          timer: 2000,
+          timer: 2000
         });
 
         //SI HAY LOGIN, QUE ME LLEVE AL HOME
@@ -237,7 +202,7 @@ export default {
           icon: "error",
           title: `${error}`,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
     },
@@ -248,8 +213,8 @@ export default {
       axios
         .get("http://localhost:3000/votes", {
           params: {
-            type: this.typeService,
-          },
+            type: this.typeService
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -260,21 +225,21 @@ export default {
           self.values = response.data.values;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
 
-    // ABRE EL MODAL PARA HACER LA BUSQUEDA DE INCIDENCIAS
+    // ABRE EL MODAL PARA HACER LA BUSQUEDA DE VALORACIONES
     openModalValorations() {
       this.modalValorations = true;
     },
-    // CIERRA EL MODAL DESPUES AL FINALIZAR LA BUSQUEDA DE INCIDENCIAS
+    // CIERRA EL MODAL DESPUES AL FINALIZAR LA BUSQUEDA DE VALORACIONES
     closeModalValorations() {
       this.modalValorations = false;
       this.emptyFieldsValorations();
@@ -290,7 +255,29 @@ export default {
     closeValorationsView() {
       this.seeValorations = false;
     },
-  },
+
+    //FUNCIÓN PARA CARGAR LOS  SERVICIOS EN EL DESPLEGABLE
+    getServices() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/services", {})
+        //SI SALE BIEN
+        .then(function(response) {
+          self.services = response.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    }
+  }
 };
 </script>
 
@@ -345,12 +332,11 @@ main section article.login {
   float: left;
   border-radius: 10px;
   border: none;
-  /* max-width: 375px; */
 }
 
 main section article.searchvalorations {
   background: rgba(255, 255, 255, 0.4);
-  padding: 10px 0;
+  padding: 15px 0;
   max-width: 375px;
   box-sizing: border-box;
   float: left;
@@ -521,6 +507,7 @@ main
 }
 
 .modalBox {
+  position: absolute;
   background: #dae1e7;
   color: #142850;
   margin: 15% auto;

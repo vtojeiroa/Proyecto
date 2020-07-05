@@ -118,16 +118,19 @@ tbody {
 }
 tr {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 td.text {
   text-transform: uppercase;
   font-size: 14px;
-  align-self: flex-start;
+  text-align: flex-start;
+  margin-right: 10px;
 }
 td.data {
   max-width: 300px;
   font-weight: bold;
+  text-align: end;
 }
 img {
   width: 200px;

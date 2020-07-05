@@ -108,7 +108,7 @@ async function listReserves(req, res, next) {
         [userId]
       );
     }
-    let date = new Date();
+    let date = new Date().toLocaleString('es-ES');
     const [entries] = result;
 
     if (!entries.length) {

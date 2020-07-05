@@ -2,10 +2,7 @@
   <div>
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful
-      title="Nueva Sede"
-      description="Página de registro de una nueva sede"
-    />
+    <vue-headful title="Nueva Sede" description="Página de registro de una nueva sede" />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 
@@ -120,12 +117,7 @@
             </form>
 
             <div class="buttons">
-              <input
-                type="button"
-                class="button-back"
-                value="Cancelar"
-                @click="$router.go(-1)"
-              />
+              <input type="button" class="button-back" value="Cancelar" @click="$router.go(-1)" />
 
               <input
                 id="button"
@@ -166,7 +158,7 @@ import {
   getUserName,
   isLoggedIn,
   checkAdmin,
-  setName,
+  setName
 } from "../api/utils";
 
 export default {
@@ -174,7 +166,7 @@ export default {
   components: {
     menucustom,
     menulinksadmin,
-    footercustom,
+    footercustom
   },
   data() {
     return {
@@ -185,7 +177,7 @@ export default {
       newPostalCode: "",
       newLocation: "",
       newProvince: "",
-      newCountry: "",
+      newCountry: ""
     };
   },
   methods: {
@@ -221,7 +213,7 @@ export default {
             postal_code: self.newPostalCode,
             location: self.newLocation,
             province: self.newProvince,
-            country: self.newCountry,
+            country: self.newCountry
           })
 
           .then(function(response) {
@@ -232,15 +224,15 @@ export default {
               icon: "success",
               title: "Sede registrada correctamente.",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             });
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -248,11 +240,11 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -267,7 +259,7 @@ body main {
   box-sizing: border-box;
   margin: 20px auto;
   padding: 15px 15px;
-  width: 90%;
+  width: 100%;
   max-width: 900px;
   border-radius: 10px;
   padding-bottom: 81px;
@@ -324,6 +316,7 @@ td {
 td.text {
   text-transform: uppercase;
   font-size: 14px;
+  min-width: 100px;
 }
 td.data {
   font-weight: bold;

@@ -32,11 +32,12 @@
                     <td class="data">
                       <select name="newType" id="NewType" v-model="newType">
                         <option value>Selecciona...</option>
-                        <option value="informatica">Informática</option>
-                        <option value="mantenimiento">Mantenimiento</option>
-                        <option value="seguridad">Seguridad</option>
-                        <option value="limpieza">Limpieza</option>
-                        <option value="otras">Otras</option>
+                        <option
+                      placeholder="Nombre del servicio"
+                      v-for="typeincidence in typeincidences"
+                      :key="typeincidence.id"
+                      :value="typeincidence.tipo"
+                    >{{typeincidence.tipo}}</option>
                       </select>
                     </td>
                   </tr>
@@ -119,7 +120,8 @@ export default {
       correctData: false,
       /*  id: null, */
       newType: "",
-      newDescription: ""
+      newDescription: "",
+      typeincidences:[]
     };
   },
   methods: {
@@ -174,7 +176,32 @@ export default {
           timer: 2500
         });
       }
+ 
+  },
+//FUNCIÓN PARA CARGAR LOS TIPOS DE INCIDENCIAS
+    getTypeIncidences() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/incidences/type")
+        //SI SALE BIEN
+        .then(function(response) {
+          self.typeincidences = response.data.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
     }
+},
+     created() {
+    this.getTypeIncidences();
   }
 };
 </script>

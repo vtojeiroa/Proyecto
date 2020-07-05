@@ -114,7 +114,8 @@
           <div class="modal" style="overflow-y: scroll;" v-show="modalVote">
             <div class="modalBox">
               <article class="search-input">
-                <h2>Valora esta reserva</h2>
+                <h2>Valora la resolucion de esta incidencia</h2>
+                <h3>Selecciona la puntuación y escribe un comentario</h3>
                 <div class="form">
                   <fieldset>
                     <form>
@@ -147,14 +148,14 @@
                         @click="
                           closeVoteEvent();
                           closeModalVote();
+
                         "
                         value="CERRAR"
                       />
                       <input
                         class="button-go"
                         @click="
-                          voteIncidenceEvent(newIncidence, voteDescription)
-                        "
+                          voteIncidenceEvent(newIncidence, voteDescription);closeModalVote()"
                         value="Valorar"
                       />
                     </div>
@@ -214,12 +215,14 @@ export default {
     closeVoteEvent() {
       this.$emit("closevote");
     },
-    //  ABRE EL MODAL PARA VOTAR LA INCIDNCIEA
+    //  ABRE EL MODAL PARA VOTAR LA INCIDENCIEA
     openModalVote() {
       this.modalVote = true;
     },
-    // CIERRA EL MODAL DESPUES DE VOTAR LA INCIDNCIEA
+    // CIERRA EL MODAL DESPUES DE VOTAR LA INCIDENCIEA
     closeModalVote() {
+      this.voteDescription = "";
+      this.rating = 0;
       this.modalVote = false;
     }
   }
@@ -240,12 +243,10 @@ export default {
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   align-items: center;
   border-radius: 2%;
-  min-width: 95%px;
-}
-table {
-  min-width: 350px;
+  min-width: 200px;
 }
 
 tbody {
@@ -269,7 +270,7 @@ td.text {
 }
 td.data {
   font-weight: bold;
-  max-width: 200px;
+  max-width: 300px;
   text-align: end;
 }
 
@@ -307,7 +308,10 @@ li {
 .modalBox fieldset form ul li textarea {
   font-size: 16px;
   padding: 10px;
+  max-height: 200px;
+  max-width: 300px;
 }
+
 p {
   text-align: center;
 }

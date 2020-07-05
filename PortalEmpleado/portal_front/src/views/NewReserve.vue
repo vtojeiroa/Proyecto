@@ -28,9 +28,12 @@
                   <td class="data">
                     <select class="data" name="newType" id="newType" v-model="newType">
                       <option value>Selecciona...</option>
-                      <option value="vehiculo">Vehículo</option>
-                      <option value="sala de reunion">Sala de reuniones</option>
-                      <option value="plaza en el comedor">Plaza en el comedor</option>
+                      <option
+                        placeholder="Nombre del servicio"
+                        v-for="typereserve in typereserves"
+                        :key="typereserve.id"
+                        :value="typereserve.tipo"
+                      >{{typereserve.tipo}}</option>
                     </select>
                   </td>
                 </tr>
@@ -138,14 +141,36 @@ export default {
     return {
       errorMessage: "",
       correctData: false,
-      /*  id: null, */
       newType: "",
       newDateInit: "",
       newDateEnd: "",
-      newDescription: ""
+      newDescription: "",
+      typereserves: []
     };
   },
   methods: {
+    //FUNCIÓN PARA CARGAR LOS TIPOS DE RESERVAS
+    getTypeReserves() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/reserves/type")
+        //SI SALE BIEN
+        .then(function(response) {
+          self.typereserves = response.data.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    },
+
     validatingData() {
       if (!this.newType || !this.newDescription) {
         this.errorMessage = "No has rellenado todos los datos."; //Establecer mensaje de error
@@ -200,6 +225,9 @@ export default {
         });
       }
     }
+  },
+  created() {
+    this.getTypeReserves();
   }
 };
 </script>
@@ -213,7 +241,7 @@ body main#container {
   box-sizing: border-box;
   margin: 20px auto;
   padding: 15px 15px;
-  width: 90%;
+  width: 100%;
   max-width: 900px;
   border-radius: 10px;
   padding-bottom: 81px;

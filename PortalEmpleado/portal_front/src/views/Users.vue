@@ -12,11 +12,12 @@
         <menulinksAdmin v-on:showusers="showUsersMenu"></menulinksAdmin>
       </article>
     </section>
-    <main>
+    <main id="container">
       <!-- LISTA DE CLIENTES -->
       <div class="users" v-show="seeUsers">
         <h2>Gestión de usuarios</h2>
 
+        <h3>Gestiona el perfil de los usuarios del portal</h3>
         <!--  ANIMACIÓN DE CSS CARGANDO -->
 
         <div v-show="loading" class="lds-ripple">
@@ -44,24 +45,16 @@
             />
             <br />
             <div class="buttons">
-              <input
-                class="button-back"
-                value="Cerrar"
-                @click="closeModalSearch()"
-              />
+              <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
               <input class="button-go" value="Reiniciar" @click="search = ''" />
             </div>
           </div>
         </div>
         <!-- VISTA DE LOS CLIENTES -->
-        <listusers
-          :users="filteredUsers"
-          v-on:edit="openModal"
-          v-on:delete="deleteUsers"
-        ></listusers>
+        <listusers :users="filteredUsers" v-on:edit="openModal" v-on:delete="deleteUsers"></listusers>
 
         <!-- MODAL PARA EDITAR CLIENTES -->
-        <div class="modal" v-show="modal">
+        <div class="modal" style="overflow-y:auto" v-show="modal">
           <div class="modalBox" v-on:edit="showEditText">
             <h2>Actualiza los datos</h2>
             <fieldset>
@@ -73,11 +66,7 @@
                         <label for="newId">ID :</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newId"
-                          placeholder="Introduce el id"
-                        />
+                        <input type="text" v-model="newId" placeholder="Introduce el id" />
                       </td>
                     </tr>
                     <tr>
@@ -102,11 +91,7 @@
                         <label for="newRole">Tipo de usuario:</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newRole"
-                          placeholder="Introduce el estado"
-                        />
+                        <input type="text" v-model="newRole" placeholder="Introduce el estado" />
                       </td>
                     </tr>
                     <tr>
@@ -114,11 +99,7 @@
                         <label for="newName">Nombre:</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newName"
-                          placeholder="Introduce el nombre"
-                        />
+                        <input type="text" v-model="newName" placeholder="Introduce el nombre" />
                       </td>
                     </tr>
                     <tr>
@@ -126,11 +107,7 @@
                         <label for="newSurname">Apellido:</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newSurname"
-                          placeholder="Introduce el apellido"
-                        />
+                        <input type="text" v-model="newSurname" placeholder="Introduce el apellido" />
                       </td>
                     </tr>
                     <tr>
@@ -163,11 +140,7 @@
                         <label for="newAvatar">Foto:</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newAvatar"
-                          placeholder="Introduce una foto"
-                        />
+                        <input type="text" v-model="newAvatar" placeholder="Introduce una foto" />
                       </td>
                     </tr>
                     <tr>
@@ -199,11 +172,7 @@
                         <label for="newLocation">Ciudad:</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newLocation"
-                          placeholder="Introduce la ciudad"
-                        />
+                        <input type="text" v-model="newLocation" placeholder="Introduce la ciudad" />
                       </td>
                     </tr>
                     <tr>
@@ -223,11 +192,7 @@
                         <label for="newCountry">Pais:</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newCountry"
-                          placeholder="Introduce el pais"
-                        />
+                        <input type="text" v-model="newCountry" placeholder="Introduce el pais" />
                       </td>
                     </tr>
                     <tr>
@@ -235,11 +200,7 @@
                         <label for="newPhone">Teléfono:</label>
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          v-model="newPhone"
-                          placeholder="Introduce el teléfono"
-                        />
+                        <input type="text" v-model="newPhone" placeholder="Introduce el teléfono" />
                       </td>
                     </tr>
                     <tr>
@@ -248,7 +209,7 @@
                       </td>
                       <td>
                         <input
-                          type="text"
+                          type="date"
                           v-model="newBirthdate"
                           placeholder="Introduce la fecha de nacimiento"
                         />
@@ -272,11 +233,7 @@
             </fieldset>
             <div class="buttons">
               <input class="button-back" value="Cerrar" @click="closeModal()" />
-              <input
-                class="button-go"
-                value="Actualizar"
-                @click="updateUser()"
-              />
+              <input class="button-go" value="Actualizar" @click="updateUser()" />
             </div>
           </div>
         </div>
@@ -337,7 +294,7 @@ export default {
       newHeadquarter: "",
       modalSearch: false,
       seeUsers: true,
-      image: "http://localhost:3000/uploads/" + "fotoavatar.jpg",
+      image: "http://localhost:3000/uploads/" + "fotoavatar.jpg"
     };
   },
   methods: {
@@ -362,12 +319,12 @@ export default {
           }
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -386,9 +343,7 @@ export default {
       this.newProvince = data.provincia;
       this.newCountry = data.pais;
       this.newPhone = data.telefono;
-      this.newBirthdate = new Date(
-        data.fecha_nacimiento
-      ).toLocaleDateString("es-ES", { timeZone: "UTC" });
+      this.newBirthdate = data.fecha_nacimiento;
       this.newHeadquarter = data.sedes_id;
       this.newAvatar = data.foto;
     },
@@ -397,6 +352,7 @@ export default {
     updateUser() {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
+
       let self = this;
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
@@ -412,7 +368,7 @@ export default {
           country: self.newCountry,
           phone: self.newPhone,
           birthdate: self.newBirthdate,
-          headquarters: self.newHeadquarter,
+          headquarters: self.newHeadquarter
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -421,22 +377,22 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos del usuario `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
             //recarga la página
-            (result) => {
+            result => {
               self.closeModal();
               self.getUsers();
             }
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -449,8 +405,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!",
-      }).then((result) => {
+        confirmButtonText: "Si, bórralo!"
+      }).then(result => {
         if (result.value) {
           const token = getAuthToken();
           axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
@@ -458,9 +414,9 @@ export default {
           axios
             .delete("http://localhost:3000/admin/users/" + data, {
               headers: {
-                authorization: `Bearer ${token}`,
+                authorization: `Bearer ${token}`
               },
-              id: data,
+              id: data
             })
             //  SI SALE BIEN
             .then(function(response) {
@@ -469,19 +425,19 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar los datos del usuario `,
                 showConfirmButton: false,
-                timer: 2500,
-              }).then((result) => {
-                search = "";
+                timer: 2500
+              }).then(result => {
                 self.getUsers();
+                search = "";
               });
             })
             //SI SALE MAL
-            .catch((error) =>
+            .catch(error =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 2500
               })
             );
         }
@@ -508,7 +464,7 @@ export default {
     //CIERRA EL MODAL DEL BUSCADOR
     showUsersMenu() {
       this.seeUsers = true;
-    },
+    }
   },
   created() {
     this.getUsers();
@@ -522,7 +478,7 @@ export default {
         return result;
       } else {
         result = result.filter(
-          (user) =>
+          user =>
             user.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
             user.id === parseInt(this.search) ||
             user.apellidos.toLowerCase().includes(this.search.toLowerCase()) ||
@@ -539,13 +495,13 @@ export default {
               "Con los parametros introducidos no hemos encontrado ningún cliente",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         }
         return result;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -582,13 +538,12 @@ export default {
     opacity: 0;
   }
 }
-
-body main {
+main#container {
   background: #fff;
-  margin: 10px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: center;
+  align-items: center;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
   margin: 30px auto;
@@ -598,22 +553,21 @@ body main {
   border-radius: 10px;
   padding-bottom: 81px;
 }
-body main section#content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-body main section article ul.link {
-  align-self: center;
-  width: 100%;
-}
+
 body section article.links {
   display: flex;
   justify-content: center;
 }
 
+section article a:hover {
+  color: #00909e;
+}
+
 tr {
+  display: flex;
+  flex-wrap: wrap;
   vertical-align: middle;
+  align-content: space-between;
 }
 
 input.button-go {
@@ -641,6 +595,7 @@ input.button-back {
 .modalBox input.button-back {
   text-align: center;
 }
+
 .modal {
   position: fixed;
   top: 0;
@@ -661,55 +616,30 @@ input.button-back {
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   border-radius: 10px;
 }
-.modalBox input {
-  width: 405px;
-}
 
-.modalBox fieldset form table tbody tr {
+.modalBox form table tbody {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.modalBox form table tbody tr {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
-
-.modalBox fieldset form form table tbody td label,
-.modalBox div label {
-  font-size: 18px;
-  font-weight: 700;
-  color: #555;
-}
-.modalBox fieldset form form table tbody td select,
-.modalBox fieldset form form table tbody td input,
 .modalBox input {
-  background: rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  font-weight: 500;
-  border: 1px solid #d4d4d4;
-  padding: 5px 10px;
-  transition: all 0.2s ease 0s;
-  width: 350px;
+  width: 280px;
+  padding: 10px;
 }
-
-.modalBox select.newStatus {
-  width: 350px;
-}
-
-.modalBox input.button-go,
-.modalBox input.button-back {
-  min-width: 120px;
-  text-align: center;
-}
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  padding: 0.5rem 0;
+.modalBox label {
+  padding: 10px;
 }
 </style>

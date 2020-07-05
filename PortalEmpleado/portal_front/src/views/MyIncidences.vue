@@ -2,10 +2,7 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful
-      title="Mis Incidencias"
-      description="Página que lista mis incidencias"
-    />
+    <vue-headful title="Mis Incidencias" description="Página que lista mis incidencias" />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
     <!-- VISTA DEL MENÚLINKS -->
@@ -13,9 +10,7 @@
       <article class="links">
         <menulinks></menulinks>
         <div class="buttons">
-          <router-link class="button-go" :to="{ name: 'NewIncidence' }"
-            >Registrar una Incidencia</router-link
-          >
+          <router-link class="button-go" :to="{ name: 'NewIncidence' }">Registrar una Incidencia</router-link>
           <button
             id="buttonText"
             type="submit"
@@ -24,9 +19,7 @@
               openAll();
               changeButtonText();
             "
-          >
-            {{ buttonText }}
-          </button>
+          >{{ buttonText }}</button>
         </div>
       </article>
     </section>
@@ -39,14 +32,32 @@
     </div>
 
     <main id="container">
-      <!-- MODAL PARA LISTAR TODAS LAS RESERVAS-->
-      <section v-show="seeAllIncidences">
-        <article class="searchAll">
-          <h1>TODAS LAS INCIDENCIAS</h1>
-          <h2>
-            Aquí puedes ver todas las incidencias que se han registrado en el
-            Portal
-          </h2>
+      <!-- MODAL PARA LISTAR TODAS LAS INCIDENCIASS-->
+      <section id="content" v-show="seeAllIncidences">
+        <h1>TODAS LAS INCIDENCIAS</h1>
+        <h2>
+          Aquí puedes ver todas las incidencias que se han registrado en el
+          Portal
+        </h2>
+
+        <article id="searchallincidences">
+          <h3>Buscador</h3>
+          <div class="buttons">
+            <input
+              type="submit"
+              class="button-back"
+              value="Cerrar"
+              @click="allincidencesearch=false"
+            />
+            <input
+              type="submit"
+              class="button-go"
+              value="Abrir"
+              @click="allincidencesearch=true ; getHeadquarters();getTypeIncidences()"
+            />
+          </div>
+        </article>
+        <article v-show="allincidencesearch">
           <h3>
             Puedes usar los filtros para buscar entre todas las incidencias
             registradas
@@ -55,58 +66,42 @@
             <form class="form">
               <ul class="searchall">
                 <li>
-                  <label for="typeAll">Tipo de incidencia:</label>
+                  <label for="typeall">Tipo de incidencia:</label>
                   <select id="typeAll" name="typeAll" v-model="typeAll">
                     <option value>Selecciona...</option>
-                    <option value="informatica">Informática</option>
-                    <option value="limpieza">Limpieza</option>
-                    <option value="mantenimiento">Mantenimiento</option>
-                    <option value="seguridad">Seguridad</option>
-                    <option value="otras">Otras</option>
+                    <option
+                      placeholder="Nombre del servicio"
+                      v-for="typeincidence in typeincidences"
+                      :key="typeincidence.id"
+                      :value="typeincidence.tipo"
+                    >{{typeincidence.tipo}}</option>
                   </select>
                 </li>
-                <li class="headquarter">
+                <li>
                   <label class="headquarter" for="headquarter">Sede :</label>
-                  <select
-                    name="headquarter"
-                    id="headquarter"
-                    v-model="headquarterAll"
-                  >
+                  <select name="headquarter" id="headquarter" v-model="headquarterAll">
                     <option value>Selecciona...</option>
-                    <option value="coruña">Coruña</option>
-                    <option value="santiago">Santiago</option>
-                    <option value="malaga">Málaga</option>
-                    <option value="vigo">Vigo</option>
+                    <option
+                      placeholder="Nombre del servicio"
+                      v-for="headquarter in headquarters"
+                      :key="headquarter.id"
+                      :value="headquarter.nombre"
+                    >{{headquarter.nombre}}</option>
                   </select>
                 </li>
-                <h3>Intervalo de fechas de inicio de la reserva</h3>
+                <h3>Intervalo de fechas de inicio de la incidencia</h3>
                 <li>
                   <label for="from">Fecha inicial &#62;&#61;</label>
-                  <input
-                    type="datetime-local"
-                    id="fromAll"
-                    name="fromAll"
-                    v-model="dateInitAll"
-                  />
+                  <input type="datetime-local" id="fromAll" name="fromAll" v-model="dateInitAll" />
                 </li>
                 <li>
                   <label for="to">Fecha final &#60;</label>
-                  <input
-                    type="datetime-local"
-                    id="toAll"
-                    name="toAll"
-                    v-model="dateEndAll"
-                  />
+                  <input type="datetime-local" id="toAll" name="toAll" v-model="dateEndAll" />
                 </li>
               </ul>
             </form>
             <div class="buttons">
-              <input
-                type="submit"
-                class="button-back"
-                value="Limpiar"
-                @click="emptyFieldsAll()"
-              />
+              <input type="submit" class="button-back" value="Limpiar" @click="emptyFieldsAll()" />
               <input
                 type="submit"
                 class="button-go"
@@ -125,24 +120,41 @@
               <input type="submit" class="button-back" value="Cerrar" @click="openAll()" />
             </div>-->
           </fieldset>
-          <h1 class="title">Todas las Incidencias</h1>
-          <listallincidences :allincidences="allincidences"></listallincidences>
         </article>
+        <h1 class="title">Todas las Incidencias</h1>
+        <listallincidences :allincidences="allincidences"></listallincidences>
       </section>
       <!-- IMPLEMENTACIÓN DEL BUSCADOR -->
       <section id="content" v-show="seeMyIncidences">
-        <article class="search-input">
-          <h1>MIS INCIDENCIAS</h1>
-          <h2>
-            Aquí puedes gestionar las incidencias que tienes registradas en el
-            Portal
-          </h2>
+        <h1>MIS INCIDENCIAS</h1>
+        <h2>
+          Aquí puedes gestionar las incidencias que tienes registradas en el
+          Portal
+        </h2>
+        <article id="searchmyincidences">
+          <h3>Buscador</h3>
+          <div class="buttons">
+            <input
+              type="submit"
+              class="button-back"
+              value="Cerrar"
+              @click="myincidencesearch=false"
+            />
+            <input
+              type="submit"
+              class="button-go"
+              value="Abrir"
+              @click="myincidencesearch=true ;getTypeIncidences()"
+            />
+          </div>
+        </article>
+        <article class="search-input" v-show="myincidencesearch">
           <h3>
             Puedes usar los filtros para buscar entre todas tus incidencias
             registradas
           </h3>
           <fieldset class="form">
-            <form>
+            <form class="form">
               <ul>
                 <li>
                   <label for="status">Estado de la incidencia:</label>
@@ -156,32 +168,23 @@
                   <label for="type">Tipo de incidencia:</label>
                   <select id="type" name="type" v-model="type">
                     <option value>Selecciona...</option>
-                    <option value="informatica">Informática</option>
-                    <option value="limpieza">Limpieza</option>
-                    <option value="mantenimiento">Mantenimiento</option>
-                    <option value="seguridad">Seguridad</option>
-                    <option value="otras">Otras</option>
+                    <option
+                      placeholder="Nombre del servicio"
+                      v-for="typeincidence in typeincidences"
+                      :key="typeincidence.id"
+                      :value="typeincidence.tipo"
+                    >{{typeincidence.tipo}}</option>
                   </select>
                 </li>
 
                 <h3>Intervalo de fechas de registro de la incidencia</h3>
                 <li>
                   <label for="from">Fecha inicial &#62;&#61;</label>
-                  <input
-                    type="datetime-local"
-                    id="from"
-                    name="from"
-                    v-model="dateInit"
-                  />
+                  <input type="datetime-local" id="from" name="from" v-model="dateInit" />
                 </li>
                 <li>
                   <label for="to">Fecha final &#60;</label>
-                  <input
-                    type="datetime-local"
-                    id="to"
-                    name="to"
-                    v-model="dateEnd"
-                  />
+                  <input type="datetime-local" id="to" name="to" v-model="dateEnd" />
                 </li>
               </ul>
             </form>
@@ -190,7 +193,7 @@
                 type="submit"
                 class="button-back"
                 name="form"
-                value="Limpiar"
+                value="Reiniciar"
                 @click="emptyFields()"
               />
               <input
@@ -236,20 +239,18 @@
           <h2>Actualiza los datos</h2>
           <fieldset>
             <label for="newDescription">Comentario:</label>
-            <input
+            <textarea
               class="descriptionText"
               type="text"
+              rows="10"
+              cols="30"
               v-model="newDescription"
               placeholder="Introduce el comentario"
             />
           </fieldset>
           <div class="buttons">
             <input class="button-back" value="Cerrar" @click="closeModal()" />
-            <input
-              class="button-go"
-              value="Actualizar"
-              @click="updateIncidence()"
-            />
+            <input class="button-go" value="Actualizar" @click="updateIncidence()" />
           </div>
         </div>
       </div>
@@ -260,19 +261,10 @@
           <h2>Introduce el código que has recibido por correo electrónico</h2>
           <fieldset>
             <label for="search">Código:</label>
-            <input
-              v-model="search"
-              class="text"
-              type="text"
-              placeholder="Introduce el código"
-            />
+            <input v-model="search" class="text" type="text" placeholder="Introduce el código" />
           </fieldset>
           <div class="buttons">
-            <input
-              class="button-back"
-              value="Cerrar"
-              @click="closeModalSearch()"
-            />
+            <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
             <input class="button-go" value="Limpiar" @click="search = ''" />
           </div>
         </div>
@@ -315,7 +307,7 @@ export default {
     menulinks,
     footercustom,
     listmyincidences,
-    listallincidences,
+    listallincidences
   },
   data() {
     return {
@@ -345,10 +337,14 @@ export default {
       seeMyIncidences: true,
       seeAllIncidences: false,
       buttonText: "Ver todas las incidencias",
+      myincidencesearch: false,
+      allincidencesearch: false,
+      headquarters: [],
+      typeincidences: []
     };
   },
   methods: {
-    //FUNCIÓN PARA CARGAR LOS CLIENTES
+    //FUNCIÓN PARA CARGAR LAS INCIDENCIAS
     getIncidences() {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
@@ -356,26 +352,26 @@ export default {
       axios
         .get("http://localhost:3000/incidences/list", {
           headers: {
-            authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`
           },
           params: {
             type: this.type,
             active: this.status,
             date_init: this.dateInit,
-            date_end: this.dateEnd,
-          },
+            date_end: this.dateEnd
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
           self.myincidences = response.data.data;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -386,7 +382,7 @@ export default {
       this.newDescription = data.descripcion;
     },
 
-    //FUNCION PARA ACTUALIZAR UN CLIENTE
+    //FUNCION PARA ACTUALIZAR UNA INCIDENCIA
     updateIncidence() {
       const token = getAuthToken();
       const data = localStorage.getItem("id");
@@ -394,7 +390,7 @@ export default {
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       axios
         .put("http://localhost:3000/incidences/" + this.newId, {
-          description: self.newDescription,
+          description: self.newDescription
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -403,22 +399,22 @@ export default {
             icon: "success",
             title: `Acabas de actualizar los datos de la incidencia `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
             //recarga la página
-            (result) => {
+            result => {
               self.closeModal();
               self.getIncidences();
             }
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -454,8 +450,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!",
-      }).then((result) => {
+        confirmButtonText: "Si, bórralo!"
+      }).then(result => {
         if (result.value) {
           axios
             .delete("http://localhost:3000/incidences/" + data)
@@ -467,21 +463,21 @@ export default {
                 icon: "success",
                 title: `Acabas de borrar la incidencia `,
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 2500
               }).then(
                 //recarga la página
-                (result) => {
+                result => {
                   self.getIncidences();
                 }
               );
             })
             //SI SALE MAL
-            .catch((error) =>
+            .catch(error =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 2500
               })
             );
         }
@@ -495,29 +491,73 @@ export default {
       axios
         .get("http://localhost:3000/incidences", {
           headers: {
-            authorization: `Bearer ${token}`,
+            authorization: `Bearer ${token}`
           },
           params: {
             type: this.typeAll,
             headquarter: this.headquarterAll,
             date_init: this.dateInitAll,
-            date_end: this.dateEndAll,
-          },
+            date_end: this.dateEndAll
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
           self.allincidences = response.data.data;
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
+
+    //FUNCIÓN PARA CARGAR LAS SEDES
+    getHeadquarters() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/headquarters")
+        //SI SALE BIEN
+        .then(function(response) {
+          self.headquarters = response.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    },
+    //FUNCIÓN PARA CARGAR LOS TIPOS DE INCIDENCIAS
+    getTypeIncidences() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/incidences/type")
+        //SI SALE BIEN
+        .then(function(response) {
+          self.typeincidences = response.data.data.data;
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
+    },
+
     emptyFieldsAll() {
       this.typeAll = "";
       this.headquarterAll = "";
@@ -550,32 +590,32 @@ export default {
       axios
         .post(`http://localhost:3000/incidences/${id}/vote`, {
           vote: rating,
-          description: voteDescription,
+          description: voteDescription
         })
         //SI SALE BIEN
         .then(function(response) {
           //MOSTRAR UN MENSAJE CON EL RESULTADO
           Swal.fire({
             icon: "success",
-            title: `${response.data.message} `,
+            title: `Votación realizada con éxito.Muchas gracias por tú valoración. Entre todos mejoramos cada día el Portal `,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           }).then(
             //recarga la página
-            (result) => {
+            result => {
               self.search = "";
-              self.closeVoteView();
               self.emptyFieldsVotes();
+              self.closeVoteView();
             }
           );
         })
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -602,7 +642,7 @@ export default {
       this.seeVote = false;
       this.seeIncidences = true;
       this.emptyFieldsVotes();
-    },
+    }
   },
   created() {
     this.getIncidences();
@@ -616,7 +656,7 @@ export default {
         return result;
       } else {
         result = result.filter(
-          (myincidence) =>
+          myincidence =>
             myincidence.codigo_incidencia
               .toLowerCase()
               .includes(this.search.toLowerCase()) ||
@@ -627,13 +667,13 @@ export default {
             title: "El código introducido no corresponde a ninguna incidencia",
             text: "Vuelve a intentarlo",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         }
         return result;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -670,6 +710,7 @@ export default {
     opacity: 0;
   }
 }
+
 section article.links {
   display: flex;
   flex-direction: column;
@@ -695,11 +736,14 @@ section article.links button {
   text-align: center;
   margin-top: 1rem;
 }
-body main {
+
+main#container {
   background: #fff;
   margin: 10px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: wrap;
   box-shadow: 0 0 4px 0 #d4d4d4;
   box-sizing: border-box;
   margin: 30px auto;
@@ -709,48 +753,50 @@ body main {
   border-radius: 10px;
   padding-bottom: 81px;
 }
-body main section#content {
+main section#content {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-body main section article.searchAll,
-body main section article.search-input {
+main section article#searchallincidences,
+main section article#searchmyincidences,
+main section article.searchAll,
+main section article.search-input,
+main section article {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
 }
-body section article.links {
+
+form.form {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
 }
-
-fieldset.form {
-  border: none;
-  padding: 1rem;
-  border-radius: 10px;
-  width: 65%;
-}
-
 ul {
   list-style: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 ul li {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0.2rem 0;
 }
-input {
-  text-align: center;
-}
 
+fieldset.form {
+  border: none;
+  border-bottom: 3px solid #142850;
+  width: 90%;
+  padding: 1rem;
+  border-radius: 0px;
+}
 input.button-go {
   padding: 0.75px;
   vertical-align: middle;
@@ -763,18 +809,24 @@ h3 {
   padding: 1rem 0;
   text-align: center;
 }
-fieldset.form {
-  border-radius: 0;
+
+.modalBox input.button-go,
+.modalBox input.button-back,
+input.button-go {
+  min-width: 110px;
+  text-align: center;
+}
+
+.modal fieldset {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   border: none;
-  border-bottom: 3px solid #142850;
 }
-
-ul li label,
-ul li select {
-  display: block;
-  align-self: initial;
+.modal fieldset textarea {
+  padding: 10px;
+  font-size: 14px;
 }
-
 h1 {
   text-align: center;
   font-size: 2rem;
@@ -783,12 +835,18 @@ h1 {
 p.code {
   text-align: center;
 }
-.modal input.descriptionText {
-  width: 400px;
-  text-align: left;
+article#searchmyincidences,
+article#searchallincidences {
+  border: 2px solid #142850;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
-.modal .buttons input {
-  width: 110px;
+article#searchmyincidences div.buttons input,
+article#searchallincidences div.buttons input {
+  padding: 4px;
+  vertical-align: middle;
 }
 </style>

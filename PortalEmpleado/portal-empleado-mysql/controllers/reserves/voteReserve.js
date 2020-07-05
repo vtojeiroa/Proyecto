@@ -45,7 +45,13 @@ async function voteReserve(req, res, next) {
     }
 
     // Check if the reservation has finished
-    if (date < formatDateToDB(new Date(dataEntry.fecha_hora_fin_reserva))) {
+
+    if (
+      new Date(date).toLocaleString() <
+      new Date(dataEntry.fecha_hora_fin_reserva).toLocaleString('es-ES', {
+        timeZone: 'UTC'
+      })
+    ) {
       throw generateError(
         `La reserva con el número ${id} no ha finalizado`,
         403

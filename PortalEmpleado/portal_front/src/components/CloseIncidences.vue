@@ -28,11 +28,7 @@
                   <td class="data">{{ closeincidence.activo }}</td>
                 </tr>
                 <div class="buttons">
-                  <input
-                    class="button-go"
-                    value="Responder"
-                    @click="closeIncidenceEvent(index)"
-                  />
+                  <input class="button-go" value="Responder" @click="closeIncidenceEvent(index)" />
                 </div>
               </tbody>
             </table>
@@ -56,8 +52,8 @@ export default {
       let data = this.closeincidences[index];
       //ENVIANDO LA INFORMACIÓN DE LAS INCIDENCIAS
       this.$emit("close", data);
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -89,6 +85,7 @@ tbody {
 tr {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 td.text {
@@ -99,16 +96,12 @@ td.text {
 }
 td.data {
   font-weight: bold;
-  max-width: 300px;
-  align-self: flex-end;
+  max-width: 200px;
+  text-align: end;
 }
-img {
-  width: 200px;
-  border-radius: 10px;
-}
+
 input {
   text-align: center;
-  min-width: 120px;
-  white-space: normal;
+  min-width: 110px;
 }
 </style>

@@ -56,39 +56,23 @@
                       <tbody>
                         <tr>
                           <td>
-                            <label for="email"
-                              >Correo electrónico actual* :</label
-                            >
+                            <label for="email">Correo electrónico actual* :</label>
                           </td>
                           <td>
-                            <input
-                              id="email"
-                              name="email"
-                              type="email"
-                              v-model="oldEmail"
-                            />
+                            <input id="email" name="email" type="email" v-model="oldEmail" />
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <label for="newEmail"
-                              >Correo electrónico nuevo* :</label
-                            >
+                            <label for="newEmail">Correo electrónico nuevo* :</label>
                           </td>
                           <td>
-                            <input
-                              id="newEmail"
-                              name="newEmail"
-                              type="email"
-                              v-model="newEmail"
-                            />
+                            <input id="newEmail" name="newEmail" type="email" v-model="newEmail" />
                           </td>
                         </tr>
                         <tr>
                           <td>
-                            <label for="newEmail1"
-                              >Repetir correo electrónico nuevo* :</label
-                            >
+                            <label for="newEmail1">Repetir correo electrónico nuevo* :</label>
                           </td>
                           <td>
                             <input
@@ -132,12 +116,10 @@
             "
             v-on:drop="deleteUser()"
           ></profiledata>
-          <div class="modal" v-show="modalProfile">
+          <div class="modal" style="overflow-y:scroll;" v-show="modalProfile">
             <div class="modalBox" v-on:edit="showEditText">
               <h2>¡Mantén actualizados tus datos!</h2>
-              <p>
-                Todos los campos marcados con * son obligatorios.
-              </p>
+              <p>Todos los campos son obligatorios.</p>
               <p>
                 El código postal y la fecha de nacimiento serán necesarios para
                 poder recuperar la contraseña
@@ -147,7 +129,7 @@
                   <tbody>
                     <tr>
                       <td class="name">
-                        <label for="newName">Nombre* :</label>
+                        <label for="newName">Nombre :</label>
                       </td>
                       <td class="name">
                         <input
@@ -162,7 +144,7 @@
                     </tr>
                     <tr>
                       <td class="surname">
-                        <label for="newSurname">Apellidos* :</label>
+                        <label for="newSurname">Apellidos :</label>
                       </td>
                       <td class="surname">
                         <input
@@ -207,7 +189,7 @@
                     </tr>
                     <tr>
                       <td class="postal_code">
-                        <label for="newPostalCode">Código postal* :</label>
+                        <label for="newPostalCode">Código postal :</label>
                       </td>
                       <td class="postal_code">
                         <input
@@ -266,15 +248,15 @@
                     </tr>
                     <tr>
                       <td class="birthdate">
-                        <label for="newBirthdate">Fecha de nacimiento* :</label>
+                        <label for="newBirthdate">Fecha de nacimiento :</label>
                       </td>
                       <td class="birthdate">
                         <input
                           id="birthdate"
                           name="birthdate"
-                          type="text"
+                          type="date"
+                          value
                           class="birthdate"
-                          autocomplete="on"
                           v-model="newBirthdate"
                         />
                       </td>
@@ -318,7 +300,7 @@
                   type="submit"
                   class="button-go"
                   value="Editar Foto"
-                  @click="openModalPhoto()"
+                  @click="openModalPhoto();showEditText()"
                 />
               </div>
             </div>
@@ -330,33 +312,17 @@
                 <tbody>
                   <tr class="editAvatar">
                     <td class="image">
-                      <label>
-                        Actualiza tu imagen de perfil:
-                      </label>
+                      <label>Actualiza tu imagen de perfil:</label>
                     </td>
                     <td class="tdFormField">
-                      <input
-                        id="file"
-                        type="file"
-                        ref="file"
-                        @change="handleFileUpload()"
-                      />
+                      <input id="file" type="file" ref="file" @change="handleFileUpload()" />
                     </td>
                   </tr>
                 </tbody>
               </table>
               <div class="buttons">
-                <input
-                  class="button-back"
-                  value="Cancelar"
-                  @click="closeModalPhoto()"
-                />
-                <input
-                  class="button-go"
-                  type="button"
-                  value="Actualizar"
-                  @click="uploadImage()"
-                />
+                <input class="button-back" value="Cancelar" @click="closeModalPhoto()" />
+                <input class="button-go" type="button" value="Actualizar" @click="uploadImage()" />
               </div>
             </div>
           </div>
@@ -427,12 +393,7 @@
                   </table>
                 </form>
                 <div class="buttonPassword">
-                  <input
-                    type="button"
-                    class="button-back"
-                    value="Cancelar"
-                    @click="closeModal()"
-                  />
+                  <input type="button" class="button-back" value="Cancelar" @click="closeModal()" />
                   <input
                     type="submit"
                     class="button-go"
@@ -483,7 +444,7 @@ import {
   setName,
   setEmail,
   setAvatar,
-  formatDateToFront,
+  formatDateToFront
 } from "../api/utils";
 
 export default {
@@ -492,7 +453,7 @@ export default {
     menucustom,
     menulinks,
     profiledata,
-    footercustom,
+    footercustom
   },
   data() {
     return {
@@ -535,7 +496,7 @@ export default {
       correctDataEmail: false,
       oldEmail: "",
       newEmail: "",
-      newEmailRepeat: "",
+      newEmailRepeat: ""
     };
   },
   methods: {
@@ -546,8 +507,8 @@ export default {
       axios
         .get(`http://localhost:3000/users/` + data, {
           headers: {
-            authorization: `Bearer ${token}`,
-          },
+            authorization: `Bearer ${token}`
+          }
         })
         //SI SALE BIEN
         .then(function(response) {
@@ -563,12 +524,12 @@ export default {
         })
 
         //SI SALE MAL
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -583,7 +544,9 @@ export default {
       this.newLocation = this.dataUsers.location;
       this.newProvince = this.dataUsers.province;
       this.newCountry = this.dataUsers.country;
-      this.newBirthdate = this.dataUsers.birthdate;
+      this.newBirthdate = new Date(this.dataUsers.birthdate).toDateString(
+        "es-ES"
+      );
       this.newMobile = this.dataUsers.phone;
       this.newAvatar = this.dataUsers.avatar;
       this.newHeadquarter = this.dataUsers.headquarters;
@@ -593,10 +556,17 @@ export default {
       if (
         !this.newName ||
         !this.newSurname ||
+        !this.newDocument ||
+        !this.newAddress ||
         !this.newPostalCode ||
-        !this.newBirthdate
+        !this.newLocation ||
+        !this.newProvince ||
+        !this.newCountry ||
+        !this.newBirthdate ||
+        !this.newMobile
       ) {
-        this.errorMessage = "No has rellenado todos los datos."; //Establecer mensaje de error
+        this.errorMessage =
+          "No has rellenado todos los datos. Todos los campos son obligatorios"; //Establecer mensaje de error
         this.correctData = false; //NO ENVIAR
       } else {
         this.correctData = true; //ENVIAR
@@ -628,8 +598,8 @@ export default {
       axios
         .put("http://localhost:3000/" + "users/" + data, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
-          },
+            "Content-Type": "multipart/form-data"
+          }
         })
         .then(function(response) {
           self.getUser();
@@ -639,15 +609,15 @@ export default {
             icon: "success",
             title: "Foto de perfil actualizada correctamente.",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           });
         })
-        .catch((error) =>
+        .catch(error =>
           Swal.fire({
             icon: "error",
             title: error.response.data.message,
             showConfirmButton: false,
-            timer: 2500,
+            timer: 2500
           })
         );
     },
@@ -660,9 +630,10 @@ export default {
     updateUser() {
       this.validatingData(); //VALIDANDO DATOS DEL FORMULARIO
       if (this.correctData) {
+        const token = getAuthToken();
         let self = this;
         let data = localStorage.getItem("id");
-
+        axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
         let formData = new FormData();
         formData.append("activo", self.newStatus);
         formData.append("name", self.newName);
@@ -680,8 +651,8 @@ export default {
         axios
           .put("http://localhost:3000/" + "users/" + data, formData, {
             headers: {
-              "Content-Type": "multipart/form-data",
-            },
+              "Content-Type": "multipart/form-data"
+            }
           })
           .then(function(response) {
             self.getUser();
@@ -690,15 +661,15 @@ export default {
               icon: "success",
               title: "Datos de perfil actualizados correctamente.",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             });
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -706,7 +677,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
     },
@@ -722,8 +693,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, bórralo!",
-      }).then((result) => {
+        confirmButtonText: "Si, bórralo!"
+      }).then(result => {
         if (result.value) {
           const token = getAuthToken();
           axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
@@ -738,19 +709,19 @@ export default {
                 icon: "success",
                 title: `Acabas de dar de baja tu cuenta. Deberás contactar con Atención al usuario para volver a activarla `,
                 showConfirmButton: false,
-                timer: 2500,
-              }).then((result) => {
+                timer: 2500
+              }).then(result => {
                 logOut();
                 self.$router.push("/");
               });
             })
             //SI SALE MAL
-            .catch((error) =>
+            .catch(error =>
               Swal.fire({
                 icon: "error",
                 title: error.response.data.message,
                 showConfirmButton: false,
-                timer: 2500,
+                timer: 2500
               })
             );
         }
@@ -828,7 +799,7 @@ export default {
           .post(`http://localhost:3000/users/${data}/password`, {
             oldPassword: self.oldPassword,
             newPassword: self.newPassword,
-            newPasswordRepeat: self.newPasswordRepeat,
+            newPasswordRepeat: self.newPasswordRepeat
           })
           .then(function(response) {
             logOut();
@@ -839,17 +810,17 @@ export default {
               title:
                 "Cambio de contraseña realizado correctamente. Todos tus tokens quedan invalidados. Haz login de nuevo para conseguir un token válido. ",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             }),
               //Ir a la página de login
               self.$router.push("/");
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -857,7 +828,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
     },
@@ -910,7 +881,7 @@ export default {
           .post(`http://localhost:3000/users/${data}/email`, {
             oldEmail: self.oldEmail,
             newEmail: self.newEmail,
-            newEmailRepeat: self.newEmailRepeat,
+            newEmailRepeat: self.newEmailRepeat
           })
           //SI SALE BIEN
           .then(function(response) {
@@ -920,19 +891,19 @@ export default {
               icon: "success",
               title: `Modificación del correo electrónico realizada correctamente. `,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             });
             setEmail(newEmail);
             self.getUser();
             self.closeModalEmail();
             self.emptyFieldsEmail();
           })
-          .catch((error) =>
+          .catch(error =>
             Swal.fire({
               icon: "error",
               title: error.response.data.message,
               showConfirmButton: false,
-              timer: 2500,
+              timer: 2500
             })
           );
       } else {
@@ -940,7 +911,7 @@ export default {
           icon: "error",
           title: this.errorMessage,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2500
         });
       }
     },
@@ -959,13 +930,13 @@ export default {
       this.oldEmail = "";
       this.newEmail = "";
       this.newEmailRepeat = "";
-    },
+    }
   },
 
   created() {
     this.getUser();
     this.loading = false;
-  },
+  }
 };
 </script>
 
@@ -1024,11 +995,10 @@ body main section#content {
   align-items: center;
 }
 body main section#content p {
-  font-size: 11px;
+  font-size: 12px;
   display: block;
   align-self: center;
   color: #8b8b8b;
-  margin-right: 20px;
 }
 body main section article ul.link {
   align-self: center;
@@ -1041,6 +1011,10 @@ body section article.links {
 
 tr {
   vertical-align: middle;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 input.button-go {
@@ -1054,6 +1028,7 @@ h2 {
 section.email .modal h3 {
   text-align: left;
 }
+
 h3.password {
   align-self: center;
   text-align: center;
