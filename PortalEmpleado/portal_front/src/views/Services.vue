@@ -439,6 +439,7 @@ input.button-back {
 .modalBox input.button-go,
 .modalBox input.button-back {
   text-align: center;
+  width: 110px;
 }
 
 .modal {

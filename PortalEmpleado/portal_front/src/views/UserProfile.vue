@@ -109,202 +109,190 @@
           <!-- PERFIL DEL USUARIO -->
 
           <profiledata
+            v-show="seeProfile"
             :dataUsers="dataUsers"
             v-on:edit="
-              openModalProfile();
+              editProfile();
               showEditText();
             "
             v-on:drop="deleteUser()"
           ></profiledata>
-          <div class="modal" style="overflow-y:scroll;" v-show="modalProfile">
-            <div class="modalBox" v-on:edit="showEditText">
-              <h2>¡Mantén actualizados tus datos!</h2>
-              <p>Todos los campos son obligatorios.</p>
-              <p>
-                El código postal y la fecha de nacimiento serán necesarios para
-                poder recuperar la contraseña
-              </p>
-              <form id="form">
-                <table class="form-table">
-                  <tbody>
-                    <tr>
-                      <td class="name">
-                        <label for="newName">Nombre :</label>
-                      </td>
-                      <td class="name">
-                        <input
-                          id="name"
-                          name="name"
-                          type="text"
-                          maxlength="255"
-                          autocomplete="off"
-                          v-model="newName"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="surname">
-                        <label for="newSurname">Apellidos :</label>
-                      </td>
-                      <td class="surname">
-                        <input
-                          id="surname"
-                          name="surname"
-                          type="text"
-                          maxlength="255"
-                          autocomplete="off"
-                          v-model="newSurname"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="document">
-                        <label for="newDocument">Documento identidad :</label>
-                      </td>
-                      <td class="document">
-                        <input
-                          id="document"
-                          name="document"
-                          type="text"
-                          maxlength="15"
-                          autocomplete="off"
-                          v-model="newDocument"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="address">
-                        <label for="newAddress">Dirección :</label>
-                      </td>
-                      <td class="address">
-                        <input
-                          id="address"
-                          name="address"
-                          type="text"
-                          maxlength="255"
-                          autocomplete="off"
-                          v-model="newAddress"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="postal_code">
-                        <label for="newPostalCode">Código postal :</label>
-                      </td>
-                      <td class="postal_code">
-                        <input
-                          id=" postal_code"
-                          name=" postal_code"
-                          type="text"
-                          maxlength="15"
-                          autocomplete="off"
-                          v-model="newPostalCode"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="location">
-                        <label for="newLocation">Localidad :</label>
-                      </td>
-                      <td class="location">
-                        <input
-                          id=" location"
-                          name=" location"
-                          type="text"
-                          maxlength="50"
-                          autocomplete="off"
-                          v-model="newLocation"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="province">
-                        <label for="newProvince">Provincia :</label>
-                      </td>
-                      <td class="province">
-                        <input
-                          id=" province"
-                          name=" province"
-                          type="text"
-                          maxlength="50"
-                          autocomplete="off"
-                          v-model="newProvince"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="newCountry">
-                        <label for="country">Pais :</label>
-                      </td>
-                      <td class="country">
-                        <input
-                          id=" country"
-                          name=" country"
-                          type="text"
-                          autocomplete="off"
-                          v-model="newCountry"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="birthdate">
-                        <label for="newBirthdate">Fecha de nacimiento :</label>
-                      </td>
-                      <td class="birthdate">
-                        <input
-                          id="birthdate"
-                          name="birthdate"
-                          type="date"
-                          value
-                          class="birthdate"
-                          v-model="newBirthdate"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="mobile">
-                        <label for="newMobile">Teléfono móvil:</label>
-                      </td>
-                      <td class="mobile">
-                        <input
-                          id="mobile"
-                          name="mobile"
-                          type="text"
-                          maxlength="12"
-                          autocomplete="off"
-                          v-model="newMobile"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </form>
-              <div class="buttons">
-                <input
-                  type="button-back"
-                  class="button-back"
-                  value="Cancelar"
-                  @click="closeModalProfile()"
-                />
 
-                <input
-                  id="button-data"
-                  type="submit"
-                  class="button-go"
-                  value="Actualizar"
-                  @click="updateUser()"
-                />
+          <article class="profile" v-show="seeEditProfile">
+            <h2>¡Mantén actualizados tus datos!</h2>
+            <p>Todos los campos son obligatorios.</p>
+            <p>
+              El código postal y la fecha de nacimiento serán necesarios para
+              poder recuperar la contraseña
+            </p>
+            <form id="form">
+              <table class="form-table">
+                <tbody>
+                  <tr>
+                    <td class="text">
+                      <label for="newName">Nombre :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        maxlength="255"
+                        autocomplete="off"
+                        v-model="newName"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newSurname">Apellidos :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="surname"
+                        name="surname"
+                        type="text"
+                        maxlength="255"
+                        autocomplete="off"
+                        v-model="newSurname"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newDocument">Documento identidad :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="document"
+                        name="document"
+                        type="text"
+                        maxlength="15"
+                        autocomplete="off"
+                        v-model="newDocument"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newAddress">Dirección :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        maxlength="255"
+                        autocomplete="off"
+                        v-model="newAddress"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newPostalCode">Código postal :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" postal_code"
+                        name=" postal_code"
+                        type="text"
+                        maxlength="15"
+                        autocomplete="off"
+                        v-model="newPostalCode"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newLocation">Localidad :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" location"
+                        name=" location"
+                        type="text"
+                        maxlength="50"
+                        autocomplete="off"
+                        v-model="newLocation"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newProvince">Provincia :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" province"
+                        name=" province"
+                        type="text"
+                        maxlength="50"
+                        autocomplete="off"
+                        v-model="newProvince"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="country">Pais :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id=" country"
+                        name=" country"
+                        type="text"
+                        autocomplete="off"
+                        v-model="newCountry"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newBirthdate">Fecha de nacimiento :</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="birthdate"
+                        name="birthdate"
+                        type="date"
+                        value
+                        class="birthdate"
+                        v-model="newBirthdate"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text">
+                      <label for="newMobile">Teléfono móvil:</label>
+                    </td>
+                    <td class="data">
+                      <input
+                        id="mobile"
+                        name="mobile"
+                        type="text"
+                        maxlength="12"
+                        autocomplete="off"
+                        v-model="newMobile"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+            <div class="buttons-profile">
+              <input type="button-back" class="button-back" value="Cancelar" @click="editProfile()" />
 
-                <input
-                  id="button-data"
-                  type="submit"
-                  class="button-go"
-                  value="Editar Foto"
-                  @click="openModalPhoto();showEditText()"
-                />
-              </div>
+              <input type="submit" class="button-go" value="Actualizar" @click="updateUser()" />
+
+              <input
+                type="submit"
+                class="button-go"
+                value="Editar Foto"
+                @click="openModalPhoto();showEditText()"
+              />
             </div>
-          </div>
+          </article>
 
           <div class="modal" v-show="modalProfilePhoto">
             <div class="modalBox" v-on:edit="showEditText">
@@ -326,7 +314,6 @@
               </div>
             </div>
           </div>
-
           <!-- IMPLEMENTACIÓN DEL MODAL PARA MODIFICAR LA CONTRASEÑA -->
           <h3 class="password">
             Si quieres modificar tu contraseña, pincha
@@ -465,6 +452,8 @@ export default {
       correctData: false,
       loading: true,
       id: null,
+      seeProfile: true,
+      seeEditProfile: false,
       idUser: "",
       newId: "",
       newStatus: "",
@@ -604,7 +593,7 @@ export default {
         .then(function(response) {
           self.getUser();
           self.closeModalPhoto();
-          self.closeModalProfile();
+          self.editProfile();
           Swal.fire({
             icon: "success",
             title: "Foto de perfil actualizada correctamente.",
@@ -656,7 +645,7 @@ export default {
           })
           .then(function(response) {
             self.getUser();
-            self.closeModalProfile();
+            self.editProfile();
             Swal.fire({
               icon: "success",
               title: "Datos de perfil actualizados correctamente.",
@@ -744,16 +733,14 @@ export default {
       this.country = "";
       this.birthdate = "";
       this.phone = "";
+      id = "button-data";
       this.headquarters = "";
     },
 
-    //  ABRE EL MODAL PARA MODIFICAR EL PERFIL
-    openModalProfile() {
-      this.modalProfile = true;
-    },
-    // CIERRA EL MODAL DESPUES DE MODIFICAR EL PERFIL
-    closeModalProfile() {
-      this.modalProfile = false;
+    // CAMBIA LA VISTA PARA MODIFICAR EL PERFIL
+    editProfile() {
+      this.seeEditProfile = !this.seeEditProfile;
+      this.seeProfile = !this.seeProfile;
     },
 
     //  ABRE EL MODAL PARA MODIFICAR LA FOTO
@@ -1008,6 +995,14 @@ body section article.links {
   display: flex;
   justify-content: center;
 }
+article.profile {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
 
 tr {
   vertical-align: middle;
@@ -1017,9 +1012,23 @@ tr {
   justify-content: space-between;
 }
 
-input.button-go {
+div.buttons-profile input {
+  margin: 20px 5px;
+}
+input.button-go,
+div.buttons-profile input.button-go {
   padding: 0.75px;
   vertical-align: middle;
+  width: 120px;
+}
+
+div.buttons-profile input.button-back {
+  padding: 0.75px;
+  vertical-align: middle;
+  text-align: center;
+  border-radius: 10px;
+  width: 110px;
+  font-weight: bolder;
 }
 h2 {
   padding: 1rem 0;
@@ -1035,5 +1044,48 @@ h3.password {
 }
 fieldset {
   border: none;
+}
+table {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+}
+
+tbody {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+td {
+  padding: 0.1rem 0.1rem;
+}
+td.text {
+  text-transform: uppercase;
+  font-size: 14px;
+  min-width: 100px;
+}
+td.data {
+  font-weight: bold;
+  text-align: end;
+  align-self: flex-end;
+}
+
+label {
+  font-size: 15px;
+}
+input {
+  padding: 5px;
+  font-size: 15px;
+}
+input#birthdate {
+  width: 210px;
 }
 </style>

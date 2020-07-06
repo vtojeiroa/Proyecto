@@ -49,7 +49,7 @@
             />
             <div class="buttons">
               <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
-              <input class="button-go" value="Limpiar" @click="search = ''" />
+              <input class="button-go" value="Reiniciar" @click="search = ''" />
             </div>
           </div>
         </div>

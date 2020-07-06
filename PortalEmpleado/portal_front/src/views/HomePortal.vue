@@ -38,9 +38,9 @@
               </fieldset>
             </form>
 
-            <div class="button-login">
+            <div class="buttons">
               <input
-                class="button-login"
+                class="button-go"
                 type="submit"
                 value="Acceder"
                 @click="$router.push('MyReserves')"
@@ -70,9 +70,9 @@
               </fieldset>
             </form>
 
-            <div class="button-login">
+            <div class="buttons">
               <input
-                class="button-login"
+                class="button-go"
                 type="submit"
                 value="Acceder"
                 @click="$router.push('MyIncidences')"

@@ -507,7 +507,6 @@ main
 }
 
 .modalBox {
-  position: absolute;
   background: #dae1e7;
   color: #142850;
   margin: 15% auto;

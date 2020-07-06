@@ -139,6 +139,7 @@ main {
   width: 100px;
   border: none;
   border: 2px solid #142850;
+  transition: all 0.4s ease 0s;
 }
 .modalBox div.buttons input.search:hover,
 .modalBox div.buttons input:hover,
@@ -146,6 +147,7 @@ main {
   background: #dae1e7;
   color: #142850;
   border: 2px solid #142850;
+  transition: all 0.4s ease 0s;
 }
 .modalBox div.buttons input.back,
 .modalBox div.button-data input.back,
@@ -154,6 +156,7 @@ main {
   background: #dae1e7;
   color: #142850;
   border: 2px solid #142850;
+  transition: all 0.4s ease 0s;
 }
 .modalBox div.buttons input.back:hover,
 .modalBox div.button-data input.back:hover,
@@ -161,6 +164,7 @@ main {
 .modalBox div.button-data input.button-back:hover {
   background: #142850;
   color: #dae1e7;
+  transition: all 0.4s ease 0s;
 }
 
 div.buttons,
@@ -174,7 +178,8 @@ div.buttons a.button-go,
 div.buttons button,
 div.buttons input,
 div.buttons input.button-go,
-input.button-go {
+input.button-go,
+main section article a.button-profile {
   background: #142850;
   color: #dae1e7;
   font-size: 0.75rem;
@@ -188,26 +193,32 @@ input.button-go {
   border: 2px solid #142850;
   text-transform: uppercase;
   margin-left: 10px;
+  transition: all 0.4s ease 0s;
 }
 div.buttons input.search:hover,
 div.buttons input.button-go:hover,
 div.buttons a.button-go:hover,
 div.buttons button.button-go:hover,
-input.button-go:hover {
+input.button-go:hover,
+main section article a.button-profile:hover {
   background: #00909e;
   color: #dae1e7;
   border: 2px solid #27496d;
+  transition: all 0.4s ease 0s;
 }
 div.buttons input.button-back,
-input.button-back {
+div.buttons-profile input.button-back {
   background: #dae1e7;
   color: #142850;
   border: 2px solid #142850;
   text-transform: uppercase;
+  transition: all 0.4s ease 0s;
 }
-div.buttons input.button-back:hover {
+div.buttons input.button-back:hover,
+div.buttons-profile input.button-back:hover {
   background: #142850;
   color: #dae1e7;
+  transition: all 0.4s ease 0s;
 }
 
 ul {
@@ -248,6 +259,7 @@ table {
 }
 
 div.buttons,
+div.buttons-profile,
 .modal div.buttons {
   display: flex;
   flex-direction: row;

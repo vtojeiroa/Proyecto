@@ -594,6 +594,7 @@ input.button-back {
 .modalBox input.button-go,
 .modalBox input.button-back {
   text-align: center;
+  width: 110px;
 }
 
 .modal {
@@ -635,8 +636,9 @@ input.button-back {
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.modalBox input {
-  width: 280px;
+.modalBox input,
+.modalBox select {
+  width: 240px;
   padding: 10px;
 }
 .modalBox label {

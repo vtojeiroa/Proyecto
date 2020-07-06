@@ -46,7 +46,7 @@
 
             <div class="buttons">
               <input class="button-back" value="Cerrar" @click="closeModalSearch()" />
-              <input class="button-go" value="Limpiar" @click="search = ''" />
+              <input class="button-go" value="Reiniciar" @click="search = ''" />
             </div>
           </div>
         </div>
@@ -159,13 +159,13 @@
               </table>
             </form>
 
-            <div class="button-data">
-              <input type="button" class="button" value="Cerrar" @click="closeModal()" />
+            <div class="buttons">
+              <input type="button" class="button-back" value="Cerrar" @click="closeModal()" />
 
               <input
                 id="button-data"
                 type="submit"
-                class="button"
+                class="button-go"
                 value="Actualizar"
                 @click="updateHeadquarters()"
               />
