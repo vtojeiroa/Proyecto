@@ -41,7 +41,7 @@
               class="search"
               name="bySearch"
               type="search"
-              placeholder="Introduce algún dato del cliente"
+              placeholder="Introduce datos del usuario"
             />
             <br />
             <div class="buttons">

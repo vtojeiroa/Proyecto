@@ -379,7 +379,7 @@
                     </tbody>
                   </table>
                 </form>
-                <div class="buttonPassword">
+                <div class="buttons">
                   <input type="button" class="button-back" value="Cancelar" @click="closeModal()" />
                   <input
                     type="submit"
