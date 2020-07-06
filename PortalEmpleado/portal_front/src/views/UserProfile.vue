@@ -27,7 +27,7 @@
           <!-- BOTON QUE TE ENVIA A OTRA PÁGINA PARA MODIFICAR EL EMAIL-->
           <h3 class="email">
             Si quieres cambiar el correo electrónico con el que inicias sesión,
-            pincha
+            pulsa
             <input
               type="submit"
               value="email"
@@ -316,7 +316,7 @@
           </div>
           <!-- IMPLEMENTACIÓN DEL MODAL PARA MODIFICAR LA CONTRASEÑA -->
           <h3 class="password">
-            Si quieres modificar tu contraseña, pincha
+            Si quieres modificar tu contraseña, pulsa
             <input
               type="submit"
               value="modificar"

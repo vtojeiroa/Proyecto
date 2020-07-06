@@ -63,7 +63,7 @@
             </p>
           </table>
           <p>
-            ¿ Quieres darte de baja del Portal de Empleado? pincha
+            ¿ Quieres darte de baja del Portal del Empleado? pulsa
             <input
               type="submit"
               value="Baja"
