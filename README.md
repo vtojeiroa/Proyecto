@@ -1,2 +1,7 @@
 # proyecto
-Documentación del Proyecto Finalfile:///home/hab41/Hackaboss/Repositorios%20GIT/proyecto/Proyecto%2017_Portal%20Empleados.jpg
+
+##Titulo: PORTAL DEL EMPLEADO
+
+## Descripción: Portal donde los empeados puedes solicitar servicios o abri incidencias.
+
+###Se adjunta documento (Proyecto Portal Empleados.pdf) con las especificaciones.
