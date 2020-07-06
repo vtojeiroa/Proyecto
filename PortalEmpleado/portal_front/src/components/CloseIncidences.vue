@@ -20,6 +20,16 @@
                   <td class="data">{{ closeincidence.usuarios_id }}</td>
                 </tr>
                 <tr>
+                  <td class="text">Fecha de registro:</td>
+                  <td
+                    class="data"
+                  >{{new Date(closeincidence.fecha_registro).toLocaleString('es-ES',{timeZone:'UTC'}) }}</td>
+                </tr>
+                <tr>
+                  <td class="text">Tipo de servicio:</td>
+                  <td class="data">{{ closeincidence.tipo }}</td>
+                </tr>
+                <tr>
                   <td class="text">Descripción:</td>
                   <td class="data">{{ closeincidence.descripcion }}</td>
                 </tr>

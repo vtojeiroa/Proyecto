@@ -9,7 +9,7 @@ async function listActiveIncidences(req, res, next) {
     connection = await getConnection();
 
     let result = await connection.query(
-      `select id,servicios_id, usuarios_id,activo,fecha_registro, descripcion,fecha_resolucion, comentario_resolucion from incidencias WHERE activo = 1  GROUP BY id`
+      `select id,(select s.tipo from servicios s where id =servicios_id) as tipo,servicios_id, usuarios_id,activo,fecha_registro, descripcion,fecha_resolucion, comentario_resolucion from incidencias WHERE activo = 1  GROUP BY id`
     );
 
     const [data] = result;

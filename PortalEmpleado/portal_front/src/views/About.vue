@@ -72,11 +72,7 @@
                 <img src="../assets/start-rating.png" alt="logo start-rating" />
               </a>
             </li>
-            <li>
-              <a href="https://www.npmjs.com/package/vue-moment" target="_blank">
-                <img src="../assets/momentjs.svg" alt="logo momentjs" />
-              </a>
-            </li>
+
             <li>
               <a href="https://loading.io/css/" target="_blank">CSS Loader Spiner</a>
             </li>

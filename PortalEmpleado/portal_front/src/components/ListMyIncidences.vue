@@ -125,13 +125,13 @@
             <div class="modalBox">
               <article class="search-input">
                 <h2>Valora la resolucion de esta incidencia</h2>
-                <h3>Selecciona la puntuación y escribe un comentario</h3>
+                <h3>Selecciona la valoración y escribe un comentario</h3>
                 <div class="form">
                   <fieldset>
                     <form>
                       <ul>
-                        <li>
-                          <label for="vote">Valoración :</label>
+                        <li class="star">
+                          <!--  <label for="vote">Valoración :</label> -->
 
                           <star-rating
                             inactive-color="#142850"
@@ -291,7 +291,6 @@ input {
 div.buttons {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
 }
 ul,
 .modalBox ul {

@@ -35,10 +35,10 @@
         <!-- IMPLEMENTACIÓN DEL MODAL DEL BUSCADOR -->
         <div class="modal" v-show="modalSearch">
           <div class="modalBox">
-            <label for="bySearch">Buscador de usuarios:</label>
+            <label class="search" for="bySearch">Buscador de usuarios:</label>
             <input
               v-model="search"
-              id="search"
+              class="search"
               name="bySearch"
               type="search"
               placeholder="Introduce algún dato del cliente"
@@ -614,7 +614,7 @@ input.button-back {
 .modalBox {
   background: #dae1e7;
   color: #142850;
-  margin: auto;
+  margin: 5% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 90%;
@@ -639,10 +639,35 @@ input.button-back {
 }
 .modalBox input,
 .modalBox select {
-  width: 240px;
-  padding: 10px;
+  width: 140px;
+  padding: 4px;
+  font-size: 12px;
 }
 .modalBox label {
+  padding: 2px;
+  font-size: 12px;
+}
+input.search {
+  width: 260px;
   padding: 10px;
+  font-size: 16px;
+}
+
+label.search {
+  padding: 10px;
+  font-size: 16px;
+}
+
+@media (min-width: 600px) {
+  .modalBox input,
+  .modalBox select {
+    width: 260px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .modalBox label {
+    padding: 10px;
+    font-size: 16px;
+  }
 }
 </style>

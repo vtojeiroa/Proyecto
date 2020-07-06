@@ -61,8 +61,19 @@ async function newIncidence(req, res, next) {
         title: 'Registro de incidencia en el Portal del Empleado',
         html: `<div>
          <h1>Incidencia registrada</h1>
-     <p>Hemos registrado tu incidencia al departamento  de ${dataIncType.tipo} con el comentario ${description} el día ${date}. Le hemos asignado el código: <strong>${incidenceCode}</strong> </p>  
+     <p>Hemos registrado tu incidencia al departamento  de ${
+       dataIncType.tipo
+     } el día ${new Date(date).toLocaleString(
+          'es-ES'
+        )}. Le hemos asignado el código: <strong>${incidenceCode}</strong> </p>  
       <p>Si deseas revisarla, haz click en el enlace: ${incidenceCodeURL}, o copialo en tu navegador. También puedes revisarla en el apartado de incidencias de tu Portal.</p>
+       <br>
+        <p>Los datos de tu incidencia son:</p>     
+       <p>Número de Incidencia: ${incidenceCode}</p>
+       <p>Tipo de Incidencia: ${dataIncType.tipo}</p>
+       <p>Fecha de Registro: ${new Date(date).toLocaleString('es-ES')}</p>
+       <p>Descripición: ${description}</p>
+       <p>Esperamos solucionarla a la mayor brevedad posible.</p>
     </div>`
       });
     } catch (error) {
@@ -80,7 +91,7 @@ async function newIncidence(req, res, next) {
 
     res.send({
       status: 'ok',
-      message: `Hemos registrado su incidencia en el Portal del Empleado.  Los datos de tu incidencia son:`,
+      message: `Hemos registrado su incidencia en el Portal del Empleado. Los datos de tu incidencia son:`,
       data: {
         id: result.insertId,
         user: req.auth.id,

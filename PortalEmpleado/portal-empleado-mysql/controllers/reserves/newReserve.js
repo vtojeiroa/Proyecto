@@ -108,9 +108,28 @@ async function newReserve(req, res, next) {
         title: 'Registro de reserva en el Portal del Empleado',
         html: `<div>
               <h1>Reserva registrada</h1>
-              <p>Hemos registrado tu reserva de ${dataReserve.tipo} con el código: <strong>${reserveCode}</strong> el día ${date}</p> </p>
+              <p>Hemos registrado tu reserva de ${
+                dataReserve.tipo
+              } con el código: <strong>${reserveCode}</strong> el día ${new Date(
+          date
+        ).toLocaleString('es-ES')}</p> </p>
               <p>Si deseas revisarla, haz click en el enlace: ${reserveCodeURL}, o copialo en tu navegador. También puedes revisarla en el apartado de reservas de tu Portal.</p>
-                       
+              <br>           
+              <p>Los datos de tu reserva son:</p>
+              <p>Cógigo de Reserva: ${reserveCode}.</p>
+              <p>Tipo de Reserva: ${dataReserve.tipo}.</p>
+              <p>Fecha de Registro: ${new Date(date).toLocaleString(
+                'es-ES'
+              )}.</p>
+                <p>Fecha de Inicio: ${new Date(dateInit).toLocaleString(
+                  'es-ES'
+                )}.</p>
+              <p>Fecha de Fin: ${new Date(dateEnd).toLocaleString('es-ES')}.</p>
+              <p>Motivo: ${commentary}.</p>
+              <br>
+              <p> <strong> Recuerda valorar la reserva una vez finalizada. </strong>  </p>
+              <p>Muchas gracias.</p>
+
               </div>`
       });
     } catch (error) {

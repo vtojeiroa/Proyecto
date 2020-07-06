@@ -272,6 +272,7 @@ body main section input.button {
   cursor: pointer;
   width: 100px;
   border: none;
+  transition: all 0.4s ease 0s;
 }
 
 body main section input.button[type="button"] {
@@ -279,15 +280,18 @@ body main section input.button[type="button"] {
   color: #142850;
   border: 2px solid #142850;
   margin-right: 5px;
+  transition: all 0.4s ease 0s;
 }
 
 body main section input.button[type="button"]:hover {
   background: #142850;
   color: #dae1e7;
+  transition: all 0.4s ease 0s;
 }
 body main section input.button[type="submit"]:hover {
-  background: #dae1e7;
-  color: #142850;
-  border: 2px solid #142850;
+  background: #00909e;
+  color: #dae1e7;
+  border: 2px solid #27496d;
+  transition: all 0.4s ease 0s;
 }
 </style>

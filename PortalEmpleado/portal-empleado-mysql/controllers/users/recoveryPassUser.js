@@ -61,7 +61,7 @@ async function recoveryPassUser(req, res, next) {
           html: `<div>
       <h1>Cambia tu contraseña</h1>
       <p>Para modificar tu contraseña, haz login en el Portal del Empleado con
-      la siguiente contraseña: ${randomPassword}. Una vez accedas, utiliza la 
+      la siguiente contraseña:<strong> ${randomPassword}</strong>. Una vez accedas, utiliza la 
       opcion modificar contraseña para personalizarla</p>  
       </div>`
         });

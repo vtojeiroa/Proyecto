@@ -203,7 +203,7 @@ export default {
             Swal.fire({
               icon: "success",
               title:
-                "Reserva registrada correctamente.Acabamos de enviarte un correo con los datos de la misma",
+                "Reserva registrada correctamente. Acabamos de enviarte un correo con los datos de la misma",
               showConfirmButton: false,
               timer: 2500
             });

@@ -531,7 +531,7 @@ export default {
           //MOSTRAR UN MENSAJE CON EL RESULTADO
           Swal.fire({
             icon: "success",
-            title: `Votación realizada con éxito.Muchas gracias por tú valoración. Entre todos mejoramos cada día el Portal `,
+            title: `Valoración realizada con éxito. Muchas gracias!!. Vuestras opiniones nos ayudan a mejorar el Portal. `,
             showConfirmButton: false,
             timer: 2500
           }).then(

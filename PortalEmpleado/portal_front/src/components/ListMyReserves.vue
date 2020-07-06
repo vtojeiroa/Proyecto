@@ -148,7 +148,7 @@
             <div class="modalBox">
               <article class="vote">
                 <h2>Valora esta reserva</h2>
-                <h3>Selecciona la puntuación y escribe un comentario</h3>
+                <h3>Selecciona la valoración y escribe un comentario</h3>
                 <div class="form">
                   <fieldset class="valoration">
                     <form>
@@ -181,13 +181,13 @@
                           closeVoteEvent();
                           closeModalVote();
                         "
-                        value="CERRAR"
+                        value="Cerrar"
                       />
                       <input
                         class="button-go"
                         @click="voteReserveEvent(newReserve, voteDescription) ;
                           closeModalVote()"
-                        value="VOTAR"
+                        value="Valorar"
                       />
                     </div>
                   </fieldset>
@@ -277,10 +277,7 @@ export default {
   border-radius: 2%;
   min-width: 200px;
 }
-/* table {
-  min-width: 300px;
-}
- */
+
 tbody {
   display: flex;
   flex-direction: column;
@@ -314,7 +311,6 @@ input {
 div.buttons {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
 }
 ul,
 .modalBox ul {
@@ -344,7 +340,7 @@ li {
   max-height: 200px;
   max-width: 300px;
 }
-p.code {
+p {
   text-align: center;
 }
 </style>
