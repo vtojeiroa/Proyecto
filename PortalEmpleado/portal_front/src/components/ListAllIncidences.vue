@@ -57,7 +57,17 @@
                   </tr>
                   <tr v-show="allincidence.valoracion">
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{ allincidence.valoracion }}</td>
+                    <td class="data">
+                      <star-rating
+                        class="starsValoration"
+                        :inline="true"
+                        :star-size="20"
+                        :read-only="true"
+                        :rating="Number(allincidence.valoracion)"
+                        :increment="0.01"
+                        :show-rating="false"
+                      ></star-rating>
+                    </td>
                   </tr>
                   <tr v-show="allincidence.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>

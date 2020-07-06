@@ -3,7 +3,7 @@
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
     <vue-headful
-      title="Mantenimiento"
+      title="Mantenimiento Incidencias"
       description="Página que lista las incidencias y permite darles una respuesta"
     />
     <!-- VISTA DEL MENÚ -->

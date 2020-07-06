@@ -37,7 +37,17 @@
                   </tr>
                   <tr v-show="allreserve.valoracion">
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{ allreserve.valoracion }}</td>
+                    <td class="data">
+                      <star-rating
+                        class="starsValoration"
+                        :inline="true"
+                        :star-size="20"
+                        :read-only="true"
+                        :rating="Number(allreserve.valoracion)"
+                        :increment="0.01"
+                        :show-rating="false"
+                      ></star-rating>
+                    </td>
                   </tr>
                   <tr v-show="allreserve.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>
@@ -115,15 +125,20 @@ tr {
 }
 td {
   padding: 0.2rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 td.text {
   text-transform: uppercase;
   font-size: 14px;
   align-self: flex-start;
+  margin-right: 10px;
 }
 td.data {
   font-weight: bold;
   max-width: 200px;
+  text-align: end;
 }
 
 input {

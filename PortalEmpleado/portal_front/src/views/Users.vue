@@ -614,7 +614,7 @@ input.button-back {
 .modalBox {
   background: #dae1e7;
   color: #142850;
-  margin: 15% auto;
+  margin: auto;
   padding: 20px;
   border: 1px solid #888;
   width: 90%;
@@ -622,6 +622,7 @@ input.button-back {
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   border-radius: 10px;
 }
 

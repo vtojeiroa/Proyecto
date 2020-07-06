@@ -2,7 +2,7 @@
   <div class="home">
     <!-- USO HEADFUL PARA PERSONALIZAR EL NOMBRE DE LA PÁGINA -->
 
-    <vue-headful title="Services" description="Página que lista los servicios" />
+    <vue-headful title="Servicios" description="Página que lista los servicios" />
     <!-- VISTA DEL MENÚ -->
     <menucustom></menucustom>
 

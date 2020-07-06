@@ -10,7 +10,7 @@
       <!-- /MENU -->
 
       <!-- CONTENIDO -->
-      <main id="container">
+      <main id="container" v-show="seeContain">
         <section id="content">
           <article class="login">
             <form class="login">
@@ -75,68 +75,63 @@
             <!-- MODAL PARA  LA IMPLEMENTACIÓN DEL BUSCADOR DE VALORACIONES -->
             <button
               class="button-search"
-              @click="openModalValorations();
-                        getServices()"
+              @click="showValorationsView();
+                              getServices()"
             >Iniciar búqueda</button>
-
-            <div class="modal" style="overflow-y: scroll;" v-show="modalValorations">
-              <div class="modalBox">
-                <fieldset class="searchValorations">
-                  <h2>Selecciona el servicio para visualizar sus valoraciones</h2>
-
-                  <form class="searchValorations">
-                    <table class="searchValorations">
-                      <tbody>
-                        <tr>
-                          <td>
-                            <label for="service">Tipo de servicio:</label>
-                            <select id="typeservice" name="typeservice" v-model="typeService">
-                              <option value>Selecciona...</option>
-                              <option
-                                placeholder="Nombre del servicio"
-                                v-for="service in services"
-                                :key="service.id"
-                                :value="service.tipo"
-                              >{{service.tipo}}</option>
-                            </select>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </form>
-                  <div class="buttons">
-                    <input
-                      type="submit"
-                      class="back"
-                      value="CERRAR"
-                      @click="
-                        closeModalValorations();
-                        closeValorationsView();
-                        emptyFieldsValorations();
-                      "
-                    />
-                    <input
-                      type="submit"
-                      class="search"
-                      value="VER"
-                      @click="
-                        getValorations();
-                        showValorationsView()
-                      "
-                    />
-                  </div>
-                </fieldset>
-
-                <searchvalorations
-                  :searchincs="searchincs"
-                  :valorations="valorations"
-                  :values="values"
-                  v-show="seeValorations"
-                ></searchvalorations>
-              </div>
-            </div>
           </article>
         </section>
+      </main>
+      <main class="valorations" v-show="seeValorations">
+        <fieldset class="searchValorations">
+          <h2>Selecciona el servicio para visualizar sus valoraciones</h2>
+
+          <form class="searchValorations">
+            <table class="searchValorations">
+              <tbody>
+                <tr>
+                  <td>
+                    <label for="service">Tipo de servicio:</label>
+                    <select id="typeservice" name="typeservice" v-model="typeService">
+                      <option value>Selecciona...</option>
+                      <option
+                        placeholder="Nombre del servicio"
+                        v-for="service in services"
+                        :key="service.id"
+                        :value="service.tipo"
+                      >{{service.tipo}}</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+          <div class="buttons">
+            <input
+              type="submit"
+              class="button-back"
+              value="CERRAR"
+              @click="
+                        showValorationsView();
+                        emptyFieldsValorations();
+                        closeResultValorations();
+                      "
+            />
+            <input
+              type="submit"
+              class="button-go"
+              value="VER"
+              @click="  showResultValorations();
+                        getValorations();
+                                          "
+            />
+          </div>
+        </fieldset>
+        <searchvalorations
+          v-show="seeResultValorations"
+          :searchincs="searchincs"
+          :valorations="valorations"
+          :values="values"
+        ></searchvalorations>
       </main>
       <!-- FOOTER -->
       <footercustom></footercustom>
@@ -176,7 +171,9 @@ export default {
       values: {},
       modalValorations: false,
       typeService: "",
+      seeContain: true,
       seeValorations: false,
+      seeResultValorations: false,
       services: []
     };
   },
@@ -235,25 +232,20 @@ export default {
         );
     },
 
-    // ABRE EL MODAL PARA HACER LA BUSQUEDA DE VALORACIONES
-    openModalValorations() {
-      this.modalValorations = true;
-    },
-    // CIERRA EL MODAL DESPUES AL FINALIZAR LA BUSQUEDA DE VALORACIONES
-    closeModalValorations() {
-      this.modalValorations = false;
-      this.emptyFieldsValorations();
-    },
+    // VACIA EL CAMPO TIPO DE SERVICIO EN EL BUSCADOR DE VALORACIONES
     emptyFieldsValorations() {
       this.typeService = "";
-
-      this.getValorations();
-    },
+      this.seeResultValorations = false;
+    }, // ABRE LA VISTA PARA HACER LA BUSQUEDA DE VALORACIONES
     showValorationsView() {
-      this.seeValorations = true;
-    },
-    closeValorationsView() {
-      this.seeValorations = false;
+      this.seeContain = !this.seeContain;
+      this.seeValorations = !this.seeValorations;
+    }, // ABRE LA VISTA DE LAS VALORACIONES
+    showResultValorations() {
+      this.seeResultValorations = true;
+    }, // CIERRA LA VISTA DE LAS VALORACIONES Y DEL BUSCADOR
+    closeResultValorations() {
+      this.seeResultValorations = false;
     },
 
     //FUNCIÓN PARA CARGAR LOS  SERVICIOS EN EL DESPLEGABLE
@@ -493,48 +485,52 @@ main
   color: #142850;
   border: 2px solid #142850;
 }
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.modalBox {
-  background: #dae1e7;
-  color: #142850;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-}
-.modalBox h1 {
+h1 {
   font-size: 2rem;
   text-align: center;
 }
 
-.modalBox h2 {
+h2 {
   color: #333;
   text-transform: uppercase;
   text-align: center;
 }
-.modalBox label {
+main.valorations {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 10px;
+}
+main.valorations fieldset {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+main.valorations fieldset form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+main.valorations fieldset form table tbody tr {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+}
+
+main.valorations fieldset form table tbody tr td {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+}
+
+main.valorations fieldset form table tbody tr td label {
   font-size: 18px;
   font-weight: 700;
   color: #555;
 }
-.modalBox select {
+main.valorations fieldset form table tbody tr td select {
   background: rgba(255, 255, 255, 0.5);
   font-size: 16px;
   font-weight: 500;

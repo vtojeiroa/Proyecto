@@ -54,7 +54,18 @@
                   </tr>
                   <tr v-show="myreserve.valoracion">
                     <td class="text">Valoracíon:</td>
-                    <td class="data">{{ myreserve.valoracion }}</td>
+
+                    <td class="data">
+                      <star-rating
+                        class="starsValoration"
+                        :inline="true"
+                        :star-size="20"
+                        :read-only="true"
+                        :rating="Number(myreserve.valoracion)"
+                        :increment="0.01"
+                        :show-rating="false"
+                      ></star-rating>
+                    </td>
                   </tr>
                   <tr v-show="myreserve.comentario_valoracion">
                     <td class="text">Comentario valoración:</td>
@@ -118,7 +129,7 @@
                   class="code"
                   v-show="
                     new Date(myreserve.fecha_hora_fin_reserva).toLocaleString('es-ES',{timeZone:'UTC'}) < date &&
-                      !myreserve.valoracion
+                      !myreserve.fecha_registro_valoracion
                   "
                 >La reserva ha finalizado, puedes valorarla.</p>
                 <p
