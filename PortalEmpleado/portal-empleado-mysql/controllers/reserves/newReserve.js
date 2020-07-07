@@ -46,6 +46,20 @@ async function newReserve(req, res, next) {
     }
     const [dataReserve] = dataTypeReserve;
 
+    // Check type of reserve exists for that headquarter
+    const [
+      existTypeReserveForHeadquarter
+    ] = await connection.query(
+      `SELECT * FROM sedes_servicios ss WHERE ss.sedes_id=? AND ss.servicios_id = (SELECT s.id FROM servicios s WHERE s.tipo like ?)`,
+      [req.auth.headquarter, `%${reserveType}%`]
+    );
+
+    if (!existTypeReserveForHeadquarter.length) {
+      throw generateError(
+        'Por el momento,no es posible realizar esta reserva en tu sede de trabajo'
+      );
+    }
+
     // check number of reserves availabity in user`s headquarter
     const [
       dataDisponibilityReserve
