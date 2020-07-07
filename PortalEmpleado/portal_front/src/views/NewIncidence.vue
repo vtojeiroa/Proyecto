@@ -10,7 +10,26 @@
     <menulinks></menulinks>
     <main id="container">
       <section>
-        <!-- MODAL PARA EDITAR EL USUARIO -->
+      
+  <!-- MODAL CON LOS TIPO DE INCIDENCIAS-->
+
+        <div class="modal" v-show="modalData">
+          <div class="modalBox">
+            <h3>Estos son los tipos de incidencias que puedes registrar</h3>
+            <ul v-for="typeincidence in typeincidences" :key="typeincidence.id">
+              <li>
+                <p class="type">{{typeincidence.tipo}}</p>
+                <p>{{typeincidence.descripcion}}</p>
+              </li>
+            </ul>
+
+            <div class="buttons">
+              <input class="button-back" value="Cerrar" @click="modalData=false" />
+            </div>
+          </div>
+        </div>
+
+
 
         <article class="content">
           <h2>Registrar una nueva incidencia</h2>
@@ -121,7 +140,8 @@ export default {
       /*  id: null, */
       newType: "",
       newDescription: "",
-      typeincidences:[]
+      typeincidences:[],
+      modalData: true
     };
   },
   methods: {
@@ -285,5 +305,60 @@ textarea {
 }
 select {
   min-width: 235px;
+}
+.modalBox {
+  width: 50%;
+}
+.modalBox ul {
+  list-style: none;
+  display: flex;
+  flex-direction: center;
+  flex-wrap: wrap;
+}
+.modalBox li {
+  max-width: 500px;
+}
+
+.modalBox h3 {
+  text-transform: uppercase;
+}
+.modalBox p.type {
+  text-transform: uppercase;
+  font-weight: 900;
+  text-decoration: underline;
+  text-align: center;
+}
+.modalBox p {
+  text-align: center;
+}
+.modalBox input.button-back {
+  text-align: center;
+}.modalBox {
+  width: 50%;
+}
+.modalBox ul {
+  list-style: none;
+  display: flex;
+  flex-direction: center;
+  flex-wrap: wrap;
+}
+.modalBox li {
+  max-width: 500px;
+}
+
+.modalBox h3 {
+  text-transform: uppercase;
+}
+.modalBox p.type {
+  text-transform: uppercase;
+  font-weight: 900;
+  text-decoration: underline;
+  text-align: center;
+}
+.modalBox p {
+  text-align: center;
+}
+.modalBox input.button-back {
+  text-align: center;
 }
 </style>

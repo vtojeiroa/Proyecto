@@ -97,10 +97,17 @@
                 <label class="headquarter" for="headquarter">Indica tu sede de trabajo *:</label>
                 <select name="headquarter" id="headquarter" v-model="headquarter">
                   <option value>Selecciona...</option>
-                  <option value="coruña">Coruña</option>
+                  <option
+                    placeholder="Nombre del servicio"
+                    v-for="headquarter in headquarters"
+                    :key="headquarter.id"
+                    :value="headquarter.nombre"
+                  >{{headquarter.nombre}}</option>
+
+                  <!--                   <option value="coruña">Coruña</option>
                   <option value="santiago">Santiago</option>
                   <option value="malaga">Málaga</option>
-                  <option value="vigo">Vigo</option>
+                  <option value="vigo">Vigo</option>-->
                 </select>
               </li>
               <li class="checkbox">
@@ -172,7 +179,8 @@ export default {
       headquarter: "",
       acceptConditions: false,
       errorMessage: "",
-      correctData: false
+      correctData: false,
+      headquarters: []
     };
   },
   methods: {
@@ -267,7 +275,32 @@ export default {
       this.repeatPassword === "";
       this.headquarter === "";
       this.acceptConditions === "";
+    },
+    //FUNCIÓN PARA CARGAR LAS SEDES
+    getHeadquarters() {
+      const token = getAuthToken();
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
+      let self = this;
+      axios
+        .get("http://localhost:3000/headquarters")
+        //SI SALE BIEN
+        .then(function(response) {
+          let result = response.data.data;
+          self.headquarters = result.filter(active => active.activo !== 0);
+        })
+        //SI SALE MAL
+        .catch(error =>
+          Swal.fire({
+            icon: "error",
+            title: error.response.data.message,
+            showConfirmButton: false,
+            timer: 2500
+          })
+        );
     }
+  },
+  created() {
+    this.getHeadquarters();
   }
 };
 </script>

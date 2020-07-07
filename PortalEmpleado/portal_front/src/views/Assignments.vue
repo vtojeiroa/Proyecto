@@ -233,7 +233,7 @@ export default {
               //MOSTRAR UN MENSAJE CON EL RESULTADO
               Swal.fire({
                 icon: "success",
-                title: `Acabas de borrar la assignación `,
+                title: `Acabas de borrar la asignación `,
                 showConfirmButton: false,
                 timer: 2500
               }).then(result => {

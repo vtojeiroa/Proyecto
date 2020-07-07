@@ -427,8 +427,8 @@ export default {
                 showConfirmButton: false,
                 timer: 2500
               }).then(result => {
+                self.search = "";
                 self.getUsers();
-                search = "";
               });
             })
             //SI SALE MAL

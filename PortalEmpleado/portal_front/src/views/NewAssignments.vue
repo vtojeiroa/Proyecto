@@ -194,7 +194,7 @@ export default {
       }
     },
 
-    //FUNCIÓN PARA CARGAR LOS CLIENTES
+    //FUNCIÓN PARA CARGAR LAS SEDES
     getHeadquarters() {
       const token = getAuthToken();
       axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
@@ -203,7 +203,8 @@ export default {
         .get("http://localhost:3000/headquarters")
         //SI SALE BIEN
         .then(function(response) {
-          self.headquarters = response.data.data;
+          let result = response.data.data;
+          self.headquarters = result.filter(active => active.activo !== 0);
         })
         //SI SALE MAL
         .catch(error =>
@@ -229,7 +230,8 @@ export default {
         })
         //SI SALE BIEN
         .then(function(response) {
-          self.services = response.data.data;
+          let result = response.data.data;
+          self.services = result.filter(active => active.activo !== 0);
         })
         //SI SALE MAL
         .catch(error =>

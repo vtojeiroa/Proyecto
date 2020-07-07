@@ -282,6 +282,7 @@ export default {
           }).then(
             //RECARGA LA PAGINA
             result => {
+              self.search = "";
               self.closeModal();
             }
           );
@@ -322,6 +323,7 @@ export default {
                 showConfirmButton: false,
                 timer: 2500
               }).then(result => {
+                self.search = "";
                 self.getHeadquarters();
               });
             })

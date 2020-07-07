@@ -10,7 +10,23 @@
     <menulinks></menulinks>
     <main id="container">
       <section>
-        <!-- MODAL PARA EDITAR EL USUARIO -->
+        <!-- MODAL CON LOS TIPO DE RESERVAS-->
+
+        <div class="modal" v-show="modalData">
+          <div class="modalBox">
+            <h3>Estos son los tipos de reservas que puedes registrar</h3>
+            <ul v-for="typereserve in typereserves" :key="typereserve.id">
+              <li>
+                <p class="type">{{typereserve.tipo}}</p>
+                <p>{{typereserve.descripcion}}</p>
+              </li>
+            </ul>
+
+            <div class="buttons">
+              <input class="button-back" value="Cerrar" @click="modalData=false" />
+            </div>
+          </div>
+        </div>
 
         <article class="content">
           <h2>Registrar una nueva reserva</h2>
@@ -37,6 +53,7 @@
                     </select>
                   </td>
                 </tr>
+
                 <tr>
                   <td class="text">
                     <label for="newDateInit">Fecha y hora de inicio de la reserva:</label>
@@ -145,7 +162,8 @@ export default {
       newDateInit: "",
       newDateEnd: "",
       newDescription: "",
-      typereserves: []
+      typereserves: [],
+      modalData: true
     };
   },
   methods: {
@@ -293,7 +311,6 @@ td.text {
 }
 td.data {
   font-weight: bold;
-  /*   align-items: center; */
 }
 
 label {
@@ -313,5 +330,33 @@ textarea {
 
 select {
   min-width: 235px;
+}
+.modalBox {
+  width: 50%;
+}
+.modalBox ul {
+  list-style: none;
+  display: flex;
+  flex-direction: center;
+  flex-wrap: wrap;
+}
+.modalBox li {
+  max-width: 500px;
+}
+
+.modalBox h3 {
+  text-transform: uppercase;
+}
+.modalBox p.type {
+  text-transform: uppercase;
+  font-weight: 900;
+  text-decoration: underline;
+  text-align: center;
+}
+.modalBox p {
+  text-align: center;
+}
+.modalBox input.button-back {
+  text-align: center;
 }
 </style>

@@ -257,7 +257,8 @@ export default {
         .get("http://localhost:3000/services", {})
         //SI SALE BIEN
         .then(function(response) {
-          self.services = response.data.data;
+          let result = response.data.data;
+          self.services = result.filter(active => active.activo !== 0);
         })
         //SI SALE MAL
         .catch(error =>
