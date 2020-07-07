@@ -11,3 +11,6 @@ En la carpeta PortalEmpleado, hay dos carpetas, una para el backend y otra para 
 - Portal-empleado-mysql -------- BackEnd del proyecto.
 
 - portal_front ------- FrontEnd del proyecto,
+
+## Enlace al video de usabilidad del portal https://www.loom.com/share/73dccebec5f04caf9bbe4f209257c354
+
